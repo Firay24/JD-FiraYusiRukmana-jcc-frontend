@@ -14,7 +14,7 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Jr Championship Center",
+  title: "JCC",
   description: "From Developer To Developer",
 };
 
