@@ -14,7 +14,7 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "XNGINE",
+  title: "Jr Championship Center",
   description: "From Developer To Developer",
 };
 
