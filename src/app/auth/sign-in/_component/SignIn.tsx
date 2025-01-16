@@ -15,7 +15,7 @@ export default function page() {
             <Link href="/" className="col-span-2 text-neutral-500">
               Back to home
             </Link>
-            <InputText label="Email" placeholder="e.g. john@mail.com" className="col-span-2" type="email" required onChange={(e) => console.log(e.target.value)} />
+            <InputText label="Username" placeholder="john doe" className="col-span-2" type="text" required onChange={(e) => console.log(e.target.value)} />
             <InputPassword label="Password" placeholder="e.g. Input Password Here..." className="col-span-2" required onChange={(e) => console.log(e.target.value)} />
             <Button className="col-span-2">Sign In</Button>
           </form>
