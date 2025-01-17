@@ -14,15 +14,15 @@ export default function Home() {
 
   return (
     <main>
-      <nav className="absolute top-0 z-20 w-full bg-white">
-        <div className="flex items-center justify-between p-4">
+      <nav className="fixed z-20 w-full max-w-7xl bg-white">
+        <div className="relative flex w-full items-center justify-between p-4">
           {/* Logo */}
           <div className="flex-shrink-0">
             <img src="/img/logo.png" alt="Logo" className="h-10 w-auto md:h-14" />
           </div>
 
           {/* Hamburger Icon */}
-          <div className="text-3xl flex md:hidden">
+          <div className="flex text-3xl md:hidden">
             <button onClick={toggleMenu} aria-label="Toggle Menu">
               {isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}
             </button>
@@ -51,7 +51,7 @@ export default function Home() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`absolute left-0 top-full z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} md:hidden`}>
+        <div className={`fixed left-0 top-20 z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} md:hidden`}>
           <div className="flex flex-col items-center space-y-6 py-4">
             <a href="#home" className="hover:text-gray-400">
               Home
@@ -83,11 +83,11 @@ export default function Home() {
           backgroundRepeat: "no-repeat", // Avoids repeating the background image
         }}
       >
-        <div className="relative top-36 z-10 flex h-full flex-col items-center text-center md:top-0 md:justify-center">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
           <div className="flex flex-col items-center">
-            <h1 className="text-3xl md:text-5xl font-bold text-neutral-800">Junior National Intelectual Olympic</h1>
-            <p className="text-sm mt-4 w-[90%] text-neutral-600 md:max-w-[60%]">JUNIO yang diselenggarakan oleh Junior Championship Center dirancang untuk memberikan ruang bagi peserta didik TK, SD, dan SMP di Kabupaten Banyuwangi guna menyalurkan bakat, mengasah kompetensi, serta membangun karakter juara sejak dini.</p>
-            <button type="button" className="text-sm mt-6 rounded-lg bg-blue-700 px-5 py-2.5 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <h1 className="text-3xl font-bold text-neutral-800 md:text-5xl">Junior National Intelectual Olympic</h1>
+            <p className="mt-4 w-[90%] text-sm text-neutral-600 md:max-w-[60%]">JUNIO yang diselenggarakan oleh Junior Championship Center dirancang untuk memberikan ruang bagi peserta didik TK, SD, dan SMP di Kabupaten Banyuwangi guna menyalurkan bakat, mengasah kompetensi, serta membangun karakter juara sejak dini.</p>
+            <button type="button" className="mt-6 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Daftar
             </button>
           </div>
