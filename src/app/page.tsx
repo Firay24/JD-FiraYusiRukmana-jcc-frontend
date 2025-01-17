@@ -1,23 +1,98 @@
+"use client";
+import Link from "next/link";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { IoClose } from "react-icons/io5";
+import { useState } from "react";
+
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev); // Toggle menu state
+    console.log("Menu state:", !isMenuOpen); // Debugging log
+  };
+
   return (
-    <main className="flex h-full w-full items-center justify-center">
-      <section className="dark:bg-gray-900 bg-white">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 text-center lg:py-16">
-          <h1 className="text-4xl text-gray-900 md:text-5xl lg:text-6xl mb-4 font-extrabold leading-none tracking-tight dark:text-white">Coming Soon</h1>
-          <p className="text-lg text-gray-500 lg:text-xl dark:text-gray-400 mb-8 font-normal sm:px-16 lg:px-48">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p>
-          <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-            <a href="#" className="text-base bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:focus:ring-blue-900 inline-flex items-center justify-center rounded-lg px-5 py-3 text-center font-medium text-white focus:ring-4">
-              Get started
-              <svg className="ms-2 h-3.5 w-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
+    <main>
+      <nav className="absolute top-0 z-20 w-full bg-white">
+        <div className="flex items-center justify-between p-4">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <img src="/img/logo.png" alt="Logo" className="h-10 w-auto md:h-14" />
+          </div>
+
+          {/* Hamburger Icon */}
+          <div className="text-3xl flex md:hidden">
+            <button onClick={toggleMenu} aria-label="Toggle Menu">
+              {isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}
+            </button>
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden items-center space-x-6 md:flex">
+            <a href="#home" className="hover:text-gray-400">
+              Home
             </a>
-            <a href="#" className="text-sm text-gray-900 border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-white px-5 py-3 font-medium focus:z-10 focus:outline-none focus:ring-4 sm:ms-4 dark:hover:text-white">
-              Learn more
+            <a href="#about" className="hover:text-gray-400">
+              About
             </a>
+            <a href="#timeline" className="hover:text-gray-400">
+              Timeline
+            </a>
+            <a href="#contact" className="hover:text-gray-400">
+              Contact
+            </a>
+            <Link href="/login" passHref>
+              <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                Login
+              </button>
+            </Link>
           </div>
         </div>
-      </section>
+
+        {/* Mobile Menu */}
+        <div className={`absolute left-0 top-full z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} md:hidden`}>
+          <div className="flex flex-col items-center space-y-6 py-4">
+            <a href="#home" className="hover:text-gray-400">
+              Home
+            </a>
+            <a href="#about" className="hover:text-gray-400">
+              About
+            </a>
+            <a href="#timeline" className="hover:text-gray-400">
+              Timeline
+            </a>
+            <a href="#contact" className="hover:text-gray-400">
+              Contact
+            </a>
+            <Link href="/login" passHref>
+              <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                Login
+              </button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <div
+        className="relative h-screen w-full bg-cover bg-center px-4"
+        style={{
+          backgroundImage: "url('/img/bg.png')",
+          backgroundSize: "cover", // Ensures the background image covers the full width and height
+          backgroundRepeat: "no-repeat", // Avoids repeating the background image
+        }}
+      >
+        <div className="relative top-36 z-10 flex h-full flex-col items-center text-center md:top-0 md:justify-center">
+          <div className="flex flex-col items-center">
+            <h1 className="text-3xl md:text-5xl font-bold text-neutral-800">Junior National Intelectual Olympic</h1>
+            <p className="text-sm mt-4 w-[90%] text-neutral-600 md:max-w-[60%]">JUNIO yang diselenggarakan oleh Junior Championship Center dirancang untuk memberikan ruang bagi peserta didik TK, SD, dan SMP di Kabupaten Banyuwangi guna menyalurkan bakat, mengasah kompetensi, serta membangun karakter juara sejak dini.</p>
+            <button type="button" className="text-sm mt-6 rounded-lg bg-blue-700 px-5 py-2.5 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              Daftar
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
