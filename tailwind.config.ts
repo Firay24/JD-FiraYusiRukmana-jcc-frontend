@@ -37,6 +37,12 @@ const config: Config = {
     colors: {
       white: "rgb(var(--color-white) / 1)",
       black: "rgb(var(--color-black) / 1)",
+      base: {
+        navy: "#242748",
+        yellow: "#FEC133",
+        pink: "#FF6B6B",
+        blue: "#56CACE",
+      },
       primary: {
         100: "rgb(var(--color-primary-100) / 1)",
         200: "rgb(var(--color-primary-200) / 1)",
