@@ -7,10 +7,12 @@ import { SnackbarProvider } from "@/hooks/snackbar/SnackbarContext";
 export default function LayoutRoot({ font, children }: { font: string; children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${font} custom-scrollbar font-inter text-body antialiased`}>
+      <body className={`${font} custom-scrollbar text-body flex justify-center font-inter antialiased`}>
         <SnackbarProvider>
           <LoadingPageProvider>
-            <LoadingBarProvider>{children}</LoadingBarProvider>
+            <LoadingBarProvider>
+              <div className="w-full">{children}</div>
+            </LoadingBarProvider>
           </LoadingPageProvider>
         </SnackbarProvider>
       </body>
