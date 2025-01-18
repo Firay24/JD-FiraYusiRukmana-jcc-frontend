@@ -89,7 +89,7 @@ export default function Home() {
         >
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
             <div className="flex flex-col items-center">
-              <h1 className="text-3xl font-bold text-neutral-800 md:text-5xl">Junior National Intelectual Olympic</h1>
+              <h1 className="text-3xl font-bold text-neutral-800 md:text-5xl">Junior National Olympiad</h1>
               <p className="mt-4 w-[90%] text-sm text-neutral-600 md:max-w-[60%]">JUNIO yang diselenggarakan oleh Junior Championship Center dirancang untuk memberikan ruang bagi peserta didik TK, SD, dan SMP di Kabupaten Banyuwangi guna menyalurkan bakat, mengasah kompetensi, serta membangun karakter juara sejak dini.</p>
               <button type="button" className="mt-6 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Daftar
