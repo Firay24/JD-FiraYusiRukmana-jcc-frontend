@@ -1,4 +1,4 @@
-import { TTimeLine } from "@/types/page/home";
+import { TTimeLine } from "@/app/(landing)/type";
 
 const timeLine: TTimeLine[] = [
   {
