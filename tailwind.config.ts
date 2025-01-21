@@ -42,6 +42,7 @@ const config: Config = {
         yellow: "#FEC133",
         pink: "#FF6B6B",
         blue: "#56CACE",
+        gray: "#F5F4F4",
       },
       primary: {
         100: "rgb(var(--color-primary-100) / 1)",
