@@ -8,7 +8,7 @@ export interface Profile {
 
 export type RoleId = "1" | "2" | "3";
 
-export type RoleName = "SUPERADMIN" | "ADMIN" | "USER";
+export type RoleName = "SUPERADMIN" | "ADMIN" | "EVENTADMIN" | "PARTICIPANT" | "FACILITATOR";
 
 export interface Role {
   id: RoleId;

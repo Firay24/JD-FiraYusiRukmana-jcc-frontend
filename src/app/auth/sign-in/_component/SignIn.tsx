@@ -1,9 +1,25 @@
 "use client";
 
+import { useLogin } from "@/hooks/auth/useLogin";
 import logo_jcc from "@public/logo-jcc.png";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Page() {
+  const { login } = useLogin();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login(username, password);
+      console.log("login success");
+    } catch (error) {
+      console.log("login failed");
+    }
+  };
+
   return (
     <>
       <main className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -13,7 +29,7 @@ export default function Page() {
             <Image src={logo_jcc} alt="Logo" width={200} height={86} className="mx-auto" />
 
             {/* Form */}
-            <form className="mx-auto mt-11 w-full max-w-md">
+            <form className="mx-auto mt-11 w-full max-w-md" onSubmit={handleSubmit}>
               <div className="relative mb-4 rounded-full border border-gray-300 bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500">
                 {/* Ikon Username */}
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -21,7 +37,7 @@ export default function Page() {
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <input type="text" placeholder="Username" className="w-full border-none bg-transparent p-4 pl-10 text-gray-900 focus:outline-none focus:ring-0" />
+                <input onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" className="w-full border-none bg-transparent p-2.5 pl-10 text-gray-900 focus:outline-none focus:ring-0" />
               </div>
 
               <div className="relative mb-4 rounded-full border border-gray-300 bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500">
@@ -31,14 +47,13 @@ export default function Page() {
                     <path fillRule="evenodd" d="M12 2a4 4 0 00-4 4v4H7a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2v-8a2 2 0 00-2-2h-1V6a4 4 0 00-4-4zm-2 4a2 2 0 114 0v4h-4V6zm-2 8a1 1 0 112 0v2a1 1 0 11-2 0v-2z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <input type="password" placeholder="Password" className="w-full border-none bg-transparent p-4 pl-10 text-gray-900 focus:outline-none focus:ring-0" />
+                <input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" className="w-full border-none bg-transparent p-2.5 pl-10 text-gray-900 focus:outline-none focus:ring-0" />
               </div>
+              {/* Button */}
+              <button type="submit" className="w-full max-w-md rounded-full border border-gray-200 bg-[#0575E6] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#0369A1] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                Login
+              </button>
             </form>
-
-            {/* Button */}
-            <button type="button" className="text-sm w-full max-w-md rounded-full border border-gray-200 bg-[#0575E6] px-5 py-4 font-medium text-white hover:bg-[#0369A1] focus:outline-none focus:ring-4 focus:ring-gray-100">
-              Login
-            </button>
           </div>
         </div>
       </main>
