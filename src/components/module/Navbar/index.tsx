@@ -13,7 +13,7 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath }: NavbarProps) => {
   };
 
   return (
-    <nav className={`fixed z-20 w-full transition-all duration-300 ${isScrolled ? "bg-white/70 shadow-md backdrop-blur-lg" : "bg-transparent"}`}>
+    <nav className={`${isLogged ? "relative" : "fixed"} z-20 w-full transition-all duration-300 ${isScrolled ? "bg-white/70 shadow-md backdrop-blur-lg" : "bg-transparent"}`}>
       <Container>
         <div className="relative flex w-full items-center justify-between p-4">
           {/* Logo */}

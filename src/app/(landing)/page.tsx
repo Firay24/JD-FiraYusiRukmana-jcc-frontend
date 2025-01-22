@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 
 import Container from "@/components/base/Container";
 
-import Navbar from "@/app/(landing)/_component/Navbar";
-import Main from "@/app/(landing)/_component/Main";
-import Footer from "@/app/(landing)/_component/Footer";
+import Navbar from "./_component/Navbar";
+import Main from "./_component/Main";
+import Footer from "./_component/Footer";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
