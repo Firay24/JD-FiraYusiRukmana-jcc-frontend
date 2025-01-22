@@ -1,5 +1,5 @@
 "use client";
-
+import "@/utils/chartConfig";
 import { LoadingBarProvider } from "@/hooks/loading-bar/LoadingBarContext";
 import { LoadingPageProvider } from "@/hooks/loading-page/LoadingPageContext";
 import { SnackbarProvider } from "@/hooks/snackbar/SnackbarContext";
