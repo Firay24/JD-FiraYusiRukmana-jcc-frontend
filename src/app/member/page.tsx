@@ -92,7 +92,13 @@ const HomeMember = () => {
         </div>
 
         {/* graph */}
-        <div>
+        <div className="grid grid-cols-1 gap-6 rounded-lg bg-white p-4">
+          <p className="font-bold text-neutral-700">Earnings History</p>
+          <div className="grid grid-cols-3 gap-2">
+            <button className="rounded-full border-2 bg-transparent p-2 text-sm text-neutral-700 hover:bg-blue-800">Default</button>
+            <button className="rounded-full bg-blue-600 p-2 text-sm font-medium text-white hover:bg-blue-800">Default</button>
+            <button className="rounded-full border-2 bg-transparent p-2 text-sm text-neutral-700 hover:bg-blue-800">Default</button>
+          </div>
           <LineChart />
         </div>
 
