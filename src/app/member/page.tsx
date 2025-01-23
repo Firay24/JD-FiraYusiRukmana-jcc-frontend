@@ -103,7 +103,38 @@ const HomeMember = () => {
         </div>
 
         {/* upcoming event */}
-        <div></div>
+        <div className="rounded-lg bg-white p-4">
+          <div className="flex justify-between">
+            <p className="font-bold text-neutral-700">Upcoming Events</p>
+
+            <a href="#" className="font-medium text-blue-600 hover:underline dark:text-blue-500">
+              Read more
+            </a>
+          </div>
+          <div className="mt-3 grid grid-cols-1 gap-4">
+            <div className="flex pl-0">
+              <hr className="mr-2 h-full w-1 rounded border-0 bg-green-500 dark:bg-gray-700 md:my-10" />
+              <div className="grid grid-cols-1 gap-1 p-3">
+                <p className="font-semibold text-neutral-700">JCC S1 - SD/Mi sederajat</p>
+                <p className="text-xs text-gray-600">23 Feb 2025</p>
+              </div>
+            </div>
+            <div className="flex pl-0">
+              <hr className="mr-2 h-full w-1 rounded border-0 bg-red-500 dark:bg-gray-700 md:my-10" />
+              <div className="grid grid-cols-1 gap-1 p-3">
+                <p className="font-semibold text-neutral-700">JCC S1 - SD/Mi sederajat</p>
+                <p className="text-xs text-gray-600">23 Feb 2025</p>
+              </div>
+            </div>
+            <div className="flex pl-0">
+              <hr className="mr-2 h-full w-1 rounded border-0 bg-yellow-300 dark:bg-gray-700 md:my-10" />
+              <div className="grid grid-cols-1 gap-1 p-3">
+                <p className="font-semibold text-neutral-700">JCC S1 - SD/Mi sederajat</p>
+                <p className="text-xs text-gray-600">23 Feb 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
