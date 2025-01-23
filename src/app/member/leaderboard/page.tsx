@@ -59,7 +59,6 @@ const Leaderboard = () => {
             </form>
             <button type="button" className="text-base-purple inline-flex h-fit items-center rounded-full bg-gray-300 p-3 text-center hover:bg-blue-800 focus:outline-none focus:ring-4">
               <MdFilterListAlt />
-              <span className="sr-only">Icon description</span>
             </button>
           </div>
           <div className="grid grid-cols-3 gap-2">
