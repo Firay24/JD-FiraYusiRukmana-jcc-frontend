@@ -27,7 +27,7 @@ const Achievement = () => {
           <div className="flex w-full flex-col gap-1">
             <div className="flex flex-row items-center justify-between gap-2">
               <p className="text-md font-semibold">Sains</p>
-              <p className="text-md w-max rounded-full bg-base-green px-3 py-1 text-end font-semibold text-white">90</p>
+              <p className="text-md w-max rounded-full bg-base-green px-3 py-0 text-end font-semibold text-white">90</p>
             </div>
 
             <div className="flex flex-row items-center justify-between gap-2">
@@ -43,7 +43,7 @@ const Achievement = () => {
           <div className="flex w-full flex-col gap-1">
             <div className="flex flex-row items-center justify-between gap-2">
               <p className="text-md font-semibold">Math</p>
-              <p className="text-md w-max rounded-full bg-base-green px-3 py-1 text-end font-semibold text-white">90</p>
+              <p className="text-md w-max rounded-full bg-base-green px-3 py-0 text-end font-semibold text-white">90</p>
             </div>
 
             <div className="flex flex-row items-center justify-between gap-2">
