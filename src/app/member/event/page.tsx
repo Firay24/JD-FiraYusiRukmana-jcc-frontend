@@ -4,6 +4,7 @@ import Navbar from "@/components/module/Navbar";
 import { navbarMenuMember } from "@/data/navbarMember";
 import React, { useEffect, useState } from "react";
 import { eventsDummy } from "./data";
+import { useRouter } from "next/navigation";
 
 const tabs = [
   { id: "all", label: "All" },
@@ -14,6 +15,9 @@ const tabs = [
 const Event = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Hooks
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +51,7 @@ const Event = () => {
             {eventsDummy
               .filter((event) => event.category === activeTab || activeTab === "all")
               .map((event) => (
-                <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md">
+                <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md" onClick={() => router.push(`/member/event/${event.id}`)}>
                   <div className={`mr-4 w-1 ${event.color} rounded-full`} />
                   <div className="flex flex-col space-y-2">
                     <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
