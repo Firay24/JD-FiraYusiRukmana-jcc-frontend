@@ -51,7 +51,7 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) =>
       </Container>
 
       {/* Mobile Menu */}
-      <div className={`top-19 fixed left-0 z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} md:hidden`}>
+      <div className={`top-19 fixed left-0 z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "hidden max-h-0 opacity-0"} md:hidden`}>
         <div className="flex flex-col items-center space-y-6 py-4">
           {menu.map((item, index) => (
             <a key={index} href={item.path} className="hover:text-gray-400">

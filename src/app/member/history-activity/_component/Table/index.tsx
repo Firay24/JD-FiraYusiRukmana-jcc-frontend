@@ -1,6 +1,11 @@
+import Link from "next/link";
 import React from "react";
+import { dataDummy } from "./data";
+import { useRouter } from "next/navigation";
 
 const Table = () => {
+  const router = useRouter();
+
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
@@ -21,30 +26,22 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="">
-            <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
-              1/1/25
-            </th>
-            <td className="px-6 py-4">Silver</td>
-            <td className="px-6 py-4">Math</td>
-            <td className="px-6 py-4">80</td>
-          </tr>
-          <tr className="">
-            <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
-              1/1/25
-            </th>
-            <td className="px-6 py-4">White</td>
-            <td className="px-6 py-4">Math</td>
-            <td className="px-6 py-4">80</td>
-          </tr>
-          <tr className="">
-            <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
-              1/1/25
-            </th>
-            <td className="px-6 py-4">Black</td>
-            <td className="px-6 py-4">Math</td>
-            <td className="px-6 py-4">80</td>
-          </tr>
+          {dataDummy.map((row, index) => (
+            <tr
+              key={index}
+              onClick={() => {
+                router.push("history-activity/evaluation");
+              }}
+              className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
+                {row.date}
+              </th>
+              <td className="px-6 py-4">{row.season}</td>
+              <td className="px-6 py-4">{row.subject}</td>
+              <td className="px-6 py-4">{row.score}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
