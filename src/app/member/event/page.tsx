@@ -1,10 +1,23 @@
 "use client";
+import Container from "@/components/base/Container";
 import Navbar from "@/components/module/Navbar";
 import { navbarMenuMember } from "@/data/navbarMember";
 import React, { useEffect, useState } from "react";
+import { eventsDummy } from "./data";
+import { useRouter } from "next/navigation";
+
+const tabs = [
+  { id: "all", label: "All" },
+  { id: "invoice", label: "Invoice" },
+  { id: "my-event", label: "My Event" },
+];
 
 const Event = () => {
+  const [activeTab, setActiveTab] = useState("all");
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Hooks
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,58 +35,40 @@ const Event = () => {
     <div className="min-h-screen bg-base-gray">
       {/* nav */}
       <Navbar menu={navbarMenuMember} isScrolled={isScrolled} isLogged title="Events" />
+      <Container>
+        <div className="p-4">
+          {/* Tabs */}
+          <div className="flex space-x-2 rounded-lg bg-gray-100 p-1">
+            {tabs.map((tab) => (
+              <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`md: w-full rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300 focus:outline-none sm:w-max ${activeTab === tab.id ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-200"}`}>
+                {tab.label}
+              </button>
+            ))}
+          </div>
 
-      {/* event */}
-      <div className="grid grid-cols-1 gap-4 px-4">
-        <div className="flex rounded-lg bg-white p-4">
-          <hr className="mr-4 h-full w-2 rounded border-0 bg-green-500 md:my-10" />
-          <div className="grid grid-cols-1 gap-3">
-            <div>
-              <p className="text-xl font-semibold text-neutral-700">JCC S1 - SD/Mi sederajat</p>
-              <p className="text-sm text-neutral-600">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-            </div>
-            <div className="flex justify-between">
-              <div className="grid grid-cols-1 text-xs text-gray-600">
-                <p className="text-sm font-semibold">23 Feb 2024</p>
-                <p>09.00 - 10.00 PM</p>
-              </div>
-              <button className="rounded-lg bg-green-500 px-6 text-sm text-white">Daftar</button>
-            </div>
+          {/* Event List */}
+          <div className="mt-4 space-y-4">
+            {eventsDummy
+              .filter((event) => event.category === activeTab || activeTab === "all")
+              .map((event) => (
+                <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md" onClick={() => router.push(`/member/event/${event.id}`)}>
+                  <div className={`mr-4 w-1 ${event.color} rounded-full`} />
+                  <div className="flex flex-col space-y-2">
+                    <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
+                    <p className="text-sm text-gray-600">{event.description}</p>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div>
+                        <p className="font-semibold">{event.date}</p>
+                        <p>{event.time}</p>
+                      </div>
+                      <button className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`}>Daftar</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
-        <div className="flex rounded-lg bg-white p-4">
-          <hr className="mr-4 h-full w-2 rounded border-0 bg-base-yellow md:my-10" />
-          <div className="grid grid-cols-1 gap-3">
-            <div>
-              <p className="text-xl font-semibold text-neutral-700">JCC S1 - SD/Mi sederajat</p>
-              <p className="text-sm text-neutral-600">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-            </div>
-            <div className="flex justify-between">
-              <div className="grid grid-cols-1 text-xs text-gray-600">
-                <p className="text-sm font-semibold">23 Feb 2024</p>
-                <p>09.00 - 10.00 PM</p>
-              </div>
-              <button className="rounded-lg bg-base-yellow px-6 text-sm text-white">Daftar</button>
-            </div>
-          </div>
-        </div>
-        <div className="flex rounded-lg bg-white p-4">
-          <hr className="mr-4 h-full w-2 rounded border-0 bg-base-pink md:my-10" />
-          <div className="grid grid-cols-1 gap-3">
-            <div>
-              <p className="text-xl font-semibold text-neutral-700">JCC S1 - SD/Mi sederajat</p>
-              <p className="text-sm text-neutral-600">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-            </div>
-            <div className="flex justify-between">
-              <div className="grid grid-cols-1 text-xs text-gray-600">
-                <p className="text-sm font-semibold">23 Feb 2024</p>
-                <p>09.00 - 10.00 PM</p>
-              </div>
-              <button className="rounded-lg bg-base-pink px-6 text-sm text-white">Daftar</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      </Container>
     </div>
   );
 };
