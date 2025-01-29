@@ -5,7 +5,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
 import { NavbarProps } from "./type";
 
-const Navbar = ({ isScrolled, menu, isLogged, logoPath }: NavbarProps) => {
+const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -17,9 +17,15 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath }: NavbarProps) => {
       <Container>
         <div className="relative flex w-full items-center justify-between p-4">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <img src={logoPath ? logoPath : "/img/logo.png"} alt="Logo" className="h-10 w-auto md:h-14" />
-          </div>
+          {title ? (
+            <div>
+              <h2 className="text-2xl font-semibold italic">{title}</h2>
+            </div>
+          ) : (
+            <div className="flex-shrink-0">
+              <img src={logoPath ? logoPath : "/img/logo.png"} alt="Logo" className="h-10 w-auto md:h-14" />
+            </div>
+          )}
 
           {/* Hamburger Icon */}
           <div className="flex text-3xl md:hidden">
@@ -45,7 +51,7 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath }: NavbarProps) => {
       </Container>
 
       {/* Mobile Menu */}
-      <div className={`top-19 fixed left-0 z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} md:hidden`}>
+      <div className={`top-19 fixed left-0 z-20 w-full bg-white pb-6 shadow-md transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100" : "hidden max-h-0 opacity-0"} md:hidden`}>
         <div className="flex flex-col items-center space-y-6 py-4">
           {menu.map((item, index) => (
             <a key={index} href={item.path} className="hover:text-gray-400">
