@@ -6,7 +6,7 @@ import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { LuCalendarDays } from "react-icons/lu";
 import { SlClock } from "react-icons/sl";
 
-const ExpandableCard = ({ title, questions }) => {
+const ExpandableCard = ({ title, questions }: { title: string; questions: string[] }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
