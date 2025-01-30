@@ -18,8 +18,10 @@ export const useLogin = () => {
 
   const login = async (username: string, password: string) => {
     try {
-      const response: HttpResponse<LoginResponse> = await post("https://api.jrchampionship.id/v1/auth/sign-in", { username, password });
+      const response: HttpResponse<LoginResponse> = await post("/auth/sign-in", { username, password });
       if (response.data.role.name === RoleType.PARTICIPANT) router.push("/member");
+      if (response.data.role.name === RoleType.EVENTADMIN) router.push("/event-admin");
+      if (response.data.role.name === RoleType.FACILITATOR) router.push("/facilitator");
       // setToken(response.data.token);
       setProfile(response.data);
       return response;

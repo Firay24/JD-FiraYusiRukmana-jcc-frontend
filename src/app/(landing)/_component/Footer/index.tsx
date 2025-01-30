@@ -14,14 +14,14 @@ const FooterLandingPage = () => {
               <div className="grid grid-cols-1 gap-2">
                 <div className="flex justify-start">
                   <div className="mb-6 md:mb-0">
-                    <a href="#" className="flex items-center">
+                    <a href="#home" className="flex items-center">
                       <img src="/img/logo.png" className="me-3 h-14" alt="FlowBite Logo" />
                     </a>
                   </div>
                 </div>
                 <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
                   © 2025{" "}
-                  <a href="https://flowbite.com/" className="hover:underline">
+                  <a href="https://jrchampionship.id/" className="hover:underline">
                     Junior Championship Center™
                   </a>
                   . All Rights Reserved.
