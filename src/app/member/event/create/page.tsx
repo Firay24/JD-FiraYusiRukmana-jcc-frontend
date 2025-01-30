@@ -12,11 +12,11 @@ const CreateEvent = () => {
     setFields([...fields, { level: "", subject: "" }]);
   };
 
-  const removeField = (index) => {
+  const removeField = (index: any) => {
     setFields(fields.filter((_, i) => i !== index));
   };
 
-  const updateField = (index, key, value) => {
+  const updateField = ({ index, key, value }: { index: any; key: any; value: any }) => {
     setFields(fields.map((field, i) => (i === index ? { ...field, [key]: value } : field)));
   };
 
@@ -28,7 +28,7 @@ const CreateEvent = () => {
           <div className="mt-8 flex flex-col items-center gap-2">
             {fields.map((field, index) => (
               <div key={index} className="flex w-full flex-row items-center gap-2">
-                <select value={field.level} onChange={(e) => updateField(index, "level", e.target.value)} className="w-full rounded-lg border border-neutral-300 p-2">
+                <select value={field.level} onChange={(e) => updateField({ index: index, key: "level", value: e.target.value })} className="w-full rounded-lg border border-neutral-300 p-2">
                   <option value="" disabled className="text-neutral-400">
                     Level
                   </option>
@@ -40,7 +40,7 @@ const CreateEvent = () => {
                   <option value="6">Level 6</option>
                 </select>
 
-                <select value={field.subject} onChange={(e) => updateField(index, "subject", e.target.value)} className="w-full rounded-lg border border-neutral-300 p-2">
+                <select value={field.subject} onChange={(e) => updateField({ index: index, key: "subject", value: e.target.value })} className="w-full rounded-lg border border-neutral-300 p-2">
                   <option value="" disabled className="text-neutral-400">
                     Subject
                   </option>

@@ -1,10 +1,11 @@
 "use client";
 import Container from "@/components/base/Container";
 import React, { useState } from "react";
+type Stage = "tk" | "sd" | "smp";
 
 const Create = () => {
-  const [image, setImage] = useState("");
-  const [stage, setStage] = useState("tk");
+  const [image, setImage] = useState<string>("");
+  const [stage, setStage] = useState<Stage>("tk");
   const classOptions = {
     tk: ["1"],
     sd: ["1", "2", "3", "4", "5", "6"],
@@ -90,7 +91,7 @@ const Create = () => {
               <label htmlFor="stage" className="block ps-2 text-sm font-medium text-gray-600">
                 Stage
               </label>
-              <select name="stage" id="stage" className="mt-0 block w-full rounded-md border-0 p-2" onChange={(e) => setStage(e.target.value)}>
+              <select name="stage" id="stage" className="mt-0 block w-full rounded-md border-0 p-2" onChange={(e) => setStage(e.target.value as Stage)}>
                 <option value="tk">TK</option>
                 <option value="sd">SD</option>
                 <option value="smp">SMP</option>
