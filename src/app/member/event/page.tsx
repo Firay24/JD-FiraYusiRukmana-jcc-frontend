@@ -51,7 +51,13 @@ const Event = () => {
             {eventsDummy
               .filter((event) => event.category === activeTab || activeTab === "all")
               .map((event) => (
-                <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md" onClick={() => router.push(`/member/event/${event.id}`)}>
+                <div
+                  key={event.id}
+                  className="flex rounded-lg bg-white p-4 shadow-md"
+                  onClick={(e) => {
+                    router.push(`/member/event/${event.id}`);
+                  }}
+                >
                   <div className={`mr-4 w-1 ${event.color} rounded-full`} />
                   <div className="flex flex-col space-y-2">
                     <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
@@ -61,7 +67,9 @@ const Event = () => {
                         <p className="font-semibold">{event.date}</p>
                         <p>{event.time}</p>
                       </div>
-                      <button className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`}>Daftar</button>
+                      <button className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`} onClick={() => router.push("/member/event/create")}>
+                        Daftar
+                      </button>
                     </div>
                   </div>
                 </div>

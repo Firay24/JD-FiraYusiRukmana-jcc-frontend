@@ -2,10 +2,10 @@ import { MenuNavbar } from "@/components/module/Navbar/type";
 
 export const navbarMenuMember: MenuNavbar[] = [
   { label: "Dashboard", path: "/" },
-  { label: "Activity", path: "/activity" },
-  { label: "Leaderboard", path: "/leaderboard" },
-  { label: "Announcement", path: "/announcement" },
-  { label: "Event", path: "/event" },
-  { label: "Tryout", path: "/tryout" },
-  { label: "Profile", path: "/profile" },
+  { label: "Activity", path: "/member/history-activity" },
+  { label: "Leaderboard", path: "/member/leaderboard" },
+  { label: "Announcement", path: "/member/announcement" },
+  { label: "Event", path: "/member/event" },
+  { label: "Tryout", path: "/member/tryout" },
+  { label: "Profile", path: "/member/profile" },
 ];

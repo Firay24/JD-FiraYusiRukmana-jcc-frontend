@@ -2,13 +2,15 @@ import Container from "@/components/base/Container";
 import React from "react";
 import timeLine from "@/data/timeline";
 
-import mockup from "@public/mockup.png";
-import timeLineImage from "@public/design-time-line.png";
+import maskot from "@public/maskot.png";
+import schoolImg from "@public/school.png";
 
 import { HiOutlineUserGroup } from "react-icons/hi2";
-import { GoCreditCard, GoPeople } from "react-icons/go";
-import { TbHandClick } from "react-icons/tb";
 import Image from "next/image";
+import { BiMath } from "react-icons/bi";
+import { FaTree } from "react-icons/fa";
+import { IoLanguage } from "react-icons/io5";
+import { MdGroups2, MdMyLocation } from "react-icons/md";
 
 interface MainLandingProps {
   convertEpochToDate: (epoch: number) => string;
@@ -90,9 +92,9 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
           {/* Daftar Fitur Unggulan */}
           <div className="flex flex-col gap-6 md:w-1/2">
             <h3 className="text-3xl font-bold text-neutral-800 md:text-3xl">Fitur Unggulan</h3>
-            <p className="text-sm text-gray-600">Discover the magic of EduPlay in just a few simple steps! Download the app and unlock a world where learning meets play. All designed to captivate young minds and make education an exciting journey.</p>
+            <p className="text-sm text-gray-600">Kami menghadirkan teknologi canggih dengan layanan yang berorientasi pada kepuasan pelanggan. Setiap fitur dirancang untuk memberikan pengalaman terbaik, memastikan kemudahan, kecepatan, dan keamanan dalam setiap penggunaan.</p>
             <ul className="flex flex-col gap-4">
-              {["Tracking skor perkembangan anak", "Transparansi nilai", "Sistem koreksi otomatis menggunakan scan LJK", "Rangkaian lomba", "Analisis statistik performa anak", "Pembahasan soal"].map((feature, index) => (
+              {["Soal berstandar OSN (Olimpiade Sains Nasional) dan HOTS (Higher Order Thinking Skills)", "Soal dirancang khusus untuk TK, SD dan SMP sesuai tingkat kesulitan", "Sistem scan LJK memastikan penilaian cepat dan akurat", "Hasil nilai dan LJK yang dapat diakses di via website", "Pembahasan soal di akhir batch", "Hadiah dan doorprize menarik"].map((feature, index) => (
                 <li key={index} className="flex items-center gap-4">
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500 font-bold text-white">{index + 1}</div>
                   <span className="text-sm font-semibold text-gray-700">{feature}</span>
@@ -103,18 +105,18 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
 
           {/* Mockup Fitur Unggulan */}
           <div className="flex items-center justify-center md:w-1/2">
-            <Image src={mockup} alt="Mockup Fitur Unggulan" width={400} height={800} className="rounded-lg" />
+            <Image src={maskot} alt="maskot Fitur Unggulan" width={400} height={800} className="rounded-lg" />
           </div>
         </div>
       </Container>
       {/* Caption Section */}
-      <div className="mt-48 bg-[#F5F7FA] py-20">
+      <div className="mt-48 bg-[#E6EBFE] py-20">
         <Container style={{ marginTop: "0px" }}>
           <div className="mx-10 flex flex-col items-center justify-between gap-10 text-black md:mx-5 md:flex-row xl:mx-0">
             {/* Section Kiri */}
             <div className="flex flex-col justify-center gap-3 md:w-1/2">
               <h2 className="text-center text-3xl font-bold text-[#4D4D4D] md:text-start">“Nurturing Young Talents, Building Tomorrow’s Champions”</h2>
-              <p className="text-center lg:text-start">We reached here with our hard work and dedication</p>
+              <p className="text-center lg:text-start">Memupuk Bakat Muda, Membangun Juara Masa Depan</p>
             </div>
 
             {/* Section Kanan */}
@@ -122,34 +124,34 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
                 {/* item 1 */}
                 <div className="flex flex-col items-center gap-5 md:flex-row lg:justify-start">
-                  <GoPeople color="#4CAF4F" size={40} />
+                  <BiMath color="#4CAF4F" size={40} />
                   <div className="flex flex-col items-center md:items-start">
                     <h2 className="text-3xl font-bold text-[#4D4D4D]">Matematika</h2>
-                    <p className="font-light text-[#717171]">Members</p>
+                    {/* <p className="font-light text-[#717171]">Members</p> */}
                   </div>
                 </div>
                 {/* item 2 */}
                 <div className="flex flex-col items-center gap-5 md:flex-row lg:justify-start">
-                  <GoPeople color="#4CAF4F" size={40} />
+                  <FaTree color="#4CAF4F" size={40} />
                   <div className="flex flex-col items-center md:items-start">
                     <h2 className="text-3xl font-bold text-[#4D4D4D]">IPA</h2>
-                    <p className="font-light text-[#717171]">Clubs</p>
+                    {/* <p className="font-light text-[#717171]">Clubs</p> */}
                   </div>
                 </div>
                 {/* item 3 */}
                 <div className="flex flex-col items-center gap-5 md:flex-row lg:justify-start">
-                  <TbHandClick fontVariant={"Bold"} color="#4CAF4F" size={40} />
+                  <IoLanguage fontVariant={"Bold"} color="#4CAF4F" size={40} />
                   <div className="flex flex-col items-center md:items-start">
                     <h2 className="text-3xl font-bold text-[#4D4D4D]">Bahasa Inggris</h2>
-                    <p className="font-light text-[#717171]">Members</p>
+                    {/* <p className="font-light text-[#717171]">Members</p> */}
                   </div>
                 </div>
                 {/* item 4 */}
                 <div className="flex flex-col items-center gap-5 md:flex-row lg:justify-start">
-                  <GoCreditCard color="#4CAF4F" size={40} />
+                  <MdGroups2 color="#4CAF4F" size={40} />
                   <div className="flex flex-col items-center md:items-start">
                     <h2 className="text-3xl font-bold text-[#4D4D4D]">IPS</h2>
-                    <p className="font-light text-[#717171]">Payments</p>
+                    {/* <p className="font-light text-[#717171]">Payments</p> */}
                   </div>
                 </div>
               </div>
@@ -157,7 +159,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
           </div>
         </Container>
       </div>
-      {/* Section Timeline Kegiatan */}86
+      {/* Section Timeline Kegiatan */}
       <Container style={{ marginTop: "180px" }}>
         <div className="flex flex-col items-center justify-center gap-2">
           <h2 className="text-3xl font-semibold text-neutral-800 md:text-5xl">Timeline Kegiatan</h2>
@@ -178,9 +180,8 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                   <li key={index} className="mb-10 ms-4">
                     <div className="absolute -start-3 mt-1.5 h-5 w-5 rounded-full border-2 border-[#FE655D] bg-[#FE655D]"></div>
                     <h2 className="text-2xl font-semibold text-neutral-800">{convertEpochToDate(it.date)}</h2>
-                    <div className="flex flex-row gap-0">
-                      <p className="text-sm font-normal text-gray-500">{regionalText}</p>
-                      <p className="ms-2 text-sm font-normal text-black">{`| ${it.nama_sekolah}`}</p>
+                    <div className="flex items-center gap-1 text-gray-600">
+                      <p className="text-sm font-normal">{regionalText}</p>
                     </div>
                   </li>
                 );
@@ -190,7 +191,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
 
           {/* Design */}
           <div className="flex items-center justify-center md:w-1/2">
-            <Image src={timeLineImage} alt="Mockup Fitur Unggulan" width={800} height={1600} className="rounded-lg" />
+            <Image src={schoolImg} alt="image timeline" width={800} height={1600} className="rounded-lg" />
           </div>
         </div>
       </Container>
