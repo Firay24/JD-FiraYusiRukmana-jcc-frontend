@@ -54,6 +54,11 @@ export default function Page() {
                 Login
               </button>
             </form>
+            <div className="mt-4">
+              <a href="/" className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-500">
+                kembali ke halaman utama
+              </a>
+            </div>
           </div>
         </div>
       </main>

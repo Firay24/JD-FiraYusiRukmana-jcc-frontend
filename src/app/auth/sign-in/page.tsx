@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import SignIn from "./_component/SignIn";
 
 export const metadata: Metadata = {
-  title: "Sign In - XNGINE",
+  title: "Sign In - JCC",
 };
 
 export default function page() {
