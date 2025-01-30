@@ -42,8 +42,10 @@ const config: Config = {
         yellow: "#FEC133",
         pink: "#FF6B6B",
         blue: "#56CACE",
+        darkBlue: "#0062FF",
         gray: "#F5F4F4",
         purple: "#7550F5",
+        darkPurple: "#5570F1",
         green: "#55C267",
       },
       primary: {

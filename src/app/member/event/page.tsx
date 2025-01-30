@@ -49,6 +49,7 @@ const Event = () => {
           {/* Event List */}
           <div className="mt-4 space-y-4">
             {eventsDummy
+              .filter((event) => event.status === true)
               .filter((event) => event.category === activeTab || activeTab === "all")
               .map((event) => (
                 <div
@@ -72,7 +73,13 @@ const Event = () => {
                         <p className="font-semibold">{event.date}</p>
                         <p>{event.time}</p>
                       </div>
-                      <button className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`} onClick={() => router.push("/member/event/create")}>
+                      <button
+                        className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Mencegah event bubbling ke div luar
+                          router.push("/member/event/create");
+                        }}
+                      >
                         Daftar
                       </button>
                     </div>
