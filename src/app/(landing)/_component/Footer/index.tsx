@@ -1,27 +1,43 @@
 import Container from "@/components/base/Container";
 import React from "react";
+import { RiInstagramFill, RiWhatsappFill } from "react-icons/ri";
 
 const FooterLandingPage = () => {
   return (
-    <Container style={{ marginTop: "180px", marginBottom: "100px" }}>
-      <div className="flex w-full flex-col gap-2 border-t border-neutral-300 px-6 xl:px-0">
-        <div className="flex flex-col items-center justify-between md:flex-row md:items-end">
-          <div className="flex flex-row gap-2 pt-10 md:flex-row">
-            <a href="/privacy-policy" className="hover:underline">
-              Privacy Policy
-            </a>
-            <a href="/terms-conditions" className="hover:underline">
-              Terms & Conditions
-            </a>
-            <a href="/support" className="hover:underline">
-              Support
-            </a>
-          </div>
-          <div className="mt-4 md:mt-0">
-            <p className="text-center md:text-left">© Copyright 2024, All Rights Reserved</p>
+    <Container style={{ marginTop: "100px", marginBottom: "20px" }}>
+      <footer>
+        <div className="mx-auto w-full max-w-screen-xl lg:py-8">
+          <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
+          <div className="sm:flex sm:items-center sm:justify-between">
+            <div className="grid grid-cols-1 gap-2">
+              <div className="flex justify-start">
+                <div className="mb-6 md:mb-0">
+                  <a href="#" className="flex items-center">
+                    <img src="/img/logo.png" className="me-3 h-14" alt="FlowBite Logo" />
+                  </a>
+                </div>
+              </div>
+              <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
+                © 2025{" "}
+                <a href="https://flowbite.com/" className="hover:underline">
+                  Junior Championship Center™
+                </a>
+                . All Rights Reserved.
+              </span>
+            </div>
+            <div className="mt-4 flex text-3xl sm:mt-0 sm:justify-center">
+              <a href="https://www.instagram.com/jrchampionship.id/" className="text-gray-500 hover:text-gray-900">
+                <RiInstagramFill />
+                <span className="sr-only">Instagram</span>
+              </a>
+              <a href="wa.me/6285231796284" className="ms-5 text-gray-500 hover:text-gray-900">
+                <RiWhatsappFill />
+                <span className="sr-only">Whatsapp</span>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </footer>
     </Container>
   );
 };
