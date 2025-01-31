@@ -11,10 +11,18 @@ interface LoginResponse {
   };
 }
 
+interface LoggedResponse {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  name: string;
+}
+
 export const useLogin = () => {
   const router = useRouter();
   const { setProfile } = useAuthStore();
-  const { post } = useHttp();
+  const { post, get } = useHttp();
 
   const login = async (username: string, password: string) => {
     try {
@@ -41,5 +49,15 @@ export const useLogin = () => {
     }
   };
 
-  return { login, logout };
+  const logged = async () => {
+    try {
+      const response: HttpResponse<LoggedResponse> = await get("/auth/logged");
+      return response.data;
+    } catch (error) {
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { login, logout, logged };
 };

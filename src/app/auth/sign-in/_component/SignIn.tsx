@@ -3,10 +3,13 @@
 import { useLogin } from "@/hooks/auth/useLogin";
 import logo_jcc from "@public/logo-jcc.png";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const { login } = useLogin();
+  const router = useRouter();
+  const { login, logged } = useLogin();
+  const [islogged, setIslogged] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -19,6 +22,29 @@ export default function Page() {
       console.log("login failed");
     }
   };
+
+  useEffect(() => {
+    const checkLogged = async () => {
+      try {
+        const response = await logged();
+        if (response) {
+          setIslogged(true);
+        } else {
+          setIslogged(false);
+        }
+      } catch (error) {
+        setIslogged(false);
+      }
+    };
+
+    checkLogged();
+  }, []);
+
+  useEffect(() => {
+    if (islogged) {
+      router.push("/member");
+    }
+  }, [islogged]);
 
   return (
     <>

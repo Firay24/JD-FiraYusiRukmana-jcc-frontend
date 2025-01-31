@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { Role } from "@/types/role";
 import { useRole } from "@/hooks/role/useRole";
 import { removeSpace } from "@/utils/removeSpace";
+import { useRouter } from "next/router";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 interface RoleResponse {
   statusCode: number;
@@ -16,8 +18,11 @@ interface RoleResponse {
 }
 
 export default function page() {
+  const router = useRouter();
   const { role } = useRole();
   const { register } = useRegister();
+  const { logged } = useLogin();
+  const [islogged, setIslogged] = useState<boolean>(false);
 
   const [roles, setRoles] = useState<Role[]>([]);
   const [name, setName] = useState<string>("");
@@ -69,6 +74,21 @@ export default function page() {
       }
     };
 
+    const checkLogged = async () => {
+      try {
+        const response = await logged();
+        if (response) {
+          setIslogged(true);
+        } else {
+          setIslogged(false);
+        }
+      } catch (error) {
+        setIslogged(false);
+      }
+    };
+
+    checkLogged();
+
     fetchRoles();
   }, []);
 
@@ -76,6 +96,12 @@ export default function page() {
     const roleid = roles.find((role) => role.name.toLocaleLowerCase() === roleUser)?.id;
     setRoleid(roleid || "");
   }, [roles, roleUser]);
+
+  useEffect(() => {
+    if (islogged) {
+      router.push("/member");
+    }
+  }, [islogged]);
 
   return (
     <main className="flex min-h-dvh items-center justify-center py-12">
