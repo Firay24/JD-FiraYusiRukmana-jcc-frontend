@@ -26,10 +26,20 @@ export const useLogin = () => {
       setProfile(response.data);
       return response;
     } catch (error) {
-      console.error("Login failed:", error);
+      // console.error("Login failed:", error);
       throw error;
     }
   };
 
-  return { login };
+  const logout = async () => {
+    try {
+      await post("/auth/sign-out");
+      setProfile(null);
+    } catch (error) {
+      console.error("Logout failed:", error);
+      throw error;
+    }
+  };
+
+  return { login, logout };
 };
