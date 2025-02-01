@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
+import { useAuthStore } from "@/state/auth.state";
 
 interface NavbarProps {
   toggleMenu: () => void;
@@ -11,6 +12,9 @@ interface NavbarProps {
 }
 
 const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) => {
+  // Hooks
+  const { profile } = useAuthStore();
+
   return (
     <nav className={`fixed z-20 w-full transition-all duration-300 ${isScrolled ? "bg-white/70 shadow-md backdrop-blur-lg" : "bg-transparent"}`}>
       <Container>
@@ -41,11 +45,13 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
             <a href="#contact" className="hover:text-gray-400">
               Contact
             </a>
-            <Link href="/login" passHref>
-              <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                Login
-              </button>
-            </Link>
+            {!profile && (
+              <Link href="/auth/sign-in" passHref>
+                <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </Container>
@@ -65,11 +71,13 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
           <a href="#contact" className="hover:text-gray-400">
             Contact
           </a>
-          <Link href="/auth/sign-in" passHref>
-            <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
-              Login
-            </button>
-          </Link>
+          {!profile && (
+            <Link href="/auth/sign-in" passHref>
+              <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                Login
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

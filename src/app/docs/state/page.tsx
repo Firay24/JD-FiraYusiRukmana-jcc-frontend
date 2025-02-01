@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import State from "./_component/State";
 
 export const metadata: Metadata = {
-  title: "State - XNGINE",
+  title: "State - JCC",
 };
 
 export default function page() {

@@ -15,7 +15,7 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   title: "JCC",
-  description: "From Developer To Developer",
+  description: "Junior Championship Center",
 };
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {

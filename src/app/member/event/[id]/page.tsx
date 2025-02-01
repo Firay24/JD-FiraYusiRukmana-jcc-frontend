@@ -1,12 +1,13 @@
 "use client";
 
 import Container from "@/components/base/Container";
+import BackNavbar from "@/components/module/BackNavbar";
 import React, { useState } from "react";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { LuCalendarDays } from "react-icons/lu";
 import { SlClock } from "react-icons/sl";
 
-const ExpandableCard = ({ title, questions }) => {
+const ExpandableCard = ({ title, questions }: { title: string; questions: string[] }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -34,6 +35,7 @@ const DetailEvent = () => {
 
   return (
     <div className="min-h-screen bg-base-gray">
+      <BackNavbar />
       <Container>
         <div className="p-4">
           {/* Header */}
