@@ -1,11 +1,11 @@
 "use client";
 import Container from "@/components/base/Container";
+import { IStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
-import { IStudentInfo } from "@/types/student";
 import React, { useEffect, useState } from "react";
 
 const CreateEvent = () => {
-  const { save } = useStudent();
+  const { profile } = useStudent();
   const [studentProfile, setStudentProfile] = useState<IStudentInfo>();
   const [fields, setFields] = useState([{ level: "", subject: "" }]);
   const selectedSubjects = fields.map((field) => field.subject);
@@ -32,7 +32,7 @@ const CreateEvent = () => {
   useEffect(() => {
     const fetchStudentProfile = async () => {
       try {
-        const response = await save();
+        const response = await profile();
         setStudentProfile(response);
       } catch (error) {
         console.error("Error fetching student profile:", error);

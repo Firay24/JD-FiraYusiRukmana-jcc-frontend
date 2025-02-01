@@ -12,12 +12,12 @@ import { GiMusicalNotes } from "react-icons/gi";
 import Container from "@/components/base/Container";
 import { useRouter } from "next/navigation";
 import { useStudent } from "@/hooks/student/useStudent";
-import { TProfileStudent } from "@/hooks/student/type";
+import { IStudentInfo } from "@/hooks/student/type";
 
 const Profile = () => {
   // States
   const [isScrolled, setIsScrolled] = useState(false);
-  const [dataProfile, setDataProfile] = useState<TProfileStudent>();
+  const [dataProfile, setDataProfile] = useState<IStudentInfo>();
 
   // Hooks
   const router = useRouter();
@@ -28,12 +28,8 @@ const Profile = () => {
   useEffect(() => {
     const handleGetStudentProfile = async () => {
       try {
-        const res = await profile(); // Menambahkan tipe IProfile eksplisit
-        if (res.statusCode !== 200) {
-          throw new Error(res.message);
-        } else {
-          setDataProfile(res.data);
-        }
+        const res = await profile();
+        setDataProfile(res);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }

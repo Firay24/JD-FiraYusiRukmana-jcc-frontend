@@ -4,7 +4,7 @@ import { TPayloadUpdateProfile } from "@/hooks/profile/type";
 import { useProfileStore } from "@/hooks/profile/useProfile";
 import { TList } from "@/hooks/school/type";
 import { useSchollStore } from "@/hooks/school/useSchool";
-import { TPayloadSave, TProfileStudent } from "@/hooks/student/type";
+import { TPayloadSave, IStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
 import { useAuthStore } from "@/state/auth.state";
 import { ILabelValue } from "@/types/global";
@@ -21,7 +21,7 @@ const Edit = () => {
     SD: ["1", "2", "3", "4", "5", "6"],
     SMP: ["1", "2", "3"],
   };
-  const [dataProfile, setDataProfile] = useState<TProfileStudent | null>(null);
+  const [dataProfile, setDataProfile] = useState<IStudentInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSchool, setIsLoadingSchool] = useState(false);
   const [listSchool, setListSchool] = useState<ILabelValue[]>([]);
@@ -33,7 +33,7 @@ const Edit = () => {
   const { list } = useSchollStore();
   const { profile: authProfile } = useAuthStore();
   // useForm untuk menangani form
-  const { register, handleSubmit, reset, setValue } = useForm<TProfileStudent>();
+  const { register, handleSubmit, reset, setValue } = useForm<IStudentInfo>();
 
   // Functions
   const handleGetListSchool = async () => {
@@ -61,7 +61,7 @@ const Edit = () => {
         // setDataProfile(res as TProfile);
         // Konversi class ke number saat menyimpan dataProfile
         setDataProfile({
-          ...(res as TProfileStudent),
+          ...res,
           class: Number(res.class), // Konversi ke number
         });
 
@@ -76,7 +76,7 @@ const Edit = () => {
   }, []);
 
   // Handler untuk submit form
-  const onSubmit = async (data: TProfileStudent) => {
+  const onSubmit = async (data: IStudentInfo) => {
     if (!authProfile) throw new Error("Auth Profile not found");
 
     setIsLoading(true);

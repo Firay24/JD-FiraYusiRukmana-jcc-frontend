@@ -1,14 +1,12 @@
-import { IStudentInfo, PrfoileResponse } from "@/types/student";
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
-import { useLogin } from "../auth/useLogin";
-import { useAuthStore } from "@/state/auth.state";
+import { IStudentInfo, PrfoileResponse, TPayloadSave } from "./type";
 
 export const useStudent = () => {
   const router = useRouter();
-  const { get } = useHttp();
+  const { get, post } = useHttp();
 
-  const profile = async () => {
+  const profileDashboard = async () => {
     try {
       const response: HttpResponse<PrfoileResponse> = await get("/student/dashboard/profile");
       return response.data;
@@ -21,7 +19,7 @@ export const useStudent = () => {
     }
   };
 
-  const save = async () => {
+  const profile = async () => {
     try {
       const response: HttpResponse<IStudentInfo> = await get("/student/profile");
       return response.data;
@@ -34,5 +32,18 @@ export const useStudent = () => {
     }
   };
 
-  return { profile, save };
+  const save = async (payload: TPayloadSave) => {
+    try {
+      const response: HttpResponse<IStudentInfo> = await post("/student/save", payload);
+      return response;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { profileDashboard, save, profile };
 };
