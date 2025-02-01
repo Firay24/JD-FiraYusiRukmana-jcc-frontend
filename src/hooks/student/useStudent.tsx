@@ -1,4 +1,4 @@
-import { PrfoileResponse } from "@/types/student";
+import { IStudentInfo, PrfoileResponse } from "@/types/student";
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
 import { useLogin } from "../auth/useLogin";
@@ -21,5 +21,18 @@ export const useStudent = () => {
     }
   };
 
-  return { profile };
+  const student = async () => {
+    try {
+      const response: HttpResponse<IStudentInfo> = await get("/student/profile");
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { profile, student };
 };

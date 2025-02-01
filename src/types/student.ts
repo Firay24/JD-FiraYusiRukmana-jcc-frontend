@@ -12,3 +12,20 @@ export interface LevelInfo {
   maxPoints: number;
   progressPercentage: number;
 }
+
+export interface IStudentInfo {
+  name: string;
+  username: string;
+  gender: boolean;
+  birthdate: string;
+  phoneNumber: string;
+  address: string;
+  school: string;
+  stage: string;
+  class: string;
+  nik: string;
+  fatherName: string;
+  motherName: string;
+  photoPath: string;
+  poin: number;
+}
