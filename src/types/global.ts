@@ -28,3 +28,8 @@ export interface Store<T, F extends Record<string, (...args: any[]) => any>> {
   data: T;
   fn: F;
 }
+
+export interface ILabelValue {
+  value: any;
+  label: any;
+}

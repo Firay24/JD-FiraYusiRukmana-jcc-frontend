@@ -5,15 +5,15 @@ import { IStudentInfo } from "@/types/student";
 import React, { useEffect, useState } from "react";
 
 const CreateEvent = () => {
-  const { student } = useStudent();
+  const { save } = useStudent();
   const [studentProfile, setStudentProfile] = useState<IStudentInfo>();
   const [fields, setFields] = useState([{ level: "", subject: "" }]);
   const selectedSubjects = fields.map((field) => field.subject);
 
   const getLevelOptions = (schoolType: string) => {
-    if (schoolType === "tk") return [1];
-    if (schoolType === "sd") return [1, 2, 3, 4, 5, 6];
-    if (schoolType === "smp") return [1, 2, 3];
+    if (schoolType === "TK") return [1];
+    if (schoolType === "SD") return [1, 2, 3, 4, 5, 6];
+    if (schoolType === "SMP") return [1, 2, 3];
     return [];
   };
 
@@ -32,7 +32,7 @@ const CreateEvent = () => {
   useEffect(() => {
     const fetchStudentProfile = async () => {
       try {
-        const response = await student();
+        const response = await save();
         setStudentProfile(response);
       } catch (error) {
         console.error("Error fetching student profile:", error);
@@ -56,7 +56,7 @@ const CreateEvent = () => {
                     Level
                   </option>
                   {studentProfile &&
-                    getLevelOptions(studentProfile?.stage?.toLocaleLowerCase()).map((level) => (
+                    getLevelOptions(studentProfile?.stage).map((level) => (
                       <option key={level} value={level}>
                         Level {level}
                       </option>

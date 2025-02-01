@@ -21,7 +21,7 @@ export const useStudent = () => {
     }
   };
 
-  const student = async () => {
+  const save = async () => {
     try {
       const response: HttpResponse<IStudentInfo> = await get("/student/profile");
       return response.data;
@@ -34,5 +34,5 @@ export const useStudent = () => {
     }
   };
 
-  return { profile, student };
+  return { profile, save };
 };

@@ -27,6 +27,12 @@ const HomeMember = () => {
   const [levelInfo, setLevelInfo] = useState<LevelInfo>();
   const [isLoading, setIsLoading] = useState(true);
 
+  // Hooks
+  const router = useRouter();
+  const { count, increment, decrement } = useButtonStore();
+  const { profile } = useAuthStore();
+  console.log("Data Profile", profile);
+  // UseEffects
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
