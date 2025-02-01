@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { PiStudentFill } from "react-icons/pi";
 import getFirstName from "@/utils/getFirstName";
 import { getLevelInfo } from "@/utils/getInfoLevel";
-import Skeleton from "@/components/base/Skeleton";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import { MdOutlineQueryStats } from "react-icons/md";
 

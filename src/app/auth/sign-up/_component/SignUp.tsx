@@ -10,6 +10,7 @@ import { useRole } from "@/hooks/role/useRole";
 import { removeSpace } from "@/utils/removeSpace";
 import { useRouter } from "next/router";
 import { useLogin } from "@/hooks/auth/useLogin";
+import { convertDateToEpoch } from "@/utils/convertDateToEpoch";
 
 interface RoleResponse {
   statusCode: number;
@@ -37,16 +38,6 @@ export default function page() {
   const [gender, setGender] = useState<string>("laki-laki");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log({
-      username: username,
-      name: name,
-      email: email,
-      password: password,
-      roleId: roleid,
-      birthdate: birthdate,
-      gender: gender === "laki-laki" ? true : false,
-      phoneNumber: phoneNumber,
-    });
     e.preventDefault();
     try {
       await register({
@@ -55,7 +46,7 @@ export default function page() {
         email: email,
         password: password,
         roleId: roleid,
-        birthdate: birthdate,
+        birthdate: convertDateToEpoch(birthdate),
         gender: gender === "laki-laki" ? true : false,
         phoneNumber: phoneNumber,
       });

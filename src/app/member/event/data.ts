@@ -3,7 +3,7 @@ export const eventsDummy = [
     id: 1,
     category: "all",
     title: "JCC Regional 1",
-    description: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+    description: "Perlombaan akademik TK, SD dan SMP di SMAN 1 Pesanggaran",
     date: "23 Feb 2025",
     time: "07.00 - 15.00 WIB",
     color: "bg-red-500",
