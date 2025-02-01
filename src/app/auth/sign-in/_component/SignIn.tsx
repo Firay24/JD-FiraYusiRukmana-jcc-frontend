@@ -1,14 +1,18 @@
 "use client";
 
 import { useLogin } from "@/hooks/auth/useLogin";
+// import { useAuthStore } from "@/state/auth.state";
 import logo_jcc from "@public/logo-jcc.png";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const { login } = useLogin();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
+  const { login, logged } = useLogin();
+  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +23,29 @@ export default function Page() {
       console.log("login failed");
     }
   };
+
+  useEffect(() => {
+    const checkLogged = async () => {
+      try {
+        const response = await logged();
+        if (response) {
+          setIsLogged(true);
+        } else {
+          setIsLogged(false);
+        }
+      } catch (error) {
+        setIsLogged(false);
+      }
+    };
+
+    checkLogged();
+  }, []);
+
+  // useEffect(() => {
+  //   if (isLogged) {
+  //     router.push("/member");
+  //   }
+  // }, [isLogged]);
 
   return (
     <>
@@ -54,6 +81,11 @@ export default function Page() {
                 Login
               </button>
             </form>
+            <div className="mt-4">
+              <a href="/" className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-500">
+                kembali ke halaman utama
+              </a>
+            </div>
           </div>
         </div>
       </main>

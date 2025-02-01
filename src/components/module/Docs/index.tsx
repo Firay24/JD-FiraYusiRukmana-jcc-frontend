@@ -4,8 +4,8 @@ export default function Docs() {
   return (
     <main className="h-full w-full text-white">
       <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-neutral-900 px-4">
-        <h1 className="text-center text-h1 font-extralight leading-normal tracking-widest lg:font-extralight">XNGINE </h1>
-        <div className="flex flex-wrap justify-center gap-8 text-h5 font-extralight uppercase tracking-widest lg:font-extralight">
+        <h1 className="text-h1 text-center font-extralight leading-normal tracking-widest lg:font-extralight">JCC</h1>
+        <div className="text-h5 flex flex-wrap justify-center gap-8 font-extralight uppercase tracking-widest lg:font-extralight">
           <ul className="flex list-disc flex-col gap-4 pl-5">
             <li>
               <Link href="/docs/components" className="">

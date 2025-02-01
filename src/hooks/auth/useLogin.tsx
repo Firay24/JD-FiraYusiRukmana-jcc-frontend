@@ -11,23 +11,53 @@ interface LoginResponse {
   };
 }
 
+interface LoggedResponse {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  name: string;
+}
+
 export const useLogin = () => {
   const router = useRouter();
   const { setProfile } = useAuthStore();
-  const { post } = useHttp();
+  const { post, get } = useHttp();
 
   const login = async (username: string, password: string) => {
     try {
-      const response: HttpResponse<LoginResponse> = await post("https://api.jrchampionship.id/v1/auth/sign-in", { username, password });
+      const response: HttpResponse<LoginResponse> = await post("/auth/sign-in", { username, password });
       if (response.data.role.name === RoleType.PARTICIPANT) router.push("/member");
+      if (response.data.role.name === RoleType.EVENTADMIN) router.push("/event-admin");
+      if (response.data.role.name === RoleType.FACILITATOR) router.push("/facilitator");
       // setToken(response.data.token);
       setProfile(response.data);
       return response;
     } catch (error) {
-      console.error("Login failed:", error);
+      // console.error("Login failed:", error);
       throw error;
     }
   };
 
-  return { login };
+  const logout = async () => {
+    try {
+      await post("/auth/sign-out");
+      setProfile(null);
+    } catch (error) {
+      console.error("Logout failed:", error);
+      throw error;
+    }
+  };
+
+  const logged = async () => {
+    try {
+      const response: HttpResponse<LoggedResponse> = await get("/auth/logged");
+      return response.data;
+    } catch (error) {
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { login, logout, logged };
 };

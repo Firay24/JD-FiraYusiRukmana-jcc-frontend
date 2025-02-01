@@ -41,7 +41,7 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
             <a href="#contact" className="hover:text-gray-400">
               Contact
             </a>
-            <Link href="/login" passHref>
+            <Link href="/auth/sign-in" passHref>
               <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
                 Login
               </button>
