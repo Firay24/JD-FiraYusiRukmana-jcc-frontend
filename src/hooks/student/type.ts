@@ -1,0 +1,44 @@
+export type TPayloadSave = {
+  id?: string;
+  address: string;
+  stage: string;
+  class: string;
+  nik: string;
+  schoolId: string;
+  fatherName: string;
+  motherName: string;
+  idUser: string;
+};
+
+export interface PrfoileResponse {
+  nama: string;
+  username: string;
+  poin: number;
+  totalActivity: number;
+  avarageScore: number;
+}
+
+export interface LevelInfo {
+  level: string;
+  currentPoints: number;
+  maxPoints: number;
+  progressPercentage: number;
+}
+
+export interface IStudentInfo {
+  name: string;
+  username: string;
+  gender: boolean;
+  birthdate: string;
+  phoneNumber: string;
+  address: string;
+  school: string;
+  stage: string;
+  class: string | number;
+  nik: string;
+  fatherName: string;
+  motherName: string;
+  photoPath: string;
+  poin: number;
+  id?: string;
+}

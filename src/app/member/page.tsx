@@ -6,38 +6,40 @@ import { BsPersonArmsUp } from "react-icons/bs";
 import { IoIosArrowDropright } from "react-icons/io";
 import dynamic from "next/dynamic";
 import { useStudent } from "@/hooks/student/useStudent";
-import { LevelInfo, PrfoileResponse } from "@/types/student";
 import { useModalStore } from "@/state/modalState";
 import { IoClose } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { PiStudentFill } from "react-icons/pi";
 import getFirstName from "@/utils/getFirstName";
 import { getLevelInfo } from "@/utils/getInfoLevel";
-import Skeleton from "@/components/base/Skeleton";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import { MdOutlineQueryStats } from "react-icons/md";
+import { LevelInfo, PrfoileResponse } from "@/hooks/student/type";
 
 const LineChart = dynamic(() => import("../../components/module/Linechart"), { ssr: false });
 
 const HomeMember = () => {
-  const { profile } = useStudent();
-  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [studentProfile, setStudentProfile] = useState<PrfoileResponse>();
   const { isModalOpen, openModal, closeModal } = useModalStore();
   const [levelInfo, setLevelInfo] = useState<LevelInfo>();
   const [isLoading, setIsLoading] = useState(true);
 
+  // Hooks
+  const router = useRouter();
+  const { profileDashboard } = useStudent();
+
+  // UseEffects
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
 
-    const fetchProfile = async () => {
+    const fetchProfileDashboard = async () => {
       try {
         setIsLoading(true);
-        const data = await profile();
+        const data = await profileDashboard();
         setStudentProfile(data);
       } catch (error) {
         openModal();
@@ -47,7 +49,7 @@ const HomeMember = () => {
       }
     };
 
-    fetchProfile();
+    fetchProfileDashboard();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);

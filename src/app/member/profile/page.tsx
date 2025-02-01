@@ -3,20 +3,46 @@ import Navbar from "@/components/module/Navbar";
 import { navbarMenuMember } from "@/data/navbarMember";
 import React, { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
-import { MdHomeFilled, MdOutlineEmail, MdOutlineFamilyRestroom, MdOutlineSportsSoccer } from "react-icons/md";
+import { MdHomeFilled, MdOutlineFamilyRestroom } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { CgGenderFemale } from "react-icons/cg";
 import { FaBook, FaPhone, FaRegUser, FaRunning } from "react-icons/fa";
-import { CiUser } from "react-icons/ci";
 import { GiMusicalNotes } from "react-icons/gi";
 import Container from "@/components/base/Container";
 import { useRouter } from "next/navigation";
+import { useStudent } from "@/hooks/student/useStudent";
+import { IStudentInfo } from "@/hooks/student/type";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
 
 const Profile = () => {
+  // States
   const [isScrolled, setIsScrolled] = useState(false);
+  const [dataProfile, setDataProfile] = useState<IStudentInfo>();
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Hooks
   const router = useRouter();
+  const { profile } = useStudent();
+
+  // UseEffect
+  // Mengambil data profile saat pertama kali render
+  useEffect(() => {
+    const handleGetStudentProfile = async () => {
+      setIsLoading(true);
+      try {
+        const res = await profile();
+        setDataProfile(res);
+      } catch (error) {
+        setIsLoading(false);
+        console.error("Failed to fetch profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    handleGetStudentProfile();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +55,7 @@ const Profile = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
     <div className="min-h-screen bg-base-gray">
       {/* nav */}
@@ -37,117 +64,124 @@ const Profile = () => {
         {/* main */}
         <div className="grid grid-cols-1 gap-4 px-4">
           {/* header */}
-          <div className="rounded-lg bg-base-green p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div>
-                  <img className="h-10 w-10 rounded-full object-cover object-center" src="/img/profileImg.jpeg" alt="avatar" />
+          {isLoading ? (
+            <SkeletonLoader rows={4} />
+          ) : (
+            <div className="rounded-lg bg-base-green p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div>
+                    <img className="h-10 w-10 rounded-full object-cover object-center" src="/img/profileImg.jpeg" alt="avatar" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-white">{`Hello ${dataProfile?.name}`}</p>
+                    <p className="text-sm text-green-800">{`Level ${dataProfile?.class}`}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-lg font-bold text-white">Hello Andre</p>
-                  <p className="text-sm text-green-800">Level Cibi</p>
+                <div className="flex items-center gap-2">
+                  <div className="mr-2 text-center text-white">
+                    <p className="text-lg font-bold">{dataProfile?.poin}</p>
+                    <p className="text-sm">poin</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      router.push("/member/profile/edit");
+                    }}
+                    className="inline-flex h-fit items-center rounded-full bg-white p-3 text-center text-base-green"
+                  >
+                    <AiFillEdit />
+                  </button>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="mr-2 text-center text-white">
-                  <p className="text-lg font-bold">50</p>
-                  <p className="text-sm">poin</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    router.push("/member/profile/create");
-                  }}
-                  className="inline-flex h-fit items-center rounded-full bg-white p-3 text-center text-base-green"
-                >
-                  <AiFillEdit />
-                </button>
               </div>
             </div>
-          </div>
+          )}
 
           {/* main */}
-          <div className="rounded-lg bg-white p-4">
-            {/* biodata */}
-            <div>
-              <p className="mb-4 font-semibold text-neutral-700">Biodata</p>
-              <div className="grid grid-cols-1 gap-5 ps-5">
-                <div className="flex items-center gap-3">
+          {isLoading ? (
+            <SkeletonLoader rows={4} />
+          ) : (
+            <div className="rounded-lg bg-white p-4">
+              {/* biodata */}
+              <div>
+                <p className="mb-4 font-semibold text-neutral-700">Biodata</p>
+                <div className="grid grid-cols-1 gap-5 ps-5">
+                  {/* <div className="flex items-center gap-3">
                   <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
                     <MdOutlineEmail />
                   </div>
                   <div>
                     <p className="text-sm italic text-gray-400">email</p>
-                    <p className="font-medium text-neutral-700">hIb0A@example.com</p>
+                    <p className="font-medium text-neutral-700">{dataProfile?.email}</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <FaRegUser />
+                </div> */}
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <FaRegUser />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">nama</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.name}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">nama</p>
-                    <p className="font-medium text-neutral-700">Andre Pratama</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <BsCalendar2DateFill />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">tanggal lahir</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.birthdate ? new Date(Number(dataProfile.birthdate) * 1000).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : ""}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <BsCalendar2DateFill />
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <PiStudentFill />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">asal sekolah</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.school}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">tanggal lahir</p>
-                    <p className="font-medium text-neutral-700">Banyuwangi, 9 Desember 2006</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <MdHomeFilled />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">alamat</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.address}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <PiStudentFill />
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <CgGenderFemale />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">jenis kelamin</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.gender ? "Laki-laki" : "Perempuan"}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">asal sekolah</p>
-                    <p className="font-medium text-neutral-700">SMAN 1 Genteng, kelas 11</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <FaPhone />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">nomer hp</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.phoneNumber}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <MdHomeFilled />
-                  </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">alamat</p>
-                    <p className="font-medium text-neutral-700">Genteng Gang Garuda No 2</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <CgGenderFemale />
-                  </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">jenis kelamin</p>
-                    <p className="font-medium text-neutral-700">Perempuan</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <FaPhone />
-                  </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">nomer hp</p>
-                    <p className="font-medium text-neutral-700">085231796284</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <MdOutlineFamilyRestroom />
-                  </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">orang tua</p>
-                    <p className="font-medium text-neutral-700">Pak John, Bu Wati</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <MdOutlineFamilyRestroom />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">orang tua</p>
+                      <p className="font-medium text-neutral-700">{`Pak ${dataProfile?.fatherName}, Bu ${dataProfile?.motherName}`}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* minat bakat */}
-            <div className="mt-10">
+              {/* minat bakat */}
+              {/* <div className="mt-10">
               <p className="mb-4 font-semibold text-neutral-700">Minat & Bakat</p>
               <div className="grid grid-cols-1 gap-5 ps-5">
                 <div className="flex items-center gap-3">
@@ -187,8 +221,9 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
+            </div> */}
             </div>
-          </div>
+          )}
         </div>
       </Container>
     </div>

@@ -53,9 +53,8 @@ export const useLogin = () => {
     try {
       const response: HttpResponse<LoggedResponse> = await get("/auth/logged");
       return response.data;
-    } catch (error) {
-      console.error("No authenticated:", error);
-      throw error;
+    } catch {
+      null;
     }
   };
 

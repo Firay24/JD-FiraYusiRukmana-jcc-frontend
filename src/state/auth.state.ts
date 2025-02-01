@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AuthState {
   isLogged: boolean;
@@ -10,12 +11,17 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isLogged: false,
-  setIsLogged: (isLogged: boolean) => set({ isLogged }),
-  token: null,
-  profile: null,
-  setToken: (token) => set({ token }),
-  setProfile: (profile) => set({ profile }),
-  logout: () => set({ token: null, profile: null }),
-}));
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      isLogged: false,
+      setIsLogged: (isLogged: boolean) => set({ isLogged }),
+      token: null,
+      profile: null,
+      setToken: (token) => set({ token }),
+      setProfile: (profile) => set({ profile }),
+      logout: () => set({ token: null, profile: null }),
+    }),
+    { name: "auth-storage" }, // Key penyimpanan di localStorage
+  ),
+);
