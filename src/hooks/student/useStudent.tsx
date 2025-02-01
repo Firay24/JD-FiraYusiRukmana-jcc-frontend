@@ -1,6 +1,6 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
-import { IStudentInfo, PrfoileResponse, TPayloadSave } from "./type";
+import { IGetStudentInfo, IStudentInfo, PrfoileResponse, TPayloadSave } from "./type";
 
 export const useStudent = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ export const useStudent = () => {
 
   const profile = async () => {
     try {
-      const response: HttpResponse<IStudentInfo> = await get("/student/profile");
+      const response: HttpResponse<IGetStudentInfo> = await get("/student/profile");
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {
