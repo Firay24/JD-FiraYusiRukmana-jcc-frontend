@@ -41,4 +41,24 @@ export interface IStudentInfo {
   photoPath: string;
   poin: number;
   id?: string;
+  userId: string;
+}
+
+export interface IGetStudentInfo {
+  name: string;
+  username: string;
+  gender: boolean;
+  birthdate: string;
+  phoneNumber: string;
+  address: string;
+  school: string;
+  stage: string;
+  class: string | number;
+  nik: string;
+  fatherName: string;
+  motherName: string;
+  photoPath: string;
+  poin: number;
+  id: string;
+  userId: string;
 }

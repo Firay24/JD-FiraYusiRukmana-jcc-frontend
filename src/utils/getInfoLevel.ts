@@ -1,4 +1,4 @@
-import { LevelInfo } from "@/types/student";
+import { LevelInfo } from "@/hooks/student/type";
 
 export const getLevelInfo = (points: number): LevelInfo => {
   const levels = [
