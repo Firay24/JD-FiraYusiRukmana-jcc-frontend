@@ -11,7 +11,8 @@ import { useAuthStore } from "@/state/auth.state";
 import { ILabelValue } from "@/types/global";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import ReactSelect from "react-select";
 
 const Edit = () => {
   // States
@@ -35,7 +36,7 @@ const Edit = () => {
   const { list } = useSchollStore();
   const { profile: authProfile } = useAuthStore();
   // useForm untuk menangani form
-  const { register, handleSubmit, reset, setValue } = useForm<IStudentInfo>();
+  const { register, handleSubmit, reset, setValue, control } = useForm<IStudentInfo>();
 
   // Functions
   const handleGetListSchool = async () => {
@@ -246,16 +247,28 @@ const Edit = () => {
                 {isLoadingSchool ? (
                   <div className="mt-0 block w-full animate-pulse rounded-md border bg-gray-100 p-2 text-gray-400">Loading...</div>
                 ) : (
-                  <select id="school" {...register("school")} defaultValue={dataProfile?.school} className="mt-0 block w-full rounded-md border-0 p-2" disabled={isLoadingSchool}>
-                    <option value="" disabled>
-                      Pilih Sekolah
-                    </option>
-                    {listSchool.map((it, key) => (
-                      <option key={key} value={it.value}>
-                        {it.label}
-                      </option>
-                    ))}
-                  </select>
+                  <Controller
+                    name="school"
+                    control={control}
+                    render={({ field }) => (
+                      <ReactSelect
+                        {...field}
+                        id="school"
+                        options={listSchool}
+                        isDisabled={isLoadingSchool}
+                        isSearchable={true}
+                        placeholder="Pilih Sekolah"
+                        className="mt-0 w-full"
+                        classNames={{
+                          control: () => "border-0 rounded-md p-2 shadow-sm bg-white",
+                          menu: () => "bg-white border border-gray-200 shadow-lg rounded-md",
+                          option: ({ isFocused }) => (isFocused ? "bg-blue-100 text-blue-700" : "bg-white text-gray-900"),
+                        }}
+                        value={listSchool.find((s) => s.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                      />
+                    )}
+                  />
                 )}
               </div>
 
