@@ -1,6 +1,7 @@
 "use client";
 import Container from "@/components/base/Container";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
+import BackNavbar from "@/components/module/BackNavbar";
 import { TPayloadUpdateProfile } from "@/hooks/profile/type";
 import { useProfileStore } from "@/hooks/profile/useProfile";
 import { useSchollStore } from "@/hooks/school/useSchool";
@@ -151,13 +152,16 @@ const Edit = () => {
 
   // Menyesuaikan kelas berdasarkan stage yang dipilih
   useEffect(() => {
-    setValue("class", classOptions[stage][0]); // Atur default kelas
+    setValue("class", classOptions[stage as keyof typeof classOptions][0]); // Atur default kelas
     handleGetListSchool();
   }, [stage, setValue]);
 
   return (
     <div className="min-h-screen bg-base-gray p-3">
       <Container>
+        <div className="mb-6">
+          <BackNavbar />
+        </div>
         {isLoadingGetData ? (
           <SkeletonLoader rows={4} />
         ) : (
@@ -261,7 +265,7 @@ const Edit = () => {
                   Class
                 </label>
                 <select id="class" {...register("class")} className="mt-0 block w-full rounded-md border-0 p-2">
-                  {classOptions[stage].map((cls) => (
+                  {classOptions[stage as keyof typeof classOptions].map((cls) => (
                     <option key={cls} value={cls}>
                       {`Kelas ${cls}`}
                     </option>

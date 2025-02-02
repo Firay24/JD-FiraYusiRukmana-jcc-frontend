@@ -22,14 +22,14 @@ const BackNavbar: React.FC<BackNavbarProps> = ({ href }) => {
   return (
     <nav className="flex items-center px-4 pt-6">
       {href ? (
-        <Link href={href} className="flex items-center space-x-2 text-blue-600 hover:underline">
+        <Link href={href} className="flex items-center space-x-2 text-neutral-700">
           <FaArrowLeftLong className="h-5 w-5" />
-          <span>Back</span>
+          <span>Kembali</span>
         </Link>
       ) : (
         <button onClick={handleBack} className="flex items-center space-x-2 text-neutral-700">
           <FaArrowLeftLong className="h-5 w-5" />
-          <span>kembali</span>
+          <span>Kembali</span>
         </button>
       )}
     </nav>

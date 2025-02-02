@@ -10,6 +10,7 @@ import { useSubject } from "@/hooks/subject/useSubject";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { set } from "react-hook-form";
 
 const CreateEvent = () => {
   const { profile } = useStudent();
@@ -20,6 +21,7 @@ const CreateEvent = () => {
   const [subjectId, setSubjectId] = useState<string>("");
   const [studentProfile, setStudentProfile] = useState<IGetStudentInfo>();
   const [fields, setFields] = useState([{ level: "", subject: "" }]);
+  const [activityId, setActivityId] = useState<string>("");
 
   const getLevelOptions = (schoolType: string) => {
     if (schoolType === "TK") return [1];
@@ -61,11 +63,11 @@ const CreateEvent = () => {
         pathAnswer: null,
       };
       try {
-        await save(payload);
+        const activity = await save(payload);
+        setActivityId(activity.id);
+        router.push(`/member/event/invoice/${activity.id}`);
       } catch (error) {
         console.error("Save failed:", error);
-      } finally {
-        router.push("/member/event/invoice");
       }
     }
   };

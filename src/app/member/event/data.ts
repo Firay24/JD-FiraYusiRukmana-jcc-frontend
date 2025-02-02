@@ -97,7 +97,7 @@ export const eventsDummy = [
     date: "23 Feb 2025",
     time: "07.00 - 15.00 WIB",
     color: "bg-red-500",
-    status: true,
+    status: false,
   },
   {
     id: 2,

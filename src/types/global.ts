@@ -6,6 +6,12 @@ export interface Profile {
   role?: Role;
 }
 
+export enum StatusPayment {
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  COMPLETED = "COMPLETED",
+}
+
 export type RoleId = "1" | "2" | "3";
 
 export type RoleName = "SUPERADMIN" | "ADMIN" | "EVENTADMIN" | "PARTICIPANT" | "FACILITATOR";
