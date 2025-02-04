@@ -8,8 +8,8 @@ const FooterLandingPage = () => {
     <Section id="contact">
       <Container style={{ marginTop: "100px", marginBottom: "20px" }}>
         <footer>
-          <div id="contact" className="mx-auto w-full max-w-screen-xl lg:py-8">
-            <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
+          <div id="contact" className="mx-auto w-full max-w-screen-xl px-6 lg:py-8">
+            <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
             <div className="sm:flex sm:items-center sm:justify-between">
               <div className="grid grid-cols-1 gap-2">
                 <div className="flex justify-start">
@@ -32,7 +32,7 @@ const FooterLandingPage = () => {
                   <RiInstagramFill />
                   <span className="sr-only">Instagram</span>
                 </a>
-                <a href="wa.me/6285231796284" className="ms-5 text-gray-500 hover:text-gray-900">
+                <a href="https://wa.me/6285190079298?text=Halo%20admin%20Junio%2C%20Kak%20Gita%20ada%20yang%20perlu%20saya%20tanyakan%20lebih%20lanjut%20perihal%20Junio.%20Terima%20kasih%20kak%20Gita" className="ms-5 text-gray-500 hover:text-gray-900">
                   <RiWhatsappFill />
                   <span className="sr-only">Whatsapp</span>
                 </a>
