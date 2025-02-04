@@ -25,14 +25,14 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
           </div>
 
           {/* Hamburger Icon */}
-          <div className="flex text-3xl md:hidden">
+          {/* <div className="flex text-3xl md:hidden">
             <button onClick={toggleMenu} aria-label="Toggle Menu">
               {isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}
             </button>
-          </div>
+          </div> */}
 
           {/* Desktop Menu */}
-          <div className="hidden items-center space-x-6 md:flex">
+          {/* <div className="hidden items-center space-x-6 md:flex">
             <a href="#home" className="hover:text-gray-400">
               Home
             </a>
@@ -52,7 +52,7 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
                 </button>
               </Link>
             )}
-          </div>
+          </div> */}
         </div>
       </Container>
 

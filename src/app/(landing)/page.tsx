@@ -19,7 +19,7 @@ export default function LandingPage() {
     const date = new Date(epoch * 1000);
 
     const options: Intl.DateTimeFormatOptions = {
-      weekday: "long",
+      // weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",

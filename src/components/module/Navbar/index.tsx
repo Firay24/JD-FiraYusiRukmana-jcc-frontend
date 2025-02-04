@@ -9,12 +9,14 @@ import { useLogin } from "@/hooks/auth/useLogin";
 import { useModalStore } from "@/state/modalState";
 import { TiWarning } from "react-icons/ti";
 import { useRouter } from "next/navigation";
+import { set } from "react-hook-form";
 
 const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) => {
   const router = useRouter();
   const { logout } = useLogin();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const { closeModal } = useModalStore();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -68,7 +70,7 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) =>
               </a>
             ))}
             {isLogged ? (
-              <button onClick={openModal} type="button" className={`rounded-full bg-red-600 px-6 py-2 font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-300`}>
+              <button onClick={() => setIsModalOpen(true)} type="button" className={`rounded-full bg-red-600 px-6 py-2 font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-300`}>
                 Logout
               </button>
             ) : (
@@ -85,7 +87,7 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) =>
             <div className="relative rounded-lg bg-white shadow-lg">
               <div className="flex items-center justify-between rounded-t border-b border-gray-200 p-4 md:p-5">
                 <h3 className="text-xl font-semibold text-gray-900">Apa Anda yakin?</h3>
-                <button onClick={closeModal} className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+                <button onClick={() => setIsModalOpen(false)} className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
                   <IoClose size={18} />
                 </button>
               </div>
@@ -97,13 +99,13 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) =>
                 <p>Anda akan logout dari akun Anda. Lanjutkan?</p>
               </div>
               <div className="flex items-center justify-center gap-3 rounded-b border-t border-gray-200 p-4 md:p-5">
-                <button onClick={closeModal} className="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700">
+                <button onClick={() => setIsModalOpen(false)} className="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700">
                   Batal
                 </button>
                 <button
                   onClick={() => {
                     logout();
-                    closeModal();
+                    setIsModalOpen(false);
                     router.push("/auth/sign-in");
                   }}
                   className="rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800"

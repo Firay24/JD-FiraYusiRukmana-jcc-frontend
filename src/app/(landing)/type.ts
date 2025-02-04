@@ -12,3 +12,14 @@ export interface TTimeLine {
     };
   }[];
 }
+
+export interface IRegionalTimeline {
+  id: number;
+  regional: number;
+  address: string;
+  date: number;
+  status: boolean;
+  location: string;
+  path: string;
+  description: string;
+}
