@@ -165,7 +165,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
           <p className="mt-4 w-[90%] text-center text-xl text-black text-neutral-600 md:max-w-[60%]">Setiap regional hanya dapat mengikuti satu jenis lomba, tetapi peserta bebas menjelajahi tantangan di regional lainnya. Siapkan strategi terbaik dan raih kemenangan di berbagai arena!</p>
         </div>
         <div className="relative mx-20 mt-10 grid max-w-full grid-cols-1 gap-x-20 md:grid-cols-3">
-          <ol className="relative col-span-1 ml-4 border-s border-gray-200 md:col-span-2">
+          <ol className="relative col-span-1 ml-0 border-s border-gray-200 md:col-span-2 md:ml-4">
             {regionalTimeline.slice(0, 5).map((item, index) => (
               <li key={index} className="mb-10 ms-6">
                 <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-base-navy ring-8 ring-white">
