@@ -22,4 +22,5 @@ export interface IRegionalTimeline {
   location: string;
   path: string;
   description: string;
+  juknis: string;
 }

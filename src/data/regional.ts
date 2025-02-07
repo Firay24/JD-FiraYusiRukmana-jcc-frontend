@@ -9,6 +9,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: true,
     location: "SMAN 1 Pesanggaran",
     path: "/posterRegional1.png",
+    juknis: "/juknis-regional1.pdf",
     description: "Pendaftaran dibuka 4 - 18 Februari 2025, segera daftarkan sekarang",
   },
   {
@@ -19,6 +20,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Cluring",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -29,6 +31,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Purwoharjo",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -39,6 +42,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Srono",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -49,6 +53,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Rogojampi",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -59,6 +64,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Kalibaru",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -69,6 +75,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Songgon",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -79,6 +86,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Banyuwangi Kota",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -89,6 +97,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Wongsorejo",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -99,6 +108,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Bango",
     path: "",
+    juknis: "",
     description: "",
   },
   {
@@ -109,6 +119,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     status: false,
     location: "Genteng",
     path: "",
+    juknis: "",
     description: "",
   },
 ];
