@@ -11,6 +11,24 @@ export const regionalTimeline: IRegionalTimeline[] = [
     path: "/posterRegional1.png",
     juknis: "/juknis-regional1.pdf",
     description: "Pendaftaran dibuka 4 - 18 Februari 2025, segera daftarkan sekarang",
+    kisikisi: [
+      {
+        label: "Matematika",
+        path: "/kisikisi/s1-mtk.pdf",
+      },
+      {
+        label: "IPA",
+        path: "/kisikisi/s1-sains.pdf",
+      },
+      {
+        label: "IPS",
+        path: "/kisikisi/s1-ips.pdf",
+      },
+      {
+        label: "Bahasa Inggris",
+        path: "/kisikisi/s1-bhsInggris.pdf",
+      },
+    ],
   },
   {
     id: 2,

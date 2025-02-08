@@ -1,5 +1,6 @@
+"use client";
 import Container from "@/components/base/Container";
-import React from "react";
+import React, { useState } from "react";
 import timeLine from "@/data/timeline";
 
 import maskot from "@public/maskot.png";
@@ -15,12 +16,28 @@ import Section from "@/components/layout/Section";
 import Link from "next/link";
 import { regionalTimeline } from "@/data/regional";
 import { convertEpochToDateLong } from "@/utils/convertEpochToDate";
+import { IoIosArrowDown, IoMdDownload } from "react-icons/io";
 
 interface MainLandingProps {
   convertEpochToDate: (epoch: number) => string;
 }
 
 const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedPath, setSelectedPath] = useState<string>("");
+
+  const handleDownload = () => {
+    if (selectedPath) {
+      const link = document.createElement("a");
+      link.href = selectedPath;
+      link.download = selectedPath.split("/").pop() || `kisi-kisi ${selectedSubject}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   return (
     <div>
       <Section id="home">
@@ -164,7 +181,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
           <h2 className="text-3xl font-semibold text-neutral-800 md:text-5xl">Timeline Kegiatan</h2>
           <p className="mt-4 w-[90%] text-center text-xl text-black text-neutral-600 md:max-w-[60%]">Setiap peserta hanya boleh mengikuti perlombaan di 1 (satu) regional. Namun, bisa leluasa untuk mendaftar di tanggal dan regional ternyaman manapun sesuai jadwal yang tersedia.</p>
         </div>
-        <div className="relative mx-20 mt-10 grid max-w-full grid-cols-1 gap-x-20 md:grid-cols-3">
+        <div className="relative mx-10 mt-10 grid max-w-full grid-cols-1 gap-x-20 md:mx-20 md:grid-cols-3">
           <ol className="relative col-span-1 ml-0 border-s border-gray-200 md:col-span-2 md:ml-4">
             {regionalTimeline.slice(0, 5).map((item, index) => (
               <li key={index} className="mb-10 ms-6">
@@ -181,21 +198,50 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                 </div>
                 {item.description ? <p className="mb-4 text-base font-normal text-gray-500">{item.description}</p> : null}
                 {item.status ? (
-                  <div className="flex gap-3">
-                    <a href={item.path} download="PosterJunio-Regional1.png" className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                  <div className="flex flex-col gap-3 md:flex-row">
+                    <a href={item.path} download="PosterJunio-Regional1.png" className="inline-flex w-fit items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
                       <svg className="me-2.5 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
                         <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
                       </svg>{" "}
                       Download poster
                     </a>
-                    <a href={item.juknis} download="juknis-regional1.pdf" className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <a href={item.juknis} download="juknis-regional1.pdf" className="inline-flex w-fit items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
                       <svg className="me-2.5 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
                         <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
                       </svg>{" "}
                       Download Juknis
                     </a>
+                    <div className="flex w-72 items-center gap-3">
+                      <div className="relative w-full">
+                        <button className="flex w-full items-center justify-between rounded-lg border p-2 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
+                          {selectedSubject || "Pilih Mata Pelajaran"}
+                          <IoIosArrowDown className="h-5 w-5" />
+                        </button>
+                        {isOpen && (
+                          <ul className="absolute z-10 mt-1 w-full rounded-lg border bg-white shadow-md">
+                            {item.kisikisi &&
+                              item.kisikisi.map(({ label, path }) => (
+                                <li
+                                  key={label}
+                                  className="cursor-pointer p-2 hover:bg-gray-100"
+                                  onClick={() => {
+                                    setSelectedSubject(label);
+                                    setSelectedPath(path);
+                                    setIsOpen(false);
+                                  }}
+                                >
+                                  {label}
+                                </li>
+                              ))}
+                          </ul>
+                        )}
+                      </div>
+                      <button className={`w-fit rounded-md p-2 text-white transition ${selectedPath ? "bg-blue-500 hover:bg-blue-600" : "cursor-not-allowed bg-gray-400"}`} onClick={handleDownload} disabled={!selectedPath}>
+                        <IoMdDownload />
+                      </button>
+                    </div>
                   </div>
                 ) : null}
               </li>
