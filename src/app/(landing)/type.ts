@@ -23,4 +23,10 @@ export interface IRegionalTimeline {
   path: string;
   description: string;
   juknis: string;
+  kisikisi?: Kisikisi[];
+}
+
+interface Kisikisi {
+  label: string;
+  path: string;
 }
