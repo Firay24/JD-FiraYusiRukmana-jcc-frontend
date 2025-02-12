@@ -40,10 +40,14 @@ const HomeMember = () => {
       try {
         setIsLoading(true);
         const data = await profileDashboard();
-        setStudentProfile(data);
+        if (data) {
+          setStudentProfile(data);
+        } else {
+          openModal();
+        }
       } catch (error) {
-        openModal();
-        console.error("Failed to load profile:", error);
+        localStorage.setItem("isLogged", "false");
+        // console.error("Failed to load profile:", error);
       } finally {
         setIsLoading(false);
       }
@@ -220,7 +224,7 @@ const HomeMember = () => {
                 <button
                   onClick={() => {
                     closeModal();
-                    router.push("/member/profile/create");
+                    router.push("/member/profile/edit");
                   }}
                   className="rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800"
                 >

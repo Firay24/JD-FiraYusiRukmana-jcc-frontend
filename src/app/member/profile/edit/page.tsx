@@ -2,308 +2,266 @@
 import Container from "@/components/base/Container";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import BackNavbar from "@/components/module/BackNavbar";
-import { TPayloadUpdateProfile } from "@/hooks/profile/type";
 import { useProfileStore } from "@/hooks/profile/useProfile";
 import { useSchollStore } from "@/hooks/school/useSchool";
-import { TPayloadSave, IStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
-import { useAuthStore } from "@/state/auth.state";
-import { ILabelValue } from "@/types/global";
+import { ISelectReactForm, ProfileStudent } from "@/types/global";
+import { convertDateToEpoch } from "@/utils/convertDateToEpoch";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ReactSelect from "react-select";
+import { ActionMeta, InputActionMeta, SingleValue } from "react-select";
+import Select from "react-select";
 
-const Edit = () => {
-  // States
-  const [image, setImage] = useState("");
-  const [stage, setStage] = useState("TK");
+const page = () => {
+  const router = useRouter();
+  const { list } = useSchollStore();
+  const { profile, save } = useStudent();
+  const { update, user } = useProfileStore();
+
+  const [formData, setFormData] = useState<ProfileStudent>({
+    id: "",
+    idUser: "",
+    username: "",
+    name: "",
+    email: "",
+    birthdate: 0,
+    gender: false,
+    phoneNumber: "",
+    address: "",
+    photoPath: "",
+    idSchool: "",
+    school: "",
+    stage: undefined,
+    class: "",
+    nik: "",
+    fatherName: "",
+    motherName: "",
+  });
+  const [schools, setSchools] = useState<ISelectReactForm[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const classOptions = {
     TK: ["1"],
     SD: ["1", "2", "3", "4", "5", "6"],
     SMP: ["1", "2", "3"],
   };
-  const [dataProfile, setDataProfile] = useState<IStudentInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingSchool, setIsLoadingSchool] = useState(false);
-  const [listSchool, setListSchool] = useState<ILabelValue[]>([]);
-  const [isLoadingGetData, setIsLoadingGetData] = useState(false);
 
-  // Hooks
-  const router = useRouter();
-  const { profile, save } = useStudent();
-  const { update } = useProfileStore();
-  const { list } = useSchollStore();
-  const { profile: authProfile } = useAuthStore();
-  // useForm untuk menangani form
-  const { register, handleSubmit, reset, setValue, control } = useForm<IStudentInfo>();
-
-  // Functions
-  const handleGetListSchool = async () => {
-    setIsLoadingSchool(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const res = await list(stage);
-      const data = res;
-      // Format data to array of object label value
-      const formatted = data.map((item) => ({ label: item.name, value: item.id }));
-      setListSchool(formatted);
+      setIsLoadingSubmit(true);
+      console.log(formData);
+      await update({
+        username: formData.username,
+        name: formData.name,
+        email: formData.email,
+        birthdate: formData.birthdate,
+        gender: formData.gender,
+        phoneNumber: formData.phoneNumber,
+      });
+      await save({
+        id: formData.id ?? "",
+        address: formData.address,
+        class: formData.class,
+        nik: formData.nik,
+        stage: formData.stage as "TK" | "SD" | "SMP",
+        schoolId: formData.idSchool,
+        fatherName: formData.fatherName,
+        motherName: formData.motherName,
+        idUser: formData.idUser ?? "",
+      });
     } catch (error) {
-      console.error("Failed to fetch list school:", error);
+      console.error("Update failed:", error);
     } finally {
-      setIsLoadingSchool(false);
+      setIsLoadingSubmit(false);
+      router.replace("/member/profile");
     }
   };
 
-  // UseEffects
-
-  // Mengambil data profile saat pertama kali render
   useEffect(() => {
-    const handleGetStudentProfile = async () => {
+    const fetchDataUser = async () => {
       try {
-        setIsLoadingGetData(true);
-        const res = await profile();
-        // Konversi class ke number saat menyimpan dataProfile
-        setDataProfile({
-          ...res,
-          class: Number(res.class), // Konversi ke number
-        });
+        setIsLoading(true);
+        const responseUser = await user();
+        const responsestudent = await profile();
+
+        if (responseUser) {
+          setFormData({
+            id: responsestudent?.id || "",
+            idUser: responseUser.id,
+            username: responseUser.username,
+            name: responseUser.name,
+            email: responseUser.email,
+            birthdate: responseUser.birthday,
+            gender: responseUser.gender,
+            phoneNumber: responseUser.phoneNumber,
+            address: responsestudent?.address || "",
+            photoPath: responsestudent?.photoPath || "",
+            idSchool: responsestudent?.idSchool || "",
+            school: responsestudent?.school || "",
+            stage: (responsestudent?.stage as "TK" | "SD" | "SMP") || "TK",
+            class: responsestudent?.class || "",
+            nik: responsestudent?.nik || "",
+            fatherName: responsestudent?.fatherName || "",
+            motherName: responsestudent?.motherName || "",
+          });
+        }
       } catch (error) {
-        setIsLoadingGetData(false);
-        console.error("Failed to fetch profile:", error);
       } finally {
-        setIsLoadingGetData(false);
+        setIsLoading(false);
       }
     };
 
-    handleGetStudentProfile();
+    fetchDataUser();
   }, []);
 
-  // Handler untuk submit form
-  const onSubmit = async (data: IStudentInfo) => {
-    if (!authProfile) throw new Error("Auth Profile not found");
-
-    setIsLoading(true);
-    try {
-      // Handle Save Student
-      const payload: TPayloadSave = {
-        ...(authProfile?.id ? { id: dataProfile?.id } : {}),
-        address: data.address,
-        stage: data.stage,
-        class: data.class.toString(),
-        nik: data.nik,
-        schoolId: data.school,
-        fatherName: data.fatherName,
-        motherName: data.motherName,
-        idUser: authProfile?.id,
-      };
-
-      const responseSaveStudent = await save(payload);
-
-      if (responseSaveStudent.statusCode !== 200) {
-        throw new Error(`Gagal menyimpan data student: ${responseSaveStudent.message}`);
+  useEffect(() => {
+    const fetchDataSchool = async (stage: string) => {
+      try {
+        const responseSchools = await list(stage);
+        if (responseSchools) {
+          const schoolOption = responseSchools.map((item) => ({
+            label: item.name,
+            value: item.id,
+          }));
+          setSchools(schoolOption);
+        }
+      } catch (error) {
+        console.error(error);
       }
-
-      // Handle Update Profile
-      const payloadUpdateProfile: TPayloadUpdateProfile = {
-        birthdate: new Date(data.birthdate).getTime(),
-        name: data.name,
-        gender: data.gender,
-        phoneNumber: data.phoneNumber,
-        username: data.username,
-      };
-
-      const responseUpdateProfile = await update(payloadUpdateProfile);
-
-      if (responseUpdateProfile.statusCode !== 200) {
-        throw new Error(`Gagal menyimpan data profile: ${responseUpdateProfile.message}`);
-      }
-
-      // Success, redirect
-      router.push("/member/profile");
-    } catch (error) {
-      console.error("Failed to save student:", error);
-    } finally {
-      setIsLoading(false);
+    };
+    if (formData?.stage) {
+      fetchDataSchool(formData?.stage);
     }
-  };
-
-  // Reset Form
-  useEffect(() => {
-    if (dataProfile) {
-      const epoch = Number(dataProfile.birthdate) * 1000; // Konversi ke milidetik jika masih dalam detik
-      const date = new Date(epoch);
-
-      // Format YYYY-MM-DD untuk input date
-      const formattedDate = date.toISOString().split("T")[0];
-
-      reset({
-        ...dataProfile,
-        birthdate: formattedDate,
-      });
-
-      setStage(dataProfile.stage);
-    }
-  }, [dataProfile]);
-
-  useEffect(() => {
-    // Cari sekolah berdasarkan ID yang diterima dari server
-    const selectedSchool = listSchool.find((item) => item.label === dataProfile?.school);
-    setValue("school", selectedSchool ? selectedSchool.value : "", { shouldDirty: true });
-  }, [dataProfile, listSchool]);
-
-  // Menyesuaikan kelas berdasarkan stage yang dipilih
-  useEffect(() => {
-    setValue("class", classOptions[stage as keyof typeof classOptions][0]); // Atur default kelas
-    handleGetListSchool();
-  }, [stage, setValue]);
+  }, [formData?.stage]);
 
   return (
     <div className="min-h-screen bg-base-gray p-3">
       <Container>
         <div className="mb-6">
-          <BackNavbar />
+          <BackNavbar href="/member/profile" />
         </div>
-        {isLoadingGetData ? (
+        {isLoading ? (
           <SkeletonLoader rows={4} />
         ) : (
-          <div className="rounded-xl border bg-white p-5">
+          <div className="rounded-xl border bg-white p-5 pb-16">
             <p className="text-2xl">Profile</p>
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-5">
-              {/* Birthday */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="birthdate" className="block ps-2 text-sm font-medium text-gray-600">
-                  Birthday
+            <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-5">
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} type="text" name="floating_name" id="floating_name" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_name" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Name <span className="text-red-500">*</span>
                 </label>
-                <input type="date" id="birthdate" {...register("birthdate")} className="mt-0 block w-full rounded-md border-0 p-2" />
               </div>
-
-              {/* Gender */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="gender" className="block ps-2 text-sm font-medium text-gray-600">
-                  Gender
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} type="text" name="floating_username" id="floating_username" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_username" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Username <span className="text-red-500">*</span>
                 </label>
-                <select id="gender" {...register("gender")} className="mt-0 block w-full rounded-md border-0 p-2">
-                  <option value="true">Laki-laki</option>
-                  <option value="false">Perempuan</option>
-                </select>
               </div>
-
-              {/* Phone */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="phoneNumber" className="block ps-2 text-sm font-medium text-gray-600">
-                  Phone Number
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} type="email" name="floating_email" id="floating_email" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                <label htmlFor="floating_email" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Email
                 </label>
-                <input type="text" id="phoneNumber" {...register("phoneNumber")} className="mt-0 block w-full rounded-md border-0 p-2" />
               </div>
-
-              {/* NIK */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="nik" className="block ps-2 text-sm font-medium text-gray-600">
-                  NIK
+              <div className="group relative z-0 mb-5 w-full">
+                <label htmlFor="stage" className="mb-2 block text-sm text-gray-500">
+                  Jenjang <span className="text-red-500">*</span>
                 </label>
-                <input type="text" id="nik" {...register("nik")} className="mt-0 block w-full rounded-md border-0 p-2" />
-              </div>
-
-              {/* Photo
-            <div className="w-full rounded-lg border p-1">
-              <label htmlFor="photoPath" className="block ps-2 text-sm font-medium text-gray-600">
-                Photo
-              </label>
-              <input
-                type="file"
-                id="photoPath"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files.length > 0) {
-                    setImage(URL.createObjectURL(e.target.files[0]));
-                  }
-                }}
-                className="mt-0 block w-full rounded-md border-0 p-2"
-              />
-            </div>
-            {image && (
-              <div className="w-full rounded-lg border p-1">
-                <label className="block ps-2 text-sm font-medium text-gray-600">Image Preview</label>
-                <img src={image} alt="preview" className="w-full rounded-lg" />
-              </div>
-            )} */}
-
-              {/* Stage */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="stage" className="block ps-2 text-sm font-medium text-gray-600">
-                  Stage
-                </label>
-                <select id="stage" {...register("stage")} onChange={(e) => setStage(e.target.value as "tk" | "sd" | "smp")} className="mt-0 block w-full rounded-md border-0 p-2">
+                <select value={formData?.stage} onChange={(e) => setFormData({ ...formData, stage: e.target.value as "TK" | "SD" | "SMP" })} id="stage" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
                   <option value="TK">TK</option>
                   <option value="SD">SD</option>
                   <option value="SMP">SMP</option>
                 </select>
               </div>
-
-              {/* School */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="school" className="block ps-2 text-sm font-medium text-gray-600">
-                  School
+              <div className="group relative z-0 mb-5 w-full">
+                <label htmlFor="classes" className="mb-2 block text-sm text-gray-500">
+                  Kelas <span className="text-red-500">*</span>
                 </label>
-                {isLoadingSchool ? (
-                  <div className="mt-0 block w-full animate-pulse rounded-md border bg-gray-100 p-2 text-gray-400">Loading...</div>
-                ) : (
-                  <Controller
-                    name="school"
-                    control={control}
-                    render={({ field }) => (
-                      <ReactSelect
-                        {...field}
-                        id="school"
-                        options={listSchool}
-                        isDisabled={isLoadingSchool}
-                        isSearchable={true}
-                        placeholder="Pilih Sekolah"
-                        className="mt-0 w-full"
-                        classNames={{
-                          control: () => "border-0 rounded-md p-2 shadow-sm bg-white",
-                          menu: () => "bg-white border border-gray-200 shadow-lg rounded-md",
-                          option: ({ isFocused }) => (isFocused ? "bg-blue-100 text-blue-700" : "bg-white text-gray-900"),
-                        }}
-                        value={listSchool.find((s) => s.value === field.value)}
-                        onChange={(val) => field.onChange(val?.value)}
-                      />
-                    )}
-                  />
-                )}
-              </div>
-
-              {/* Class */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="class" className="block ps-2 text-sm font-medium text-gray-600">
-                  Class
-                </label>
-                <select id="class" {...register("class")} className="mt-0 block w-full rounded-md border-0 p-2">
-                  {classOptions[stage as keyof typeof classOptions].map((cls) => (
-                    <option key={cls} value={cls}>
-                      {`Kelas ${cls}`}
+                <select value={formData?.class} onChange={(e) => setFormData({ ...formData, class: e.target.value })} id="classes" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+                  {classOptions[formData.stage as "TK" | "SD" | "SMP"]?.map((option, index) => (
+                    <option key={index} value={option}>
+                      {`Kelas ${option}`}
                     </option>
                   ))}
                 </select>
               </div>
-
-              {/* Father Name */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="fatherName" className="block ps-2 text-sm font-medium text-gray-600">
-                  Father Name
+              <div className="group relative z-10 mb-5 w-full">
+                <label htmlFor="school" className="mb-2 block text-sm text-gray-500">
+                  Asal Sekolah <span className="text-red-500">*</span>
                 </label>
-                <input type="text" id="fatherName" {...register("fatherName")} className="mt-0 block w-full rounded-md border-0 p-2" />
+                <Select
+                  styles={{
+                    input: (base) => ({
+                      ...base,
+                      "input:focus": {
+                        boxShadow: "none",
+                      },
+                    }),
+                    control: (provided) => ({
+                      ...provided,
+                      border: "none",
+                      boxShadow: "none",
+                    }),
+                  }}
+                  className="basic-single"
+                  classNamePrefix="select"
+                  value={schools.find((s) => s.value === formData?.idSchool) ?? null}
+                  isSearchable={true}
+                  name="school"
+                  id="shool"
+                  options={schools}
+                  onChange={(e) => setFormData({ ...formData, idSchool: e?.value ?? "" })}
+                />
               </div>
-
-              {/* Mother Name */}
-              <div className="w-full rounded-lg border p-1">
-                <label htmlFor="motherName" className="block ps-2 text-sm font-medium text-gray-600">
-                  Mother Name
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData.birthdate ? new Date(formData.birthdate * 1000).toISOString().split("T")[0] : ""} onChange={(e) => setFormData({ ...formData, birthdate: convertDateToEpoch(e.target.value) })} type="date" name="floating_birthdate" id="floating_birthdate" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_birthdate" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Birthdate <span className="text-red-500">*</span>
                 </label>
-                <input type="text" id="motherName" {...register("motherName")} className="mt-0 block w-full rounded-md border-0 p-2" />
               </div>
-
-              <button type="submit" className="mt-4 w-full rounded-xl bg-[#5570F1] px-4 py-4 text-white">
-                {isLoading ? "Loading..." : "Simpan"}
+              <div className="group relative z-0 mb-5 w-full">
+                <label htmlFor="gender" className="mb-2 block text-sm text-gray-500">
+                  Jenis kelamin <span className="text-red-500">*</span>
+                </label>
+                <select value={formData?.gender ? "laki-laki" : "perempuan"} onChange={(e) => setFormData({ ...formData, gender: e.target.value === "laki-laki" ? true : false })} id="gender" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+                  <option value="laki-laki">Laki-laki</option>
+                  <option value="perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.phoneNumber} onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value.toString() })} type="number" name="floating_phonenumber" id="floating_phonenumber" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_phonenumber" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Nomer HP <span className="text-red-500">*</span>
+                </label>
+              </div>
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} type="text" name="floating_name" id="floating_name" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_name" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Alamat <span className="text-red-500">*</span>
+                </label>
+              </div>
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.nik} onChange={(e) => setFormData({ ...formData, nik: e.target.value.toString() })} type="number" name="floating_nik" id="floating_nik" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_nik" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  NIK <span className="text-red-500">*</span>
+                </label>
+              </div>
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.fatherName} onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })} type="text" name="floating_fatherName" id="floating_fatherName" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_fatherName" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Nama Ayah <span className="text-red-500">*</span>
+                </label>
+              </div>
+              <div className="group relative z-0 mb-5 w-full">
+                <input value={formData?.motherName} onChange={(e) => setFormData({ ...formData, motherName: e.target.value })} type="text" name="floating_mother" id="floating_mother" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                <label htmlFor="floating_mother" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+                  Nama Ibu <span className="text-red-500">*</span>
+                </label>
+              </div>
+              <button type="submit" className="mt-2 w-full rounded-xl bg-[#5570F1] p-3 text-white">
+                {isLoadingSubmit ? "Loading" : "Simpan"}
               </button>
             </form>
           </div>
@@ -313,4 +271,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default page;
