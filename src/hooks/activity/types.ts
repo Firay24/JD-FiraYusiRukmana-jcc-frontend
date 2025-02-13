@@ -68,3 +68,17 @@ export interface IListActivity {
   total: number;
   data: IListActivityStudent[];
 }
+
+export interface IActivityCreateDto {
+  id?: string;
+  studentId: string;
+  competitionId: string[];
+  competitionRommId?: string;
+  paymentId?: string;
+  attedance: boolean;
+  score?: number;
+  correct?: number;
+  incorrect?: number;
+  pathAnswer?: string;
+  amount?: number;
+}

@@ -1,7 +1,7 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
 
-interface SubjectResponse {
+export interface SubjectResponse {
   id: string;
   name: string;
 }

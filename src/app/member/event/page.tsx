@@ -118,8 +118,8 @@ const Event = () => {
           {activeTab === "my-event" && (
             <div className="mt-4 space-y-4">
               {listActivity && listActivity.length > 0 ? (
-                listActivity.map((event) => (
-                  <div onClick={() => router.push(`/member/event/invoice/${event.id}`)} key={event.competition.season} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
+                listActivity.map((event, index) => (
+                  <div onClick={() => router.push(`/member/event/invoice/${event.id}`)} key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
                     <div className="flex flex-col">
                       <h3 className="text-lg font-semibold text-gray-800">{event.competition.name}</h3>
                       <p className="text-sm text-gray-600">{event.competition.region.name}</p>
