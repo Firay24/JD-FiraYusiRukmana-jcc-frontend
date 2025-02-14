@@ -31,6 +31,7 @@ export interface IDetailActivity {
     nik: string;
   };
   events: {
+    name: string;
     season: string;
     region: string;
     price: number;

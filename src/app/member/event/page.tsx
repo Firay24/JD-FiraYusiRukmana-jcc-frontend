@@ -159,7 +159,7 @@ const Event = () => {
                   <div className="mt-4 space-y-4">
                     {listActivity && listActivity.length > 0 ? (
                       listActivity.map((event, index) => (
-                        <div onClick={() => router.push(`/member/event/invoice/${event.id}`)} key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
+                        <div onClick={() => router.push(`/member/event/my-event/${event.id}`)} key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
                           <div className="flex flex-col">
                             <h3 className="text-lg font-semibold text-gray-800">{event.competition.name}</h3>
                             <p className="text-sm text-gray-600">{event.competition.region.name}</p>
