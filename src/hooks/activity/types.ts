@@ -31,6 +31,7 @@ export interface IDetailActivity {
     nik: string;
   };
   events: {
+    name: string;
     season: string;
     region: string;
     price: number;
@@ -46,6 +47,42 @@ export interface IDetailActivity {
   latestStatus: IStatusPayment;
 }
 
+interface Competition {
+  id: string;
+  name: string;
+  price: number;
+  stage: string;
+  level: number;
+  season: {
+    id: string;
+    name: string;
+  };
+  subject: {
+    id: string;
+    name: string;
+  };
+  region: {
+    id: string;
+    name: string;
+  };
+}
+
+interface DetailStatus {
+  status: string;
+  date: number;
+}
+
+export interface IDetailPayment {
+  id: string;
+  invoice: string;
+  date: number;
+  amount: number;
+  status: StatusPayment;
+  competition: Competition[];
+  detailStatus: DetailStatus[];
+  latestStatus: DetailStatus;
+}
+
 export interface IListActivityStudent {
   id: string;
   statusPayment: StatusPayment;
@@ -55,6 +92,7 @@ export interface IListActivityStudent {
     date: number;
     subject: string;
     season: string;
+    location: string;
     region: {
       name: string;
       region: number;
@@ -67,4 +105,18 @@ export interface IListActivity {
   limit: number;
   total: number;
   data: IListActivityStudent[];
+}
+
+export interface IActivityCreateDto {
+  id?: string;
+  studentId: string;
+  competitionId: string[];
+  competitionRommId?: string;
+  paymentId?: string;
+  attedance: boolean;
+  score?: number;
+  correct?: number;
+  incorrect?: number;
+  pathAnswer?: string;
+  amount?: number;
 }

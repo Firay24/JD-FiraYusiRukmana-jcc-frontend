@@ -1,163 +1,167 @@
 "use client";
 import Container from "@/components/base/Container";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
 import BackNavbar from "@/components/module/BackNavbar";
-import { TSaveActivity } from "@/hooks/activity/types";
 import { useActivity } from "@/hooks/activity/useActivity";
 import { useEvent } from "@/hooks/event/useEvent";
 import { IGetStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
-import { useSubject } from "@/hooks/subject/useSubject";
-import Link from "next/link";
+import { SubjectResponse, useSubject } from "@/hooks/subject/useSubject";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 
-const CreateEvent = () => {
-  const { profile } = useStudent();
-  const { eventId } = useEvent();
-  const { save } = useActivity();
-  const { listSubject } = useSubject();
+const EventCreate = () => {
   const router = useRouter();
-  const [subjectId, setSubjectId] = useState<string>("");
-  const [studentProfile, setStudentProfile] = useState<IGetStudentInfo>();
-  const [fields, setFields] = useState([{ level: "", subject: "" }]);
-  const [activityId, setActivityId] = useState<string>("");
+  const { profile } = useStudent();
+  const { listSubject } = useSubject();
+  const { create } = useActivity();
+  const { eventId } = useEvent();
 
-  const getLevelOptions = (schoolType: string) => {
-    if (schoolType === "TK") return [1];
-    if (schoolType === "SD") return [1, 2, 3, 4, 5, 6];
-    if (schoolType === "SMP") return [1, 2, 3];
-    return [];
-  };
+  const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
+  const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
+  const [selectedSubjects, setSelectedSUbject] = useState<SubjectResponse[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+  const [idPayment, setIdPayment] = useState<string>("");
 
-  const selectedSubjects = fields.map((field) => field.subject);
-  const subjects = ["matematika", "ipa", "bahasa inggris", "ips"];
+  const handleSelectSubject = (subject: SubjectResponse) => {
+    setSelectedSUbject((prev) => {
+      const isAlreadySelected = prev.some((s) => s.id === subject.id);
 
-  // Pastikan stage aman untuk diakses
-  const stage = studentProfile?.stage || "";
-  const filteredSubjects = stage === "TK" ? subjects.filter((subj) => subj !== "ips") : subjects;
-
-  const addField = () => {
-    setFields([...fields, { level: "", subject: "" }]);
-  };
-
-  const removeField = (index: any) => {
-    setFields(fields.filter((_, i) => i !== index));
-  };
-
-  const updateField = ({ index, key, value }: { index: any; key: any; value: any }) => {
-    setFields(fields.map((field, i) => (i === index ? { ...field, [key]: value } : field)));
+      if (isAlreadySelected) {
+        return prev.filter((s) => s.id !== subject.id);
+      } else {
+        return [...prev, subject];
+      }
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (studentProfile && subjectId) {
-      const competitionId = await eventId({ stage: studentProfile.stage, level: fields[0].level, subjectId: subjectId });
-      const payload: TSaveActivity = {
-        studentId: studentProfile.id,
-        competitionId: competitionId.id,
-        attedance: false,
-        score: 0,
-        incorrect: null,
-        correct: null,
-        pathAnswer: null,
-      };
+    const competitionIds: string[] = [];
+
+    if (profileStudent) {
+      for (const subject of selectedSubjects) {
+        try {
+          const responseCompetitionId = await eventId({
+            stage: profileStudent.stage,
+            level: profileStudent.class,
+            subjectId: subject.id,
+          });
+
+          if (responseCompetitionId) {
+            competitionIds.push(responseCompetitionId.id);
+          }
+        } catch (error) {
+          console.error("Error fetching competition ID:", error);
+        }
+      }
+
+      const priceList = [0, 70000, 130000, 180000, 220000];
+      const totalAmount = priceList[competitionIds.length] || 0;
+
       try {
-        const activity = await save(payload);
-        setActivityId(activity.id);
-        router.push(`/member/event/invoice/${activity.id}`);
+        setIsLoadingSubmit(true);
+        const response = await create({
+          studentId: profileStudent.id,
+          competitionId: competitionIds,
+          attedance: false,
+          score: 0,
+          incorrect: 0,
+          correct: 0,
+          pathAnswer: "",
+          amount: totalAmount,
+        });
+        if (response) {
+          setIdPayment(response.id);
+        }
       } catch (error) {
-        console.error("Save failed:", error);
+      } finally {
+        setIsLoadingSubmit(false);
+        router.replace(`/member/event/invoice/${idPayment}`);
       }
     }
   };
 
   useEffect(() => {
-    const fetchStudentProfile = async () => {
+    const fetchMatpel = async () => {
       try {
-        const response = await profile();
-        setStudentProfile(response);
+        setIsLoading(true);
+        const responseSubject = await listSubject();
+        if (responseSubject) {
+          setSubjects(responseSubject);
+        }
       } catch (error) {
-        console.error("Error fetching student profile:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchStudentProfile();
+    const fetchProfileStudent = async () => {
+      try {
+        setIsLoading(true);
+        const responseProfile = await profile();
+        if (responseProfile) {
+          setProfileStuden(responseProfile);
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMatpel();
+    fetchProfileStudent();
   }, []);
-
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await listSubject();
-        const selectedSubjectId = response.find((subject) => subject.name === fields[0].subject)?.id;
-        setSubjectId(selectedSubjectId || "");
-      } catch (error) {
-        console.error("Error fetching subjects:", error);
-      }
-    };
-
-    fetchSubjects();
-  }, [fields[0].subject]);
 
   return (
     <div className="min-h-screen bg-base-gray p-4">
-      <Container>
-        <div className="mb-6">
-          <BackNavbar />
+      {isLoading ? (
+        <div className="rounded-xl bg-white p-7">
+          <SkeletonLoader rows={6} />
         </div>
-        <div className="rounded-xl border bg-white p-7">
-          <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
-          <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa setiap perlombaan dalam satu regional hanya dapat memilih satu mata pelajaran saja</p>
-          <form onSubmit={handleSubmit}>
-            <div className="mt-6 flex flex-col items-center gap-2">
-              {fields.map((field, index) => (
-                <div key={index} className="flex w-full flex-row items-center gap-2 text-neutral-500">
-                  <select value={field.level} onChange={(e) => updateField({ index: index, key: "level", value: e.target.value })} className="w-full rounded-lg border border-neutral-300 p-2">
-                    <option value="" disabled className="text-neutral-400">
-                      Level
-                    </option>
-                    {studentProfile &&
-                      getLevelOptions(studentProfile?.stage).map((level) => (
-                        <option key={level} value={level}>
-                          Level {level}
-                        </option>
-                      ))}
-                  </select>
-
-                  <select value={field.subject} onChange={(e) => updateField({ index: index, key: "subject", value: e.target.value })} className="w-full rounded-lg border border-neutral-300 p-2">
-                    <option value="" disabled className="text-neutral-400">
-                      Mapel
-                    </option>
-                    {filteredSubjects.map((subject) => (
-                      <option key={subject} value={subject} disabled={selectedSubjects.includes(subject)}>
-                        {subject.charAt(0).toUpperCase() + subject.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-
-                  {fields.length > 1 && (
-                    <button onClick={() => removeField(index)} className="text-red-500">
-                      ✖
-                    </button>
-                  )}
+      ) : (
+        <Container>
+          <div className="mb-6">
+            <BackNavbar />
+          </div>
+          <div className="rounded-xl border bg-white p-7">
+            <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
+            <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa peserta bisa memilih lomba lebih dari satu matpel</p>
+            <form onSubmit={handleSubmit}>
+              <div className="mt-6 grid grid-cols-1 gap-2">
+                <label htmlFor="subject" className="mb-2 block text-sm font-medium text-gray-900">
+                  Pilih Mata Pelajaran
+                </label>
+                <div className="grid grid-cols-1 gap-1">
+                  {subjects &&
+                    subjects.map((subject, index) => {
+                      const isChecked = selectedSubjects.some((s) => s.id === subject.id);
+                      return (
+                        <div key={index} className="mb-4 flex items-center">
+                          <input id={`checkbox-${subject.id}`} type="checkbox" checked={isChecked} onChange={() => handleSelectSubject(subject)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+                          <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-gray-900">
+                            {subject.name === "ipa" || subject.name === "ips"
+                              ? subject.name.toUpperCase()
+                              : subject.name
+                                  .split(" ")
+                                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                  .join(" ")}
+                          </label>
+                        </div>
+                      );
+                    })}
                 </div>
-              ))}
-              {/* <CiSquarePlus className="text-[1.8rem]" onClick={addField} /> */}
-              {fields[0].subject === "" || fields[0].level === "" ? (
-                <button disabled className="bg-primary mt-4 w-full cursor-not-allowed rounded-lg bg-base-purple p-2 text-white opacity-50">
-                  Daftar
+                <button type="submit" className="mt-4 w-full rounded-xl bg-[#5570F1] p-3 text-white">
+                  {isLoadingSubmit ? "Loading..." : "Simpan"}
                 </button>
-              ) : (
-                <button type="submit" className="bg-primary w-full rounded-lg bg-base-purple p-2 text-white">
-                  Daftar
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
-      </Container>
+              </div>
+            </form>
+          </div>
+        </Container>
+      )}
     </div>
   );
 };
 
-export default CreateEvent;
+export default EventCreate;

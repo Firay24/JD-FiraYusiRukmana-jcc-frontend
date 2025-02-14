@@ -1,6 +1,6 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
-import { IPaymentPayload } from "./type";
+import { IDetailPayment, IGetAllPayment, IPaymentPayload } from "./type";
 
 interface SavePaymentResponse {
   id: string;
@@ -8,7 +8,7 @@ interface SavePaymentResponse {
 
 export const usePayment = () => {
   const router = useRouter();
-  const { put } = useHttp();
+  const { put, get } = useHttp();
 
   const save = async ({ id, payload }: { id: string; payload: IPaymentPayload }) => {
     try {
@@ -23,5 +23,31 @@ export const usePayment = () => {
     }
   };
 
-  return { save };
+  const detail = async (id: string) => {
+    try {
+      const response: HttpResponse<IDetailPayment> = await get(`/payment/get/${id}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("Get detail failed:", error);
+      throw error;
+    }
+  };
+
+  const allbyuser = async () => {
+    try {
+      const response: HttpResponse<IGetAllPayment[]> = await get(`/payment/user`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("Get detail failed:", error);
+      throw error;
+    }
+  };
+
+  return { save, detail, allbyuser };
 };

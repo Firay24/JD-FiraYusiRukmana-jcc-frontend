@@ -1,7 +1,11 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
-import { IDetailActivity, IListActivity, TSaveActivity } from "./types";
+import { IActivityCreateDto, IDetailActivity, IListActivity, TSaveActivity } from "./types";
 
 type TSaveActivityResponse = {
+  id: string;
+};
+
+type TCreateAcitivityResponse = {
   id: string;
 };
 
@@ -38,5 +42,15 @@ export const useActivity = () => {
     }
   };
 
-  return { save, detail, listbyidstudent };
+  const create = async (data: IActivityCreateDto) => {
+    try {
+      const response: HttpResponse<TCreateAcitivityResponse> = await post("/activity/create", data);
+      return response.data;
+    } catch (error) {
+      console.error("Create failed:", error);
+      throw error;
+    }
+  };
+
+  return { save, detail, listbyidstudent, create };
 };

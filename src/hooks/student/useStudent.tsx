@@ -27,8 +27,8 @@ export const useStudent = () => {
       if (error.statusCode === 401) {
         router.push("/auth/sign-in");
       }
-      console.error("No authenticated:", error);
-      throw error;
+      // console.error("No authenticated:", error);
+      // throw error;
     }
   };
 

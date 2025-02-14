@@ -106,6 +106,7 @@ const Navbar = ({ isScrolled, menu, isLogged, logoPath, title }: NavbarProps) =>
                   onClick={() => {
                     logout();
                     setIsModalOpen(false);
+                    localStorage.setItem("isLogged", "false");
                     router.push("/auth/sign-in");
                   }}
                   className="rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800"

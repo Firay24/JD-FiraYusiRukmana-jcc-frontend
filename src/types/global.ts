@@ -39,3 +39,28 @@ export interface ILabelValue {
   value: any;
   label: any;
 }
+
+export interface ProfileStudent {
+  id?: string;
+  idUser?: string;
+  username: string;
+  name: string;
+  email?: string;
+  birthdate: number;
+  gender: boolean;
+  phoneNumber: string;
+  address: string;
+  photoPath: string;
+  idSchool: string;
+  school: string;
+  stage: "TK" | "SD" | "SMP" | undefined;
+  class: string;
+  nik: string;
+  fatherName: string;
+  motherName: string;
+}
+
+export interface ISelectReactForm {
+  value: string;
+  label: string;
+}

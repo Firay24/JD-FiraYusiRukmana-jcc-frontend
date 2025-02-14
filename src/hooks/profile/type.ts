@@ -15,7 +15,26 @@ export type TPayloadUpdateProfile = {
   email?: string;
   password?: string;
   roleId?: string;
-  birthdate: string | number;
+  birthdate: number;
   gender: boolean;
   phoneNumber: string;
+};
+
+export type TUser = {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  birthday: number;
+  gender: boolean;
+  phoneNumber: string;
+  role: {
+    id: string;
+    name: string;
+  };
+};
+
+export type TSchool = {
+  id: string | null;
+  name: string | null;
 };

@@ -35,6 +35,12 @@ export default function LandingPage() {
 
     window.addEventListener("scroll", handleScroll);
 
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("isLogged")) {
+        localStorage.setItem("isLogged", "false");
+      }
+    }
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };

@@ -12,14 +12,17 @@ import { GiMusicalNotes } from "react-icons/gi";
 import Container from "@/components/base/Container";
 import { useRouter } from "next/navigation";
 import { useStudent } from "@/hooks/student/useStudent";
-import { IStudentInfo } from "@/hooks/student/type";
+import { IStudentInfo, LevelInfo } from "@/hooks/student/type";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
+import { getLevelInfo } from "@/utils/getInfoLevel";
+import { FaIdCardClip } from "react-icons/fa6";
 
 const Profile = () => {
   // States
   const [isScrolled, setIsScrolled] = useState(false);
   const [dataProfile, setDataProfile] = useState<IStudentInfo>();
   const [isLoading, setIsLoading] = useState(false);
+  const [levelInfo, setLevelInfo] = useState<LevelInfo>();
 
   // Hooks
   const router = useRouter();
@@ -40,11 +43,8 @@ const Profile = () => {
         setIsLoading(false);
       }
     };
-
     handleGetStudentProfile();
-  }, []);
 
-  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -55,6 +55,12 @@ const Profile = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (dataProfile) {
+      setLevelInfo(getLevelInfo(dataProfile.poin));
+    }
+  }, [dataProfile]);
 
   return (
     <div className="min-h-screen bg-base-gray">
@@ -75,7 +81,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-lg font-bold text-white">{`Hello ${dataProfile?.name}`}</p>
-                    <p className="text-sm text-green-800">{`Level ${dataProfile?.class}`}</p>
+                    <p className="text-sm text-green-800">{`Level ${levelInfo?.level}`}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -106,15 +112,6 @@ const Profile = () => {
               <div>
                 <p className="mb-4 font-semibold text-neutral-700">Biodata</p>
                 <div className="grid grid-cols-1 gap-5 ps-5">
-                  {/* <div className="flex items-center gap-3">
-                  <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                    <MdOutlineEmail />
-                  </div>
-                  <div>
-                    <p className="text-sm italic text-gray-400">email</p>
-                    <p className="font-medium text-neutral-700">{dataProfile?.email}</p>
-                  </div>
-                </div> */}
                   <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
                       <FaRegUser />
@@ -122,6 +119,15 @@ const Profile = () => {
                     <div>
                       <p className="text-sm italic text-gray-400">nama</p>
                       <p className="font-medium text-neutral-700">{dataProfile?.name}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
+                      <FaIdCardClip />
+                    </div>
+                    <div>
+                      <p className="text-sm italic text-gray-400">nik</p>
+                      <p className="font-medium text-neutral-700">{dataProfile?.nik}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">

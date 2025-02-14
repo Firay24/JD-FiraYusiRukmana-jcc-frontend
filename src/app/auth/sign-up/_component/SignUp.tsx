@@ -8,9 +8,7 @@ import { useEffect, useState } from "react";
 import { Role } from "@/types/role";
 import { useRole } from "@/hooks/role/useRole";
 import { removeSpace } from "@/utils/removeSpace";
-import { useLogin } from "@/hooks/auth/useLogin";
 import { convertDateToEpoch } from "@/utils/convertDateToEpoch";
-import { useRouter } from "next/navigation";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 
 interface RoleResponse {
@@ -20,11 +18,8 @@ interface RoleResponse {
 }
 
 export default function page() {
-  const router = useRouter();
   const { role } = useRole();
   const { register } = useRegister();
-  const { logged } = useLogin();
-  const [islogged, setIslogged] = useState<boolean>(false);
 
   const [roles, setRoles] = useState<Role[]>([]);
   const [name, setName] = useState<string>("");
@@ -37,11 +32,12 @@ export default function page() {
   const [birthdate, setBirthdate] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [gender, setGender] = useState<string>("laki-laki");
-  const [isLoadingLogged, setIsLoadingLogged] = useState(true);
+  const [isLoadingLogged, setIsLoadingLogged] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoadingLogged(true);
       await register({
         username: username,
         name: name,
@@ -54,34 +50,23 @@ export default function page() {
       });
     } catch (error) {
       console.error("Failed to register:", error);
+    } finally {
+      setIsLoadingLogged(false);
     }
   };
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
+        setIsLoadingLogged(true);
         const response = await role();
         setRoles(response);
       } catch (error) {
         console.error("Failed to fetch roles:", error);
+      } finally {
+        setIsLoadingLogged(false);
       }
     };
-
-    const checkLogged = async () => {
-      try {
-        const response = await logged();
-        if (response) {
-          setIslogged(true);
-        } else {
-          setIslogged(false);
-        }
-      } catch (error) {
-        setIslogged(false);
-      }
-    };
-
-    checkLogged();
-
     fetchRoles();
   }, []);
 
@@ -89,12 +74,6 @@ export default function page() {
     const roleid = roles.find((role) => role.name.toLocaleLowerCase() === roleUser)?.id;
     setRoleid(roleid || "");
   }, [roles, roleUser]);
-
-  useEffect(() => {
-    if (islogged) {
-      router.push("/member");
-    }
-  }, [islogged]);
 
   return (
     <>
@@ -125,31 +104,31 @@ export default function page() {
                     </label>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
-                    <label htmlFor="floating_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500 rtl:peer-focus:translate-x-1/4">
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                    <label htmlFor="floating_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4">
                       Password<span className="text-red-500">*</span>
                     </label>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
-                    <input value={repeatpassword} onChange={(e) => setRepeatPassword(e.target.value)} type="password" name="repeat_password" id="floating_repeat_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" placeholder=" " required />
-                    <label htmlFor="floating_repeat_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500 rtl:peer-focus:translate-x-1/4">
+                    <input value={repeatpassword} onChange={(e) => setRepeatPassword(e.target.value)} type="password" name="repeat_password" id="floating_repeat_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
+                    <label htmlFor="floating_repeat_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4">
                       Confirm password<span className="text-red-500">*</span>
                     </label>
-                    {password !== repeatpassword && <p className="mt-2 text-xs text-red-500 dark:text-gray-400">password tidak sama</p>}
+                    {password !== repeatpassword && <p className="mt-2 text-xs text-red-500">password tidak sama</p>}
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" name="floating_email" id="floating_email" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
                     <label htmlFor="floating_email" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                       Email
                     </label>
-                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">tidak wajib diisi</p>
+                    <p className="mt-2 text-xs text-gray-500">tidak wajib diisi</p>
                   </div>
                   <div className="group relative z-0 mb-8 w-full">
                     <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type="text" name="floating_username" id="floating_username" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                     <label htmlFor="floating_username" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                       Phone number<span className="text-red-500">*</span>
                     </label>
-                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">contoh: 628523162829</p>
+                    <p className="mt-2 text-xs text-gray-500">contoh: 628523162829</p>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={birthdate} onChange={(e) => setBirthdate(e.target.value)} type="date" name="floating_birthdate" id="floating_birthdate" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />

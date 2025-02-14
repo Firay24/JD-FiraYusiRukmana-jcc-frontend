@@ -10,8 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const router = useRouter();
-  const { login, logged } = useLogin();
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const { login } = useLogin();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoadingLogged, setIsLoadingLogged] = useState(true);
@@ -19,39 +18,26 @@ export default function Page() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoadingLogged(true);
       await login(username, password);
-      console.log("login success");
+      localStorage.setItem("isLogged", "true");
+      router.replace("/member");
     } catch (error) {
       console.log("login failed");
+    } finally {
+      setIsLoadingLogged(false);
     }
   };
 
   useEffect(() => {
-    const checkLogged = async () => {
-      try {
-        setIsLoadingLogged(true);
-        const response = await logged();
-        if (response) {
-          setIsLogged(true);
-          router.push("/member"); // Navigasi langsung
-        } else {
-          setIsLogged(false);
-        }
-      } catch (error) {
-        setIsLogged(false);
-      } finally {
-        setIsLoadingLogged(false);
+    if (typeof window !== "undefined") {
+      const isLogged = localStorage.getItem("isLogged") === "true";
+      if (isLogged) {
+        router.push("/member");
       }
-    };
-
-    checkLogged();
-  }, []);
-
-  useEffect(() => {
-    if (isLogged) {
-      router.replace("/member");
+      setIsLoadingLogged(false);
     }
-  }, [isLogged]);
+  }, []);
 
   return (
     <>

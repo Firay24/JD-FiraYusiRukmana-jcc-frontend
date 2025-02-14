@@ -1,12 +1,25 @@
 import { BASE_API } from "@/constants/base.api";
 import { HttpResponse, useHttp } from "../http/useHttp";
-import { TPayloadUpdateProfile, TProfile } from "./type";
+import { TPayloadUpdateProfile, TProfile, TUser } from "./type";
 import { useRouter } from "next/navigation";
 
 export const useProfileStore = () => {
   // Hooks
-  const { put } = useHttp();
+  const { put, get } = useHttp();
   const router = useRouter();
+
+  const user = async () => {
+    try {
+      const response: HttpResponse<TUser> = await get("/user/user");
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
 
   const update = async (payload: TPayloadUpdateProfile) => {
     try {
@@ -20,5 +33,5 @@ export const useProfileStore = () => {
       throw error;
     }
   };
-  return { update };
+  return { update, user };
 };
