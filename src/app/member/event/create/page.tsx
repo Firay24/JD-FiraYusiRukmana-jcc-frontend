@@ -74,7 +74,7 @@ const EventCreate = () => {
       } catch (error) {
       } finally {
         setIsLoadingSubmit(false);
-        router.replace("/member/event/invoice");
+        router.replace("/member/event");
       }
     }
   };

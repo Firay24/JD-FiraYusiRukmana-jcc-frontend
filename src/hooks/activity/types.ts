@@ -55,6 +55,7 @@ export interface IListActivityStudent {
     date: number;
     subject: string;
     season: string;
+    location: string;
     region: {
       name: string;
       region: number;
