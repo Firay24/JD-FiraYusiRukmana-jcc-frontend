@@ -44,7 +44,7 @@ export const useActivity = () => {
 
   const create = async (data: IActivityCreateDto) => {
     try {
-      const response: HttpResponse<TCreateAcitivityResponse[]> = await post("/activity/create", data);
+      const response: HttpResponse<TCreateAcitivityResponse> = await post("/activity/create", data);
       return response.data;
     } catch (error) {
       console.error("Create failed:", error);

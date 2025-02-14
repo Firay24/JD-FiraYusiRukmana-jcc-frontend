@@ -47,6 +47,42 @@ export interface IDetailActivity {
   latestStatus: IStatusPayment;
 }
 
+interface Competition {
+  id: string;
+  name: string;
+  price: number;
+  stage: string;
+  level: number;
+  season: {
+    id: string;
+    name: string;
+  };
+  subject: {
+    id: string;
+    name: string;
+  };
+  region: {
+    id: string;
+    name: string;
+  };
+}
+
+interface DetailStatus {
+  status: string;
+  date: number;
+}
+
+export interface IDetailPayment {
+  id: string;
+  invoice: string;
+  date: number;
+  amount: number;
+  status: StatusPayment;
+  competition: Competition[];
+  detailStatus: DetailStatus[];
+  latestStatus: DetailStatus;
+}
+
 export interface IListActivityStudent {
   id: string;
   statusPayment: StatusPayment;

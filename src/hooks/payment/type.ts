@@ -8,6 +8,8 @@ interface competition {
   id: string;
   name: string;
   price: number;
+  stage: string;
+  level: number;
   season: {
     id: string;
     name: string;

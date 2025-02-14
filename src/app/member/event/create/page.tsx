@@ -22,6 +22,7 @@ const EventCreate = () => {
   const [selectedSubjects, setSelectedSUbject] = useState<SubjectResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+  const [idPayment, setIdPayment] = useState<string>("");
 
   const handleSelectSubject = (subject: SubjectResponse) => {
     setSelectedSUbject((prev) => {
@@ -61,7 +62,7 @@ const EventCreate = () => {
 
       try {
         setIsLoadingSubmit(true);
-        await create({
+        const response = await create({
           studentId: profileStudent.id,
           competitionId: competitionIds,
           attedance: false,
@@ -71,10 +72,13 @@ const EventCreate = () => {
           pathAnswer: "",
           amount: totalAmount,
         });
+        if (response) {
+          setIdPayment(response.id);
+        }
       } catch (error) {
       } finally {
         setIsLoadingSubmit(false);
-        router.replace("/member/event");
+        router.replace(`/member/event/invoice/${idPayment}`);
       }
     }
   };

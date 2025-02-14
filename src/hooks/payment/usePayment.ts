@@ -25,7 +25,7 @@ export const usePayment = () => {
 
   const detail = async (id: string) => {
     try {
-      const response: HttpResponse<IDetailPayment> = await get(`/activity/detail/${id}`);
+      const response: HttpResponse<IDetailPayment> = await get(`/payment/get/${id}`);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {

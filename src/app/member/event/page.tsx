@@ -188,7 +188,7 @@ const Event = () => {
                   <div className="mt-4 space-y-4">
                     {listPayment && listPayment.length > 0 ? (
                       listPayment.map((payment, index) => (
-                        <div key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
+                        <div onClick={() => router.push(`/member/event/invoice/${payment.id}`)} key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
                           <h3 className="text-lg font-semibold text-gray-800">{payment.invoice}</h3>
                           <p className="text-sm text-gray-600">{convertEpochToDateLong(payment.date)}</p>
                           <div className="mt-2 flex items-center justify-between">
