@@ -19,7 +19,7 @@ import { FaCalendar } from "react-icons/fa";
 
 const tabs = [
   { id: "all", label: "All" },
-  { id: "invoice", label: "Invoice" },
+  // { id: "invoice", label: "Invoice" },
   { id: "my-event", label: "My Event" },
 ];
 

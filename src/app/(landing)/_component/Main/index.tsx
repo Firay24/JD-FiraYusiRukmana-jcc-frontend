@@ -61,7 +61,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                 <p className="mt-4 w-[90%] text-sm text-neutral-600 md:max-w-[60%]">JUNIO yang diselenggarakan oleh Junior Championship Center dirancang untuk memberikan ruang bagi peserta didik TK, SD, dan SMP di Kabupaten Banyuwangi guna menyalurkan bakat, mengasah kompetensi, serta membangun karakter juara sejak dini.</p>
                 <div className="mt-5">
                   <Link href="https://tally.so/r/mDx0Ol" passHref>
-                    <button type="button" className="rounded-full bg-base-pink px-8 py-2.5 text-xl font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    <button disabled type="button" className="rounded-full bg-gray-300 px-8 py-2.5 text-xl font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
                       Daftar
                     </button>
                   </Link>
@@ -189,7 +189,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                   <MdOutlineMyLocation />
                 </span>
                 <h3 className="mb-1 flex items-center text-lg font-semibold text-gray-900">
-                  {`Regional ${item.regional.toString()}`} {item.status ? <span className="me-2 ms-3 rounded-sm bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">Pendaftaran Dibuka</span> : null}
+                  {`Regional ${item.regional.toString()}`} {item.status ? <span className="me-2 ms-3 rounded-sm bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800">Pendaftaran Ditutup</span> : null}
                 </h3>
                 <time className="mb-2 block text-sm font-normal leading-none text-gray-400">{item.location}</time>
                 <div className="flex items-center gap-2 text-base font-normal text-gray-500">
@@ -254,7 +254,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                   <MdOutlineMyLocation />
                 </span>
                 <h3 className="mb-1 flex items-center text-lg font-semibold text-gray-900">
-                  {`Regional ${item.regional.toString()}`} {item.status ? <span className="me-2 ms-3 rounded-sm bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">Pendaftaran Dibuka</span> : null}
+                  {`Regional ${item.regional.toString()}`} {item.status ? <span className="me-2 ms-3 rounded-sm bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800">Pendaftaran Ditutup</span> : null}
                 </h3>
                 <time className="mb-2 block text-sm font-normal leading-none text-gray-400">{item.location}</time>
                 <div className="flex items-center gap-2 text-base font-normal text-gray-500">

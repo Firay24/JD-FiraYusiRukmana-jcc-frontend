@@ -22,7 +22,7 @@ const Profile = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [dataProfile, setDataProfile] = useState<IStudentInfo>();
   const [isLoading, setIsLoading] = useState(false);
-  const [levelInfo, setLevelInfo] = useState<LevelInfo>();
+  // const [levelInfo, setLevelInfo] = useState<LevelInfo>();
 
   // Hooks
   const router = useRouter();
@@ -56,11 +56,11 @@ const Profile = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (dataProfile) {
-      setLevelInfo(getLevelInfo(dataProfile.poin));
-    }
-  }, [dataProfile]);
+  // useEffect(() => {
+  //   if (dataProfile) {
+  //     setLevelInfo(getLevelInfo(dataProfile.poin));
+  //   }
+  // }, [dataProfile]);
 
   return (
     <div className="min-h-screen bg-base-gray">
@@ -81,14 +81,14 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-lg font-bold text-white">{`Hello ${dataProfile?.name}`}</p>
-                    <p className="text-sm text-green-800">{`Level ${levelInfo?.level}`}</p>
+                    <p className="text-sm text-green-800">{dataProfile?.username}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="mr-2 text-center text-white">
+                  {/* <div className="mr-2 text-center text-white">
                     <p className="text-lg font-bold">{dataProfile?.poin}</p>
                     <p className="text-sm">poin</p>
-                  </div>
+                  </div> */}
                   <button
                     type="button"
                     onClick={() => {
@@ -148,7 +148,7 @@ const Profile = () => {
                       <p className="font-medium text-neutral-700">{dataProfile?.school}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  {/* <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
                       <MdHomeFilled />
                     </div>
@@ -156,7 +156,7 @@ const Profile = () => {
                       <p className="text-sm italic text-gray-400">alamat</p>
                       <p className="font-medium text-neutral-700">{dataProfile?.address}</p>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
                       <CgGenderFemale />
@@ -175,7 +175,7 @@ const Profile = () => {
                       <p className="font-medium text-neutral-700">{dataProfile?.phoneNumber}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  {/* <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
                       <MdOutlineFamilyRestroom />
                     </div>
@@ -183,7 +183,7 @@ const Profile = () => {
                       <p className="text-sm italic text-gray-400">orang tua</p>
                       <p className="font-medium text-neutral-700">{`Pak ${dataProfile?.fatherName}, Bu ${dataProfile?.motherName}`}</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* minat bakat */}
