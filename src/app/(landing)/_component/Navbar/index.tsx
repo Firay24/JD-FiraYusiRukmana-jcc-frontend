@@ -25,18 +25,18 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
           </div>
 
           {/* Hamburger Icon */}
-          {/* <div className="flex text-3xl md:hidden">
+          <div className="flex text-3xl md:hidden">
             <button onClick={toggleMenu} aria-label="Toggle Menu">
               {isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}
             </button>
-          </div> */}
+          </div>
 
           {/* Desktop Menu */}
-          {/* <div className="hidden items-center space-x-6 md:flex">
+          <div className="hidden items-center space-x-6 md:flex">
             <a href="#home" className="hover:text-gray-400">
               Home
             </a>
-            <a href="#about" className="hover:text-gray-400">
+            {/* <a href="#about" className="hover:text-gray-400">
               About
             </a>
             <a href="#timeline" className="hover:text-gray-400">
@@ -44,7 +44,7 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
             </a>
             <a href="#contact" className="hover:text-gray-400">
               Contact
-            </a>
+            </a> */}
             {!profile && (
               <Link href="/auth/sign-in" passHref>
                 <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
@@ -52,7 +52,7 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
                 </button>
               </Link>
             )}
-          </div> */}
+          </div>
         </div>
       </Container>
 
@@ -62,7 +62,7 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
           <a href="#home" className="hover:text-gray-400">
             Home
           </a>
-          <a href="#about" className="hover:text-gray-400">
+          {/* <a href="#about" className="hover:text-gray-400">
             About
           </a>
           <a href="#timeline" className="hover:text-gray-400">
@@ -70,7 +70,7 @@ const NavbarLandingPage = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) 
           </a>
           <a href="#contact" className="hover:text-gray-400">
             Contact
-          </a>
+          </a> */}
           {!profile && (
             <Link href="/auth/sign-in" passHref>
               <button type="button" className="rounded-full bg-blue-700 px-6 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
