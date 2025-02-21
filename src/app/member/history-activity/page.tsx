@@ -8,11 +8,32 @@ import CardHistoryActivity from "./_component/CardActivity";
 import Table from "./_component/Table";
 import Achievement from "./_component/Achievement";
 import Container from "@/components/base/Container";
+import { useActivity } from "@/hooks/activity/useActivity";
+import { IListActivityStudent } from "@/hooks/activity/types";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
 
 const HistoruyActivity = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { listbyidstudent } = useActivity();
+  const [listActivities, setListActivities] = useState<IListActivityStudent[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    const fetchActivity = async () => {
+      try {
+        setIsLoading(true);
+        const response = await listbyidstudent({ page: 1, limit: 10 });
+        if (response) {
+          setListActivities(response.data);
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchActivity();
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -26,18 +47,18 @@ const HistoruyActivity = () => {
   return (
     <div className="min-h-screen bg-base-gray">
       {/* nav */}
-      <Navbar menu={navbarMenuMember} isScrolled={isScrolled} isLogged title="History Activity" />
+      <Navbar menu={navbarMenuMember} isScrolled={isScrolled} isLogged title="Riwayat Perlombaan" />
       <Container>
-        <div className="flex flex-col gap-5 px-4">
-          {/* header */}
+        {/* header */}
+        {/* <div className="flex flex-col gap-5 px-4">
           <div className="flex flex-row items-center justify-between">
             <p className="flex-1 font-bold">All Activity</p>
             <LuSettings2 className="ml-auto" />
           </div>
-        </div>
+        </div> */}
 
         {/* Card */}
-        <div className="mt-3 flex flex-row gap-2 px-4">
+        {/* <div className="mt-3 flex flex-row gap-2 px-4">
           {[1, 2, 3, 4].map((_, i) => {
             const bgColors = ["bg-base-purple", "bg-base-pink", "bg-base-yellow", "bg-base-green"];
             return (
@@ -46,17 +67,20 @@ const HistoruyActivity = () => {
               </div>
             );
           })}
-        </div>
+        </div> */}
 
         {/* Table */}
-        <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">
-          <Table />
-        </div>
-
+        {isLoading ? (
+          <div className="m-4 rounded-lg bg-white p-4">
+            <SkeletonLoader rows={5} />
+          </div>
+        ) : (
+          <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">{listActivities && listActivities.length > 0 ? <Table listActivities={listActivities} /> : <div>Data Kosong</div>}</div>
+        )}
         {/* Achievement */}
-        <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">
+        {/* <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">
           <Achievement />
-        </div>
+        </div> */}
       </Container>
     </div>
   );

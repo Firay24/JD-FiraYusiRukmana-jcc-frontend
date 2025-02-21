@@ -79,28 +79,39 @@ const HomeMember = () => {
               <SkeletonLoader rows={4} />
             </div>
           ) : (
-            <div className="rounded-lg bg-white p-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div>
-                    <img className="h-auto w-12 rounded-full" src="/img/profileImg.jpeg" alt="avatar" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold">{`Hello ${studentProfile?.nama ? getFirstName(studentProfile?.nama) : ""}`}</p>
-                    <p className="text-sm text-gray-400">{`Level ${levelInfo?.level}`}</p>
-                  </div>
+            <div className="rounded-lg bg-white p-4">
+              <div className="flex items-center gap-2">
+                <div>
+                  <img className="h-auto w-12 rounded-full" src="/img/profileImg.jpeg" alt="avatar" />
                 </div>
-                <div className="mr-2">
-                  <p className="text-right text-lg font-bold">{`${levelInfo?.progressPercentage}%`}</p>
-                  <p className="text-right text-sm text-gray-400">{`${levelInfo?.currentPoints}/${levelInfo?.maxPoints} poin`}</p>
-                </div>
-              </div>
-              <div className="px-3 py-2">
-                <div className="h-2.5 w-full rounded-full bg-gray-200">
-                  <div className="h-2.5 rounded-full bg-blue-600" style={{ width: `${levelInfo?.progressPercentage}%` }}></div>
+                <div>
+                  <p className="text-lg font-bold">{`Hello ${studentProfile?.nama ? getFirstName(studentProfile?.nama) : ""}`}</p>
+                  <p className="text-sm text-gray-400">{studentProfile?.username}</p>
                 </div>
               </div>
             </div>
+            // <div className="rounded-lg bg-white p-2">
+            //   <div className="flex items-center justify-between">
+            //     <div className="flex items-center gap-2">
+            //       <div>
+            //         <img className="h-auto w-12 rounded-full" src="/img/profileImg.jpeg" alt="avatar" />
+            //       </div>
+            //       <div>
+            //         <p className="text-lg font-bold">{`Hello ${studentProfile?.nama ? getFirstName(studentProfile?.nama) : ""}`}</p>
+            //         <p className="text-sm text-gray-400">{`Level ${levelInfo?.level}`}</p>
+            //       </div>
+            //     </div>
+            //     <div className="mr-2">
+            //       <p className="text-right text-lg font-bold">{`${levelInfo?.progressPercentage}%`}</p>
+            //       <p className="text-right text-sm text-gray-400">{`${levelInfo?.currentPoints}/${levelInfo?.maxPoints} poin`}</p>
+            //     </div>
+            //   </div>
+            //   <div className="px-3 py-2">
+            //     <div className="h-2.5 w-full rounded-full bg-gray-200">
+            //       <div className="h-2.5 rounded-full bg-blue-600" style={{ width: `${levelInfo?.progressPercentage}%` }}></div>
+            //     </div>
+            //   </div>
+            // </div>
           )}
 
           {/* static */}
@@ -110,7 +121,7 @@ const HomeMember = () => {
                 <SkeletonLoader rows={4} />
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-3 rounded-lg bg-white p-3">
+              <div className="grid grid-cols-1 gap-3 rounded-lg bg-white p-3" onClick={() => router.push("/member/history-activity")}>
                 <div className="grid grid-cols-1 gap-1">
                   <div className="w-fit rounded-md bg-blue-100 p-2 text-blue-700">
                     <BsPersonArmsUp />
@@ -154,7 +165,7 @@ const HomeMember = () => {
           </div>
 
           {/* graph */}
-          {isLoading ? null : (
+          {/* {isLoading ? null : (
             <div className="grid grid-cols-1 gap-6 rounded-lg bg-white p-4">
               <p className="font-bold text-neutral-700">Earnings History</p>
               <div className="grid grid-cols-3 gap-2">
@@ -164,10 +175,10 @@ const HomeMember = () => {
               </div>
               <LineChart />
             </div>
-          )}
+          )} */}
 
           {/* upcoming event */}
-          {isLoading ? null : (
+          {/* {isLoading ? null : (
             <div className="rounded-lg bg-white p-4">
               <div className="flex justify-between">
                 <p className="font-bold text-neutral-700">Upcoming Events</p>
@@ -200,7 +211,7 @@ const HomeMember = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       {isModalOpen && (
