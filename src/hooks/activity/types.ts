@@ -86,7 +86,10 @@ export interface IDetailPayment {
 export interface IListActivityStudent {
   id: string;
   statusPayment: StatusPayment;
+  score: number;
+  pathAnswer: string;
   competition: {
+    id: string;
     name: string;
     description: string;
     date: number;
@@ -105,6 +108,23 @@ export interface IListActivity {
   limit: number;
   total: number;
   data: IListActivityStudent[];
+}
+
+export interface Participant {
+  score: number;
+  name: string;
+  school: string;
+  class: string;
+  stage: string;
+  regional: string;
+}
+
+export interface IListParticipant {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+  data: Participant[];
 }
 
 export interface IActivityCreateDto {

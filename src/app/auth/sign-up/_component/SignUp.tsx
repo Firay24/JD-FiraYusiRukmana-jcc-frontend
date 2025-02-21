@@ -86,7 +86,7 @@ export default function page() {
           <div className="container max-w-[600px]">
             <div className="grid grid-cols-1 gap-10 pb-3">
               <Image src={logo_jcc} alt="Logo" width={200} height={86} className="mx-auto" />
-              <p className="text-gray-600">Create your account</p>
+              <p className="text-gray-600">Buat akun Anda</p>
             </div>
             <Card type="border" className="p-8">
               <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
@@ -94,7 +94,7 @@ export default function page() {
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={name} onChange={(e) => setName(e.target.value)} type="text" name="floating_name" id="floating_name" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                     <label htmlFor="floating_name" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
-                      Name <span className="text-red-500">*</span>
+                      Nama Lengkap <span className="text-red-500">*</span>
                     </label>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
@@ -102,6 +102,7 @@ export default function page() {
                     <label htmlFor="floating_username" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                       Username<span className="text-red-500">*</span>
                     </label>
+                    <p className="mt-2 text-xs italic text-gray-500">nama disertai angka, username harus unik</p>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
@@ -112,7 +113,7 @@ export default function page() {
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={repeatpassword} onChange={(e) => setRepeatPassword(e.target.value)} type="password" name="repeat_password" id="floating_repeat_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                     <label htmlFor="floating_repeat_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4">
-                      Confirm password<span className="text-red-500">*</span>
+                      Konfirmasi Password<span className="text-red-500">*</span>
                     </label>
                     {password !== repeatpassword && <p className="mt-2 text-xs text-red-500">password tidak sama</p>}
                   </div>
@@ -126,7 +127,7 @@ export default function page() {
                   <div className="group relative z-0 mb-8 w-full">
                     <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type="text" name="floating_username" id="floating_username" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                     <label htmlFor="floating_username" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
-                      Phone number<span className="text-red-500">*</span>
+                      Nomer HP<span className="text-red-500">*</span>
                     </label>
                     <p className="mt-2 text-xs text-gray-500">contoh: 628523162829</p>
                   </div>
@@ -151,7 +152,7 @@ export default function page() {
                     </label>
                     <select value={roleUser} onChange={(e) => setRoleUser(e.target.value)} id="role" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
                       <option value="participant">Peserta</option>
-                      <option value="facilitator">Pendaftar Batch</option>
+                      <option value="facilitator">Kolektif</option>
                     </select>
                   </div>
                 </div>

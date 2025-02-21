@@ -159,12 +159,12 @@ const page = () => {
                   Username <span className="text-red-500">*</span>
                 </label>
               </div>
-              <div className="group relative z-0 mb-5 w-full">
+              {/* <div className="group relative z-0 mb-5 w-full">
                 <input value={formData?.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} type="email" name="floating_email" id="floating_email" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
                 <label htmlFor="floating_email" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                   Email
                 </label>
-              </div>
+              </div> */}
               <div className="group relative z-0 mb-5 w-full">
                 <label htmlFor="stage" className="mb-2 block text-sm text-gray-500">
                   Jenjang <span className="text-red-500">*</span>
@@ -248,18 +248,18 @@ const page = () => {
                   NIK <span className="text-red-500">*</span>
                 </label>
               </div>
-              <div className="group relative z-0 mb-5 w-full">
+              {/* <div className="group relative z-0 mb-5 w-full">
                 <input value={formData?.fatherName} onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })} type="text" name="floating_fatherName" id="floating_fatherName" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                 <label htmlFor="floating_fatherName" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                   Nama Ayah <span className="text-red-500">*</span>
                 </label>
-              </div>
-              <div className="group relative z-0 mb-5 w-full">
+              </div> */}
+              {/* <div className="group relative z-0 mb-5 w-full">
                 <input value={formData?.motherName} onChange={(e) => setFormData({ ...formData, motherName: e.target.value })} type="text" name="floating_mother" id="floating_mother" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                 <label htmlFor="floating_mother" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                   Nama Ibu <span className="text-red-500">*</span>
                 </label>
-              </div>
+              </div> */}
               <button type="submit" className="mt-2 w-full rounded-xl bg-[#5570F1] p-3 text-white">
                 {isLoadingSubmit ? "Loading" : "Simpan"}
               </button>

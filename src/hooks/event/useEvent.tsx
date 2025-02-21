@@ -22,5 +22,15 @@ export const useEvent = () => {
     }
   };
 
-  return { eventId };
+  const pdfView = async (fileName: string) => {
+    try {
+      const response: HttpResponse<any> = await get(`/event/getpdf/${fileName}`);
+      return response;
+    } catch (error) {
+      console.error("Save failed:", error);
+      throw error;
+    }
+  };
+
+  return { eventId, pdfView };
 };
