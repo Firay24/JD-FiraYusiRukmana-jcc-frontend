@@ -7,11 +7,15 @@ import { useEvent } from "@/hooks/event/useEvent";
 import { IGetStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
 import { SubjectResponse, useSubject } from "@/hooks/subject/useSubject";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const EventCreate = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const seasonId = searchParams.get("seasonId");
+
   const { profile } = useStudent();
   const { listSubject } = useSubject();
   const { create } = useActivity();
@@ -87,9 +91,11 @@ const EventCreate = () => {
     const fetchMatpel = async () => {
       try {
         setIsLoading(true);
-        const responseSubject = await listSubject();
-        if (responseSubject) {
-          setSubjects(responseSubject);
+        if (seasonId && profileStudent) {
+          const responseSubject = await listSubject(profileStudent.id, seasonId);
+          if (responseSubject) {
+            setSubjects(responseSubject);
+          }
         }
       } catch (error) {
       } finally {
@@ -107,10 +113,9 @@ const EventCreate = () => {
       } catch (error) {
       } finally {
         setIsLoading(false);
+        fetchMatpel();
       }
     };
-
-    fetchMatpel();
     fetchProfileStudent();
   }, []);
 
@@ -125,39 +130,48 @@ const EventCreate = () => {
           <div className="mb-6">
             <BackNavbar />
           </div>
-          <div className="rounded-xl border bg-white p-7">
-            <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
-            <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa peserta bisa memilih lomba lebih dari satu matpel</p>
-            <form onSubmit={handleSubmit}>
-              <div className="mt-6 grid grid-cols-1 gap-2">
-                <label htmlFor="subject" className="mb-2 block text-sm font-medium text-gray-900">
-                  Pilih Mata Pelajaran
-                </label>
-                <div className="grid grid-cols-1 gap-1">
-                  {subjects &&
-                    subjects.map((subject, index) => {
-                      const isChecked = selectedSubjects.some((s) => s.id === subject.id);
-                      return (
-                        <div key={index} className="mb-4 flex items-center">
-                          <input id={`checkbox-${subject.id}`} type="checkbox" checked={isChecked} onChange={() => handleSelectSubject(subject)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-                          <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-gray-900">
-                            {subject.name === "ipa" || subject.name === "ips"
-                              ? subject.name.toUpperCase()
-                              : subject.name
-                                  .split(" ")
-                                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                                  .join(" ")}
-                          </label>
-                        </div>
-                      );
-                    })}
+          {subjects.length > 0 ? (
+            <div className="rounded-xl border bg-white p-7">
+              <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
+              <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa peserta bisa memilih lomba lebih dari satu matpel</p>
+              <form onSubmit={handleSubmit}>
+                <div className="mt-6 grid grid-cols-1 gap-2">
+                  <label htmlFor="subject" className="mb-2 block text-sm font-medium text-gray-900">
+                    Pilih Mata Pelajaran
+                  </label>
+                  <div className="grid grid-cols-1 gap-1">
+                    {subjects &&
+                      subjects.map((subject, index) => {
+                        const isChecked = selectedSubjects.some((s) => s.id === subject.id);
+                        return (
+                          <div key={index} className="mb-4 flex items-center">
+                            <input id={`checkbox-${subject.id}`} type="checkbox" checked={isChecked} onChange={() => handleSelectSubject(subject)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+                            <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-gray-900">
+                              {subject.name === "ipa" || subject.name === "ips"
+                                ? subject.name.toUpperCase()
+                                : subject.name
+                                    .split(" ")
+                                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                    .join(" ")}
+                            </label>
+                          </div>
+                        );
+                      })}
+                  </div>
+                  <button type="submit" className="mt-4 w-full rounded-xl bg-[#5570F1] p-3 text-white">
+                    {isLoadingSubmit ? "Loading..." : "Simpan"}
+                  </button>
                 </div>
-                <button type="submit" className="mt-4 w-full rounded-xl bg-[#5570F1] p-3 text-white">
-                  {isLoadingSubmit ? "Loading..." : "Simpan"}
-                </button>
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
+          ) : (
+            <div className="h-40 items-center justify-center rounded-xl border bg-white p-7 text-center">
+              <p className="flex w-full justify-center text-center text-5xl text-gray-300">
+                <RiErrorWarningFill />
+              </p>
+              <p className="mt-2 text-center text-sm font-normal text-neutral-600">Maaf Anda sudah mendaftar seluruh matpel pada Junio Season ini</p>
+            </div>
+          )}
         </Container>
       )}
     </div>

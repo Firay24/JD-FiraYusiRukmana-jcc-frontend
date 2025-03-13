@@ -10,9 +10,9 @@ export const useSubject = () => {
   const router = useRouter();
   const { get } = useHttp();
 
-  const listSubject = async () => {
+  const listSubject = async (studentId?: string, seasonId?: string) => {
     try {
-      const response: HttpResponse<SubjectResponse[]> = await get("/subject/list");
+      const response: HttpResponse<SubjectResponse[]> = await get(`/subject/list?studentId=${studentId}&seasonId=${seasonId}`);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {
