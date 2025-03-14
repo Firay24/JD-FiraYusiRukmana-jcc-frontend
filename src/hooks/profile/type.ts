@@ -10,14 +10,14 @@ export type TProfile = {
 };
 
 export type TPayloadUpdateProfile = {
-  username: string;
-  name: string;
+  username?: string;
+  name?: string;
   email?: string;
   password?: string;
   roleId?: string;
-  birthdate: number;
-  gender: boolean;
-  phoneNumber: string;
+  birthdate?: number;
+  gender?: boolean;
+  phoneNumber?: string;
 };
 
 export type TUser = {

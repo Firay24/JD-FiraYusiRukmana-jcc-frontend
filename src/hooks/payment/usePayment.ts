@@ -10,7 +10,7 @@ export const usePayment = () => {
   const router = useRouter();
   const { put, get } = useHttp();
 
-  const save = async ({ id, payload }: { id: string; payload: IPaymentPayload }) => {
+  const updateStatus = async ({ id, payload }: { id: string; payload: IPaymentPayload }) => {
     try {
       const response: HttpResponse<SavePaymentResponse> = await put(`/payment/update/${id}`, payload);
       return response;
@@ -49,5 +49,5 @@ export const usePayment = () => {
     }
   };
 
-  return { save, detail, allbyuser };
+  return { updateStatus, detail, allbyuser };
 };
