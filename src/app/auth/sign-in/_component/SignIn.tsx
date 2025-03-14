@@ -28,6 +28,8 @@ export default function Page() {
         router.replace("/member");
       } else if (responseLogin.role.name === RoleType.EVENTADMIN) {
         router.replace("/event-admin");
+      } else if (responseLogin.role.name === RoleType.FACILITATOR) {
+        router.replace("/facilitator");
       }
     } catch (error) {
       console.log("login failed");
@@ -46,6 +48,8 @@ export default function Page() {
           router.replace("/member");
         } else if (profile.role.name === RoleType.EVENTADMIN) {
           router.replace("/event-admin");
+        } else if (profile.role.name === RoleType.FACILITATOR) {
+          router.replace("/facilitator");
         }
       }
       setIsLoadingLogged(false);
