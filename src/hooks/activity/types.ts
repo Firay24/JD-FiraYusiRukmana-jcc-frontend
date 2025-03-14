@@ -1,5 +1,47 @@
 import { StatusPayment } from "@/types/global";
 
+export interface IParticipant {
+  id: string;
+  name: string;
+  idMember: string;
+  idParticipant: string;
+  school: string;
+  class: string;
+  stage: string;
+  phoneNumber: string;
+  nik: string;
+  payment: {
+    id: string;
+    status: StatusPayment;
+  };
+  competition: {
+    id: string;
+    name: string;
+    subject: {
+      id: string;
+      name: string;
+    };
+    season: {
+      id: string;
+      name: string;
+    };
+    region: {
+      id: string;
+      name: string;
+    };
+    date: number;
+    location: string;
+  };
+}
+
+export interface IListAllParticipant {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+  data: IParticipant[];
+}
+
 export type TSaveActivity = {
   id?: string;
   studentId: string;

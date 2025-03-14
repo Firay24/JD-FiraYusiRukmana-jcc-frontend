@@ -1,5 +1,5 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
-import { IActivityCreateDto, IDetailActivity, IListActivity, IListParticipant, TSaveActivity } from "./types";
+import { IActivityCreateDto, IDetailActivity, IListActivity, IListAllParticipant, IListParticipant, TSaveActivity } from "./types";
 
 type TSaveActivityResponse = {
   id: string;
@@ -27,7 +27,7 @@ export const useActivity = () => {
       const response: HttpResponse<IDetailActivity> = await get(`/activity/detail/${id}`);
       return response.data;
     } catch (error) {
-      console.error("Save failed:", error);
+      console.error("Get failed:", error);
       throw error;
     }
   };
@@ -37,7 +37,7 @@ export const useActivity = () => {
       const response: HttpResponse<IListActivity> = await get(`/activity/list?page=${page}&limit=${limit}`);
       return response.data;
     } catch (error) {
-      console.error("Save failed:", error);
+      console.error("Get failed:", error);
       throw error;
     }
   };
@@ -57,10 +57,33 @@ export const useActivity = () => {
       const response: HttpResponse<IListParticipant> = await get(`/activity/participant?page=${page}&limit=${limit}&idCompetition=${idCompetition}`);
       return response.data;
     } catch (error) {
-      console.error("Save failed:", error);
+      console.error("Get failed:", error);
       throw error;
     }
   };
 
-  return { save, detail, listbyidstudent, create, participant };
+  const listAll = async (params: { page?: number; limit?: number; seasonId?: string; regionId?: string; stage?: string; level?: string; subjectId?: string }) => {
+    try {
+      // Filter hanya parameter yang memiliki nilai
+      const queryParams = new URLSearchParams(
+        Object.entries(params)
+          .filter(([_, value]) => value !== undefined && value !== null)
+          .reduce(
+            (acc, [key, value]) => {
+              acc[key] = String(value);
+              return acc;
+            },
+            {} as Record<string, string>,
+          ),
+      );
+
+      const response: HttpResponse<IListAllParticipant> = await get(`/activity/list/all?${queryParams.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.error("Get failed:", error);
+      throw error;
+    }
+  };
+
+  return { save, detail, listbyidstudent, create, participant, listAll };
 };

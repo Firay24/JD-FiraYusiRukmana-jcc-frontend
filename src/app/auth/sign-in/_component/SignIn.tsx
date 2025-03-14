@@ -1,6 +1,7 @@
 "use client";
 
 import SkeletonLoader from "@/components/base/SkeletonLoader";
+import { RoleType } from "@/constants/global.enums";
 import { useLogin } from "@/hooks/auth/useLogin";
 // import { useAuthStore } from "@/state/auth.state";
 import logo_jcc from "@public/logo-jcc.png";
@@ -19,9 +20,15 @@ export default function Page() {
     e.preventDefault();
     try {
       setIsLoadingLogged(true);
-      await login(username, password);
+      const responseLogin = await login(username, password);
       localStorage.setItem("isLogged", "true");
-      router.replace("/member");
+      localStorage.setItem("profile", JSON.stringify(responseLogin));
+
+      if (responseLogin.role.name === RoleType.PARTICIPANT) {
+        router.replace("/member");
+      } else if (responseLogin.role.name === RoleType.EVENTADMIN) {
+        router.replace("/event-admin");
+      }
     } catch (error) {
       console.log("login failed");
     } finally {
@@ -33,7 +40,13 @@ export default function Page() {
     if (typeof window !== "undefined") {
       const isLogged = localStorage.getItem("isLogged") === "true";
       if (isLogged) {
-        router.push("/member");
+        // router.push("/member");
+        const profile = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile") || "") : null;
+        if (profile.role.name === RoleType.PARTICIPANT) {
+          router.replace("/member");
+        } else if (profile.role.name === RoleType.EVENTADMIN) {
+          router.replace("/event-admin");
+        }
       }
       setIsLoadingLogged(false);
     }

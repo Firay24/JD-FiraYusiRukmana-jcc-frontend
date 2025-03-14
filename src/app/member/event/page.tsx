@@ -77,7 +77,7 @@ const Event = () => {
 
       fetchList();
     }
-  }, [activeTab]);
+  }, [activeTab, allbyuser]);
 
   return (
     <div className="min-h-screen bg-base-gray">
@@ -112,46 +112,42 @@ const Event = () => {
                 {/* Event List */}
                 <div className="mt-4 space-y-4">
                   {eventsDummy
-                    .filter((event) => event.status === true)
                     .filter((event) => event.category === activeTab || activeTab === "all")
-                    .map((event) => {
-                      const isRegistered = listActivity.some((activity) => activity.competition.season === event.id.toString());
-                      return (
-                        <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md">
-                          <div className={`mr-4 w-1 ${event.color} rounded-full`} />
-                          <div className="flex flex-col space-y-2">
-                            <div className="grid grid-cols-2 items-center">
-                              <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
-                              <a href={`/member/event/${event.id}`} className="text-right font-medium text-blue-600 hover:underline dark:text-blue-500">
-                                Read more
-                              </a>
+                    .map((event) => (
+                      <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md">
+                        <div className={`mr-4 w-1 ${event.color} rounded-full`} />
+                        <div className="flex flex-col space-y-2">
+                          <div className="grid grid-cols-2 items-center">
+                            <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
+                            <a href={`/member/event/${event.id}`} className="text-right font-medium text-blue-600 hover:underline dark:text-blue-500">
+                              Read more
+                            </a>
+                          </div>
+                          <p className="text-sm text-gray-600">{event.description}</p>
+                          <div className="flex items-center justify-between text-sm text-gray-500">
+                            <div>
+                              <p className="font-semibold">{event.date}</p>
+                              <p>{event.time}</p>
                             </div>
-                            <p className="text-sm text-gray-600">{event.description}</p>
-                            <div className="flex items-center justify-between text-sm text-gray-500">
-                              <div>
-                                <p className="font-semibold">{event.date}</p>
-                                <p>{event.time}</p>
-                              </div>
-                              {!isRegistered ? (
-                                <button
-                                  className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    router.push("/member/event/create");
-                                  }}
-                                >
-                                  Daftar
-                                </button>
-                              ) : (
-                                <button disabled className={`rounded-lg bg-gray-300 px-4 py-2 text-sm text-gray-500`}>
-                                  Sudah Terdaftar
-                                </button>
-                              )}
-                            </div>
+                            {event.status ? (
+                              <button
+                                className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  router.push(`/member/event/create?seasonId=${event.seasonId}`);
+                                }}
+                              >
+                                Daftar
+                              </button>
+                            ) : (
+                              <button disabled className={`rounded-lg bg-gray-300 px-4 py-2 text-sm text-gray-500`}>
+                                Ditutup
+                              </button>
+                            )}
                           </div>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                 </div>
 
                 {/* my event list */}

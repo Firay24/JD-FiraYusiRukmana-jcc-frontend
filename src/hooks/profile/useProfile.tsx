@@ -21,7 +21,7 @@ export const useProfileStore = () => {
     }
   };
 
-  const update = async (payload: TPayloadUpdateProfile) => {
+  const updateUser = async (payload: TPayloadUpdateProfile) => {
     try {
       const response: HttpResponse<TProfile> = await put("/user/update", payload);
       return response;
@@ -33,5 +33,5 @@ export const useProfileStore = () => {
       throw error;
     }
   };
-  return { update, user };
+  return { updateUser, user };
 };

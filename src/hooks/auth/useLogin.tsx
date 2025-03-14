@@ -32,7 +32,7 @@ export const useLogin = () => {
       if (response.data.role.name === RoleType.FACILITATOR) router.push("/facilitator");
       // setToken(response.data.token);
       setProfile(response.data);
-      return response;
+      return response.data;
     } catch (error) {
       // console.error("Login failed:", error);
       throw error;

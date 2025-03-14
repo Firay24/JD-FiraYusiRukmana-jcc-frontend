@@ -34,7 +34,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     id: 2,
     regional: 2,
     address: "Cluring",
-    date: 1744520795,
+    date: 1745110800,
     status: false,
     location: "Cluring",
     path: "",
