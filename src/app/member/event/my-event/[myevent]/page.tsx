@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 const DetailActivity = () => {
   const params = useParams();
   const { detail } = useActivity();
-  const { save } = usePayment();
+  const { updateStatus } = usePayment();
   const [detailActivity, setDetailActivity] = useState<IDetailActivity>();
   const [statusInvoice, setStatusInvoice] = useState<string>("Belum Bayar");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -21,7 +21,7 @@ const DetailActivity = () => {
   const handleSubmitStatusPayment = async () => {
     try {
       setIsLoading(true);
-      await save({ id: detailActivity?.paymentId as string, payload: { status: StatusPayment.CONFIRMED } });
+      await updateStatus({ id: detailActivity?.paymentId as string, payload: { status: StatusPayment.CONFIRMED } });
       const response = await detail(params.myevent as string);
       setDetailActivity(response);
     } catch (error) {

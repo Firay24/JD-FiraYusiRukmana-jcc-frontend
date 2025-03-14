@@ -33,7 +33,7 @@ const Edit = () => {
   // Hooks
   const router = useRouter();
   const { profile, save } = useStudent();
-  const { update, user } = useProfileStore();
+  const { updateUser, user } = useProfileStore();
   const { list } = useSchollStore();
   const { profile: authProfile } = useAuthStore();
   // useForm untuk menangani form
@@ -135,7 +135,7 @@ const Edit = () => {
         username: data.username,
       };
 
-      const responseUpdateProfile = await update(payloadUpdateProfile);
+      const responseUpdateProfile = await updateUser(payloadUpdateProfile);
 
       if (responseUpdateProfile.statusCode !== 200) {
         throw new Error(`Gagal menyimpan data profile: ${responseUpdateProfile.message}`);

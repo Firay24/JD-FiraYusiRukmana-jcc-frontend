@@ -12,7 +12,7 @@ import React, { use, useEffect, useState } from "react";
 
 const DetailInvoice = () => {
   const params = useParams();
-  const { save, detail } = usePayment();
+  const { updateStatus, detail } = usePayment();
   const [detailPaymentData, setDetailPaymentData] = useState<IDetailPayment>();
   const [statusInvoice, setStatusInvoice] = useState<string>("Belum Bayar");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -20,7 +20,7 @@ const DetailInvoice = () => {
   const handleSubmitStatusPayment = async () => {
     try {
       setIsLoading(true);
-      await save({ id: detailPaymentData?.id as string, payload: { status: StatusPayment.CONFIRMED } });
+      await updateStatus({ id: detailPaymentData?.id as string, payload: { status: StatusPayment.CONFIRMED } });
       const response = await detail(params.invoice as string);
       if (response) {
         setDetailPaymentData(response);
