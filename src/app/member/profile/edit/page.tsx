@@ -16,7 +16,7 @@ const page = () => {
   const router = useRouter();
   const { list } = useSchollStore();
   const { profile, save } = useStudent();
-  const { update, user } = useProfileStore();
+  const { updateUser, user } = useProfileStore();
 
   const [formData, setFormData] = useState<ProfileStudent>({
     id: "",
@@ -50,8 +50,7 @@ const page = () => {
     e.preventDefault();
     try {
       setIsLoadingSubmit(true);
-      console.log(formData);
-      await update({
+      await updateUser({
         username: formData.username,
         name: formData.name,
         email: formData.email,
