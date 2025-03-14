@@ -64,3 +64,10 @@ export interface ISelectReactForm {
   value: string;
   label: string;
 }
+
+export interface IRegional {
+  id: string;
+  name: string;
+  region: number;
+  regionDetail: string;
+}
