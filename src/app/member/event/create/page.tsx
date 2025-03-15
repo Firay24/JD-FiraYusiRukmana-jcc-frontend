@@ -131,7 +131,7 @@ const EventCreateContent = () => {
             <div className="mb-6">
               <BackNavbar />
             </div>
-            {subjects.length > 0 ? (
+            {subjects.length < 4 ? (
               <div className="rounded-xl border bg-white p-7">
                 <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
                 <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa peserta bisa memilih lomba lebih dari satu matpel</p>
