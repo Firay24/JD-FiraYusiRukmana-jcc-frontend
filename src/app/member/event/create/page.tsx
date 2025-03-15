@@ -8,7 +8,7 @@ import { IGetStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
 import { SubjectResponse, useSubject } from "@/hooks/subject/useSubject";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, use, useEffect, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 
 const EventCreateContent = () => {
@@ -88,21 +88,6 @@ const EventCreateContent = () => {
   };
 
   useEffect(() => {
-    const fetchMatpel = async () => {
-      try {
-        setIsLoading(true);
-        if (seasonId && profileStudent) {
-          const responseSubject = await listSubject(profileStudent.id, seasonId);
-          if (responseSubject) {
-            setSubjects(responseSubject);
-          }
-        }
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     const fetchProfileStudent = async () => {
       try {
         setIsLoading(true);
@@ -113,11 +98,24 @@ const EventCreateContent = () => {
       } catch (error) {
       } finally {
         setIsLoading(false);
-        fetchMatpel();
       }
     };
     fetchProfileStudent();
   }, []);
+
+  useEffect(() => {
+    if (profileStudent) {
+      const fetchSubjects = async () => {
+        try {
+          const responseSubjects = await listSubject();
+          if (responseSubjects) {
+            setSubjects(responseSubjects);
+          }
+        } catch (error) {}
+      };
+      fetchSubjects();
+    }
+  }, [profileStudent]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -131,7 +129,7 @@ const EventCreateContent = () => {
             <div className="mb-6">
               <BackNavbar />
             </div>
-            {subjects.length < 4 ? (
+            {subjects.length > 0 ? (
               <div className="rounded-xl border bg-white p-7">
                 <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
                 <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa peserta bisa memilih lomba lebih dari satu matpel</p>
