@@ -188,13 +188,13 @@ const DetailInvoice = () => {
             <div className="flex w-full flex-col items-start">
               <p className="text-sm font-semibold text-neutral-600">No Rekening</p>
               <div className="grid w-full grid-cols-2">
-                <p className="text-md font-normal">123456789</p>
-                <p className="text-md text-right text-black">Bank BCA</p>
+                <p className="text-md font-normal">1430032335422</p>
+                <p className="text-md text-right text-black">Bank Mandiri</p>
               </div>
             </div>
             <div>
               <p className="text-sm font-semibold text-neutral-600">Atas nama</p>
-              <p className="text-md font-normal text-black">Fira Yusi Rukmana</p>
+              <p className="text-md font-normal text-black">Ayatulloh Amini</p>
             </div>
             <div className="mt-5">
               <h2 className="text-md mb-2 font-semibold text-gray-900">Langkah Pembayaran</h2>
