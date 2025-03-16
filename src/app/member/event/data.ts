@@ -7,7 +7,7 @@ export const eventsDummy = [
     description: "Perlombaan akademik TK, SD dan SMP di SMAN Pesanggaran",
     date: "23 Feb 2025",
     time: "07.00 - 15.00 WIB",
-    color: "bg-red-400",
+    color: "bg-red-500",
     status: false,
   },
   {
@@ -18,7 +18,7 @@ export const eventsDummy = [
     description: "Perlombaan akademik TK, SD dan SMP di SMAN 1 Cluring",
     date: "20 April 2025",
     time: "07.00 - 15.00 WIB",
-    color: "bg-blue-400",
+    color: "bg-blue-500",
     status: true,
   },
   // {

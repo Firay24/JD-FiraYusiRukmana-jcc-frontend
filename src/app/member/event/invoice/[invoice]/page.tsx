@@ -4,6 +4,8 @@ import SkeletonLoader from "@/components/base/SkeletonLoader";
 import BackNavbar from "@/components/module/BackNavbar";
 import { IDetailPayment } from "@/hooks/activity/types";
 import { usePayment } from "@/hooks/payment/usePayment";
+import { IGetStudentInfo } from "@/hooks/student/type";
+import { useStudent } from "@/hooks/student/useStudent";
 import { StatusPayment } from "@/types/global";
 import { convertEpochToDateShort } from "@/utils/convertEpochToDate";
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -13,6 +15,9 @@ import React, { use, useEffect, useState } from "react";
 const DetailInvoice = () => {
   const params = useParams();
   const { updateStatus, detail } = usePayment();
+  const { profile } = useStudent();
+
+  const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
   const [detailPaymentData, setDetailPaymentData] = useState<IDetailPayment>();
   const [statusInvoice, setStatusInvoice] = useState<string>("Belum Bayar");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -57,6 +62,20 @@ const DetailInvoice = () => {
       }
     };
 
+    const fetchProfileStudent = async () => {
+      try {
+        setIsLoading(true);
+        const responseProfile = await profile();
+        if (responseProfile) {
+          setProfileStuden(responseProfile);
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfileStudent();
     fetchDetail();
   }, []);
 
@@ -82,12 +101,12 @@ const DetailInvoice = () => {
             </div>
 
             {/* ID Invoice */}
-            <div className="mt-5 flex flex-row">
+            {/* <div className="mt-5 flex flex-row">
               <div className="flex w-full flex-col gap-1">
                 <p className="text-sm font-semibold text-neutral-600">ID Invoice</p>
                 <p className="text-md text-black">{detailPaymentData?.invoice}</p>
               </div>
-            </div>
+            </div> */}
 
             {/* Amount */}
             <div className="mt-5 flex flex-row">
@@ -169,9 +188,7 @@ const DetailInvoice = () => {
                 </div>
                 <div className="mt-2 flex justify-between">
                   <p className="text-sm text-gray-500">Diskon</p>
-                  <p className="text-sm text-red-600">
-                    <p className="text-sm">{detailPaymentData?.competition ? `-${formatCurrency(detailPaymentData.competition.length * (detailPaymentData.competition[0]?.price ?? 0) - (detailPaymentData.amount ?? 0))}` : "Rp 0"}</p>
-                  </p>
+                  <p className="text-sm text-red-600">{detailPaymentData?.competition ? `-${formatCurrency(detailPaymentData.competition.length * (detailPaymentData.competition[0]?.price ?? 0) - (detailPaymentData.amount ?? 0))}` : "Rp 0"}</p>
                 </div>
               </div>
               <div className="mt-5 flex justify-between text-lg font-bold">
@@ -203,7 +220,8 @@ const DetailInvoice = () => {
                 <li>Screenshoot bukti pembayaran</li>
                 <li>Kirim bukti pembayaran melalui tombol "Kirim Bukti Pembayaran"</li>
                 <li>Anda akan diarahkan ke pesan whatsapp, lengkapi nama pengirim dan asal bank</li>
-                <li>Lalu klik tombol "Tandai Sudah Membayar"</li>
+                <li>Setelah berhasil mengirim ke admin, lalu klik tombol "Tandai Sudah Membayar"</li>
+                <li>Tunggu admin melakukan konfirmasi apakah sudah membayar</li>
               </ul>
             </div>
           </div>
@@ -236,7 +254,7 @@ const DetailInvoice = () => {
 
         {detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.PENDING && (
           <div className="mt-5 grid grid-cols-1 gap-2">
-            <a href="https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20atas%20nama%20%5BISI-NAMA%5D%20dari%20bank%20%5BNAMA-BANK%5D.%20Terima%20kasih" target="_blank">
+            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20dengan%20rincian%20sebagai%20berikut%3A%0ANama%3A%20${profileStudent?.name}%0AKelas%3A%20${`Kelas ${profileStudent?.class} ${profileStudent?.stage}`}%0ADengan%20lomba%3A%0A${detailPaymentData.competition?.map((comp) => `- ${comp.subject.name}, ${comp.region.name}`).join("%0A")}%0ATerima%20kasih%20atas%20perhatiannya%20admin.`} target="_blank">
               <button className="bg-primary w-full rounded-lg bg-base-purple p-2 text-white">Kirim Bukti Pembayaran</button>
             </a>
             <button onClick={handleSubmitStatusPayment} className="bg-primary w-full rounded-lg bg-base-green p-2 text-white">

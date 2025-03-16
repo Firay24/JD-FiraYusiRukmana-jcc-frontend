@@ -80,18 +80,19 @@ const DetailActivity = () => {
             </div>
 
             {/* ID Invoice */}
-            <div className="mt-5 flex flex-row">
+            {/* <div className="mt-5 flex flex-row">
               <div className="flex w-full flex-col gap-1">
                 <p className="text-sm font-semibold text-neutral-600">ID Invoice</p>
                 <p className="text-md text-black">{detailActivity?.invoice}</p>
               </div>
-            </div>
+            </div> */}
 
             {/* Events */}
             <div className="mt-5 flex flex-col gap-2">
               <p className="text-sm font-semibold text-neutral-600">Events</p>
               <div className="flex w-full flex-col items-start">
                 <p className="text-md text-black">{detailActivity?.events.name}</p>
+                <p className="text-sm font-semibold">{`${detailActivity?.events.subject.toUpperCase()} ${detailActivity?.events.stage} Kelas ${detailActivity?.events.level}`}</p>
                 <p className="text-sm text-neutral-600">{detailActivity?.events.region}</p>
               </div>
             </div>
@@ -115,8 +116,8 @@ const DetailActivity = () => {
               <p>{detailActivity.events.room || "-"}</p>
             </div>
             <div className="grid grid-cols-2 text-sm">
-              <p className="text-gray-500">Pengawas</p>
-              <p>{detailActivity.events.supervisor || "-"}</p>
+              <p className="text-gray-500">ID Peserta</p>
+              <p>{`J${detailActivity.idjcc.toString().padStart(4, "0")}` || "-"}</p>
             </div>
           </div>
         ) : (

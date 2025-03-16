@@ -15,6 +15,7 @@ const EventCreateContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const seasonId = searchParams.get("seasonId");
+  const region = searchParams.get("region");
 
   const { profile } = useStudent();
   const { listSubject } = useSubject();
@@ -51,6 +52,7 @@ const EventCreateContent = () => {
             stage: profileStudent.stage,
             level: profileStudent.class,
             subjectId: subject.id,
+            region: Number(region),
           });
 
           if (responseCompetitionId) {
@@ -82,10 +84,15 @@ const EventCreateContent = () => {
       } catch (error) {
       } finally {
         setIsLoadingSubmit(false);
-        router.replace(`/member/event/invoice/${idPayment}`);
       }
     }
   };
+
+  useEffect(() => {
+    if (idPayment) {
+      router.push(`/member/event/invoice/${idPayment}`);
+    }
+  }, [idPayment]);
 
   useEffect(() => {
     const fetchProfileStudent = async () => {

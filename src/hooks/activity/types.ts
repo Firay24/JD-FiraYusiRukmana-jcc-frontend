@@ -61,6 +61,7 @@ export interface IStatusPayment {
 export interface IDetailActivity {
   id: string;
   participantId: string;
+  idjcc: string;
   paymentId: string;
   paymentDate: number;
   invoice: string;
