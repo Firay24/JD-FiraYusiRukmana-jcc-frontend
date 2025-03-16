@@ -1,17 +1,8 @@
 "use client";
 import Container from "@/components/base/Container";
 import React, { useState } from "react";
-import timeLine from "@/data/timeline";
-
-import maskot from "@public/maskot.png";
-import schoolImg from "@public/school.png";
-
-import { HiOutlineUserGroup } from "react-icons/hi2";
-import Image from "next/image";
-import { BiMath } from "react-icons/bi";
-import { FaCalendarAlt, FaTree, FaWhatsapp } from "react-icons/fa";
-import { IoLanguage } from "react-icons/io5";
-import { MdGroups2, MdMyLocation, MdOutlineMyLocation } from "react-icons/md";
+import { FaCalendarAlt, FaWhatsapp } from "react-icons/fa";
+import { MdOutlineMyLocation } from "react-icons/md";
 import Section from "@/components/layout/Section";
 import Link from "next/link";
 import { regionalTimeline } from "@/data/regional";
@@ -60,8 +51,8 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                 <h2 className="text-3xl font-bold text-neutral-800 md:text-5xl">Junior National Olympiad</h2>
                 <p className="mt-4 w-[90%] text-sm text-neutral-600 md:max-w-[60%]">JUNIO yang diselenggarakan oleh Junior Championship Center dirancang untuk memberikan ruang bagi peserta didik TK, SD, dan SMP di Kabupaten Banyuwangi guna menyalurkan bakat, mengasah kompetensi, serta membangun karakter juara sejak dini.</p>
                 <div className="mt-5">
-                  <Link href="https://tally.so/r/mDx0Ol" passHref>
-                    <button disabled type="button" className="rounded-full bg-gray-300 px-8 py-2.5 text-xl font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                  <Link href="/auth/sign-up" passHref>
+                    <button type="button" className="rounded-full bg-red-400 px-8 py-2.5 text-xl font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
                       Daftar
                     </button>
                   </Link>
@@ -189,7 +180,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                   <MdOutlineMyLocation />
                 </span>
                 <h3 className="mb-1 flex items-center text-lg font-semibold text-gray-900">
-                  {`Regional ${item.regional.toString()}`} {item.status ? <span className="me-2 ms-3 rounded-sm bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800">Pendaftaran Ditutup</span> : null}
+                  {`Regional ${item.regional.toString()}`} {item.status ? <span className={`${item.regis ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} me-2 ms-3 rounded-sm px-2.5 py-0.5 text-sm font-medium`}>{`${item.regis ? "Pendaftaran Dibuka" : "Pendaftaran Ditutup"}`}</span> : null}
                 </h3>
                 <time className="mb-2 block text-sm font-normal leading-none text-gray-400">{item.location}</time>
                 <div className="flex items-center gap-2 text-base font-normal text-gray-500">
@@ -197,7 +188,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                   <p>{convertEpochToDateLong(item.date)}</p>
                 </div>
                 {item.description ? <p className="mb-4 text-base font-normal text-gray-500">{item.description}</p> : null}
-                {item.status ? (
+                {item.regis ? (
                   <div className="flex flex-col gap-3 md:flex-row">
                     <a href={item.path} download="PosterJunio-Regional1.png" className="inline-flex w-fit items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
                       <svg className="me-2.5 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

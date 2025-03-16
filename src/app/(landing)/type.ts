@@ -19,6 +19,7 @@ export interface IRegionalTimeline {
   address: string;
   date: number;
   status: boolean;
+  regis: boolean;
   location: string;
   path: string;
   description: string;
