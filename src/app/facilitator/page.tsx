@@ -35,6 +35,7 @@ const Facilitator = () => {
   const [selectedSchool, setSelectedSchool] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [stage, setStage] = useState("TK");
+  const [paymentId, setPaymentId] = useState<string>("");
 
   const [listPayment, setListPayment] = useState<IGetAllPayment[]>([]);
   const [profile, setProfile] = useState<TUser>();
@@ -65,7 +66,10 @@ const Facilitator = () => {
 
     try {
       setIsLoadingSubmit(true);
-      await uploadBatch(selectedFile, selectedSchool, "c2ea4ab1f7114bbb8058", selectedRegional);
+      const response = await uploadBatch(selectedFile, selectedSchool, "c2ea4ab1f7114bbb8058", selectedRegional);
+      if (response) {
+        setPaymentId(response.id);
+      }
     } catch (error) {
       console.error("Failed to save participants:", error);
     } finally {
@@ -145,6 +149,8 @@ const Facilitator = () => {
       fetchSchool();
     }
   }, [stage]);
+
+  useEffect(() => {}, [paymentId]);
 
   return (
     <ContainerFacilitator>

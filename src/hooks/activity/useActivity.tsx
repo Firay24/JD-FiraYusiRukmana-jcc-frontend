@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { HttpResponse, useHttp } from "../http/useHttp";
-import { IActivityCreateDto, IDetailActivity, IListActivity, IListAllParticipant, IListParticipant, TSaveActivity } from "./types";
+import { IActivityCreateDto, IDetailActivity, IListActivity, IListAllParticipant, IListParticipant, ISaveBatch, TSaveActivity } from "./types";
 
 type TSaveActivityResponse = {
   id: string;
@@ -113,7 +113,7 @@ export const useActivity = () => {
     formData.append("regionId", regionId);
 
     try {
-      const response = await post("/activity/batch-save", formData);
+      const response: HttpResponse<ISaveBatch> = await post("/activity/batch-save", formData);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {
