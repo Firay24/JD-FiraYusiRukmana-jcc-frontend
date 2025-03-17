@@ -42,7 +42,7 @@ const Leaderboard = () => {
     try {
       setIsLoading(true);
 
-      const response = await eventId({ stage: jenjang, level: level, subjectId: subjectId });
+      const response = await eventId({ stage: jenjang, level: level, subjectId: subjectId, region: 1 });
       const newIdCompetition = response.id;
 
       const participantResponse = await participant({ page, limit, idCompetition: newIdCompetition });
