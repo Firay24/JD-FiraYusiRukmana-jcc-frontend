@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { IActivityCreateDto, IDetailActivity, IListActivity, IListAllParticipant, IListParticipant, TSaveActivity } from "./types";
 
@@ -10,14 +11,18 @@ type TCreateAcitivityResponse = {
 };
 
 export const useActivity = () => {
+  const router = useRouter();
   const { post, get } = useHttp();
 
   const save = async (data: TSaveActivity) => {
     try {
       const response: HttpResponse<TSaveActivityResponse> = await post("/activity/save", data);
       return response.data;
-    } catch (error) {
-      console.error("Save failed:", error);
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
       throw error;
     }
   };
@@ -26,8 +31,11 @@ export const useActivity = () => {
     try {
       const response: HttpResponse<IDetailActivity> = await get(`/activity/detail/${id}`);
       return response.data;
-    } catch (error) {
-      console.error("Get failed:", error);
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
       throw error;
     }
   };
@@ -36,8 +44,11 @@ export const useActivity = () => {
     try {
       const response: HttpResponse<IListActivity> = await get(`/activity/list?page=${page}&limit=${limit}`);
       return response.data;
-    } catch (error) {
-      console.error("Get failed:", error);
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
       throw error;
     }
   };
@@ -46,8 +57,11 @@ export const useActivity = () => {
     try {
       const response: HttpResponse<TCreateAcitivityResponse> = await post("/activity/create", data);
       return response.data;
-    } catch (error) {
-      console.error("Create failed:", error);
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
       throw error;
     }
   };
@@ -56,8 +70,11 @@ export const useActivity = () => {
     try {
       const response: HttpResponse<IListParticipant> = await get(`/activity/participant?page=${page}&limit=${limit}&idCompetition=${idCompetition}`);
       return response.data;
-    } catch (error) {
-      console.error("Get failed:", error);
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
       throw error;
     }
   };
@@ -79,11 +96,33 @@ export const useActivity = () => {
 
       const response: HttpResponse<IListAllParticipant> = await get(`/activity/list/all?${queryParams.toString()}`);
       return response.data;
-    } catch (error) {
-      console.error("Get failed:", error);
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
       throw error;
     }
   };
 
-  return { save, detail, listbyidstudent, create, participant, listAll };
+  const uploadBatch = async (file: File, schoolId: string, seasonId: string, regionId: string) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("schoolId", schoolId);
+    formData.append("seasonId", seasonId);
+    formData.append("regionId", regionId);
+
+    try {
+      const response = await post("/activity/batch-save", formData);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { save, detail, listbyidstudent, create, participant, listAll, uploadBatch };
 };
