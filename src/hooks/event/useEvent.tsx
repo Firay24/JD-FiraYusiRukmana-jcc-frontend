@@ -9,9 +9,9 @@ export const useEvent = () => {
   const router = useRouter();
   const { get } = useHttp();
 
-  const eventId = async ({ stage, level, subjectId }: { stage: string; level: string; subjectId: string }) => {
+  const eventId = async ({ stage, level, subjectId, region }: { stage: string; level: string; subjectId: string; region: number }) => {
     try {
-      const response: HttpResponse<IEventId> = await get(`/event/search?stage=${stage}&level=${level}&subjectId=${subjectId}`);
+      const response: HttpResponse<IEventId> = await get(`/event/search?stage=${stage}&level=${level}&subjectId=${subjectId}&region=${region}`);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {

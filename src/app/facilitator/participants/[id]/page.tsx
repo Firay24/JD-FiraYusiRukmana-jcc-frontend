@@ -1,32 +1,32 @@
 "use client";
-import Container from "@/components/base/Container";
+import ContainerFacilitator from "@/components/base/Container-facilitator/page";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
-import BackNavbar from "@/components/module/BackNavbar";
 import { IDetailPayment } from "@/hooks/activity/types";
 import { usePayment } from "@/hooks/payment/usePayment";
-import { IGetStudentInfo } from "@/hooks/student/type";
+import { IParticipantsList } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
 import { StatusPayment } from "@/types/global";
 import { convertEpochToDateShort } from "@/utils/convertEpochToDate";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { useParams } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-const DetailInvoice = () => {
+const Participants = () => {
   const params = useParams();
+  const { listParticipantByKolektif } = useStudent();
   const { updateStatus, detail } = usePayment();
-  const { profile } = useStudent();
 
-  const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
-  const [detailPaymentData, setDetailPaymentData] = useState<IDetailPayment>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusInvoice, setStatusInvoice] = useState<string>("Belum Bayar");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [listParticipants, setListParticipants] = useState<IParticipantsList>();
+  const [detailPaymentData, setDetailPaymentData] = useState<IDetailPayment>();
 
   const handleSubmitStatusPayment = async () => {
     try {
       setIsLoading(true);
       await updateStatus({ id: detailPaymentData?.id as string, payload: { status: StatusPayment.CONFIRMED } });
-      const response = await detail(params.invoice as string);
+      const response = await detail(params.id as string);
       if (response) {
         setDetailPaymentData(response);
       }
@@ -36,6 +36,23 @@ const DetailInvoice = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchList = async () => {
+      try {
+        setIsLoading(true);
+        const response: IParticipantsList = await listParticipantByKolektif(params.id as string);
+        setListParticipants(response);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (params.id) {
+      fetchList();
+    }
+  }, []);
 
   useEffect(() => {
     if (detailPaymentData) {
@@ -53,7 +70,7 @@ const DetailInvoice = () => {
     const fetchDetail = async () => {
       try {
         setIsLoading(true);
-        const response = await detail(params.invoice as string);
+        const response = await detail(params.id as string);
         setDetailPaymentData(response);
       } catch (error) {
         console.error("Failed to fetch detail:", error);
@@ -62,100 +79,56 @@ const DetailInvoice = () => {
       }
     };
 
-    const fetchProfileStudent = async () => {
-      try {
-        setIsLoading(true);
-        const responseProfile = await profile();
-        if (responseProfile) {
-          setProfileStuden(responseProfile);
-        }
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProfileStudent();
     fetchDetail();
   }, []);
 
   return (
-    <div className="min-h-screen bg-base-gray p-4">
-      <Container>
-        <div className="mb-6">
-          <BackNavbar href="/member/event" />
+    <ContainerFacilitator>
+      <div className="mb-6 px-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold">Daftar Peserta</h2>
+            <p>{listParticipants?.regional}</p>
+          </div>
+          <div>
+            <Link href="/facilitator" className="text-sm text-blue-500 hover:text-blue-600">
+              <span>Kembali</span>
+            </Link>
+          </div>
         </div>
-        {/* Invoice */}
+        <div className="mt-4">{detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.COMPLETED ? <button className="rounded-lg bg-base-green px-5 py-2.5 text-sm text-white">{statusInvoice}</button> : detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.CONFIRMED ? <button className="rounded-lg bg-base-yellow p-2 text-sm font-medium text-white">{statusInvoice}</button> : <button className="rounded-lg bg-base-pink p-2 text-sm font-medium text-white">{statusInvoice}</button>}</div>
+
+        {/* DETAIL PAYMENT */}
+
+        {/* rincian pembayaran */}
         {isLoading ? (
-          <div className="rounded-xl border bg-white p-7">
-            <SkeletonLoader rows={5} />
-          </div>
-        ) : (
-          <div className="rounded-xl border bg-white p-7">
-            <div className="flex flex-row items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <p className="text-start text-2xl font-semibold">Invoice</p>
-                <p className="text-sm text-neutral-600">{detailPaymentData?.date ? `${convertEpochToDateShort({ epoch: detailPaymentData.date, showtime: true })} WIB` : "-"}</p>
-              </div>
-              {detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.COMPLETED ? <button className="rounded-lg bg-base-green px-5 py-2.5 text-sm text-white">{statusInvoice}</button> : detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.CONFIRMED ? <button className="rounded-lg bg-base-yellow p-2 text-sm font-medium text-white">{statusInvoice}</button> : <button className="rounded-lg bg-base-pink p-2 text-sm font-medium text-white">{statusInvoice}</button>}
-            </div>
-
-            {/* ID Invoice */}
-            {/* <div className="mt-5 flex flex-row">
-              <div className="flex w-full flex-col gap-1">
-                <p className="text-sm font-semibold text-neutral-600">ID Invoice</p>
-                <p className="text-md text-black">{detailPaymentData?.invoice}</p>
-              </div>
-            </div> */}
-
-            {/* Amount */}
-            <div className="mt-5 flex flex-row">
-              <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-semibold text-neutral-600">Total</p>
-                <p className="text-lg font-semibold text-black">{detailPaymentData && formatCurrency(detailPaymentData.amount)}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Events */}
-        {/* {detailPaymentData?.competition &&
-              detailPaymentData.competition.map((event, index) => (
-                <div key={index} className="mt-5 flex flex-col gap-2">
-                  <p className="text-sm font-semibold text-neutral-600">Events</p>
-                  <div className="flex w-full flex-col items-start">
-                    <p className="text-md text-black">{event.name}</p>
-                    <p className="text-sm text-neutral-600">{event.region.name}</p>
-                  </div>
-                </div>
-              ))} */}
-
-        {/* Rincian Pembayaran */}
-        {isLoading ? (
-          <div className="rounded-xl border bg-white p-7">
+          <div className="mt-5 rounded-xl border bg-white p-7">
             <SkeletonLoader rows={9} />
           </div>
         ) : (
           <div className="mt-5 flex flex-col gap-2">
-            <div className="mt-5 rounded-lg bg-white p-5">
+            <div className="rounded-lg bg-white p-5">
               <div className="relative overflow-x-auto">
                 <table className="w-full text-left text-sm text-gray-500 rtl:text-right">
                   <thead className="border-b border-gray-200 text-xs uppercase text-gray-700">
                     <tr>
                       <th scope="col" className="px-6 py-3">
+                        No
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Nama
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Username
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Kelas
+                      </th>
+                      <th scope="col" className="px-6 py-3">
                         Matpel
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Jenjang
-                      </th>
-                      <th scope="col" className="px-6 py-3">
                         Harga
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Level
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Regional
                       </th>
                     </tr>
                   </thead>
@@ -163,18 +136,19 @@ const DetailInvoice = () => {
                     {detailPaymentData?.competition &&
                       detailPaymentData.competition.map((event, index) => (
                         <tr className="bg-white" key={index}>
-                          <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                          <td className="px-6 py-4">{index + 1}</td>
+                          <th className="px-6 py-4">{event.student.name}</th>
+                          <th className="px-6 py-4">{event.student.username}</th>
+                          <td className="px-6 py-4">{`${event.student.class} ${event.student.stage}`}</td>
+                          <td scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                             {event.subject.name === "ipa" || event.subject.name === "ips"
                               ? event.subject.name.toUpperCase()
                               : event.subject.name
                                   .split(" ")
                                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                                   .join(" ")}
-                          </th>
-                          <td className="px-6 py-4">{event.stage}</td>
-                          <td className="px-6 py-4">{event.price}</td>
-                          <td className="px-6 py-4">{`Lv. ${event.level.toString()}`}</td>
-                          <td className="px-6 py-4">{event.region.name}</td>
+                          </td>
+                          <td className="px-6 py-4">{formatCurrency(event.price)}</td>
                         </tr>
                       ))}
                   </tbody>
@@ -215,7 +189,7 @@ const DetailInvoice = () => {
             </div>
             <div className="mt-5">
               <h2 className="text-md mb-2 font-semibold text-gray-900">Langkah Pembayaran</h2>
-              <ul className="max-w-md list-disc space-y-1 pl-3 text-gray-500">
+              <ul className="w-full list-disc space-y-1 pl-3 text-gray-500">
                 <li>Lakukan pembayaran ke rekening di atas</li>
                 <li>Screenshoot bukti pembayaran</li>
                 <li>Kirim bukti pembayaran melalui tombol "Kirim Bukti Pembayaran"</li>
@@ -254,7 +228,7 @@ const DetailInvoice = () => {
 
         {detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.PENDING && (
           <div className="mt-5 grid grid-cols-1 gap-2">
-            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20dengan%20rincian%20sebagai%20berikut%3A%0ANama%3A%20${profileStudent?.name}%0AKelas%3A%20${`Kelas ${profileStudent?.class} ${profileStudent?.stage}`}%0ADengan%20lomba%3A%0A${detailPaymentData.competition?.map((comp) => `- ${comp.subject.name}, ${comp.region.name}`).join("%0A")}%0ATerima%20kasih%20atas%20perhatiannya%20admin.`} target="_blank">
+            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20kolektif%20dengan%20id%20invoice%20yaitu%20${detailPaymentData.invoice}%0ATerima%20kasih%20atas%20perhatiannya%C2%A0admin.`} target="_blank">
               <button className="bg-primary w-full rounded-lg bg-base-purple p-2 text-white">Kirim Bukti Pembayaran</button>
             </a>
             <button onClick={handleSubmitStatusPayment} className="bg-primary w-full rounded-lg bg-base-green p-2 text-white">
@@ -262,9 +236,11 @@ const DetailInvoice = () => {
             </button>
           </div>
         )}
-      </Container>
-    </div>
+
+        <div></div>
+      </div>
+    </ContainerFacilitator>
   );
 };
 
-export default DetailInvoice;
+export default Participants;

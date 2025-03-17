@@ -194,6 +194,9 @@ const Participants = () => {
                       Status
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Invoice
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Nama
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -214,6 +217,7 @@ const Participants = () => {
                         <td className="px-6 py-4">
                           <span className={`${participant.payment.status === "COMPLETED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} me-2 rounded-sm px-2.5 py-0.5 text-sm font-medium`}>{participant.payment.status === "COMPLETED" ? "Lunas" : "Belum"}</span>
                         </td>
+                        <td className="px-6 py-4">{participant.payment.invoice}</td>
                         <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                           {participant.name}
                         </th>

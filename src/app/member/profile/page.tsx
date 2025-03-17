@@ -16,6 +16,7 @@ import { IStudentInfo, LevelInfo } from "@/hooks/student/type";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import { getLevelInfo } from "@/utils/getInfoLevel";
 import { FaIdCardClip } from "react-icons/fa6";
+import { BiSolidSchool } from "react-icons/bi";
 
 const Profile = () => {
   // States
@@ -141,22 +142,22 @@ const Profile = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                      <PiStudentFill />
+                      <BiSolidSchool />
                     </div>
                     <div>
                       <p className="text-sm italic text-gray-400">asal sekolah</p>
                       <p className="font-medium text-neutral-700">{dataProfile?.school}</p>
                     </div>
                   </div>
-                  {/* <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
-                      <MdHomeFilled />
+                      <PiStudentFill />
                     </div>
                     <div>
-                      <p className="text-sm italic text-gray-400">alamat</p>
-                      <p className="font-medium text-neutral-700">{dataProfile?.address}</p>
+                      <p className="text-sm italic text-gray-400">kelas</p>
+                      <p className="font-medium text-neutral-700">{`Kelas ${dataProfile?.class} ${dataProfile?.stage}`}</p>
                     </div>
-                  </div> */}
+                  </div>
                   <div className="flex items-center gap-3">
                     <div className="h-fit w-fit rounded-full bg-teal-100 p-3 text-lg text-teal-500">
                       <CgGenderFemale />

@@ -10,6 +10,12 @@ interface competition {
   price: number;
   stage: string;
   level: number;
+  student: {
+    name: string;
+    username: string;
+    class: string;
+    stage: string;
+  };
   season: {
     id: string;
     name: string;

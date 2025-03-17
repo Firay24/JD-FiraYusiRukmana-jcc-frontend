@@ -102,13 +102,14 @@ export default function page() {
                     <label htmlFor="floating_username" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                       Username<span className="text-red-500">*</span>
                     </label>
-                    <p className="mt-2 text-xs italic text-gray-500">nama disertai angka, username harus unik</p>
+                    <p className="mt-2 text-xs italic text-gray-500">nama disertai angka, huruf kecil semua, username harus unik. contoh: hatakee23</p>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
                     <label htmlFor="floating_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4">
                       Password<span className="text-red-500">*</span>
                     </label>
+                    <p className="mt-2 text-xs italic text-gray-500">password harus mengandung karakter !@#$%&*</p>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={repeatpassword} onChange={(e) => setRepeatPassword(e.target.value)} type="password" name="repeat_password" id="floating_repeat_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
@@ -161,6 +162,11 @@ export default function page() {
                 </button>
               </form>
             </Card>
+            <div className="mt-4 text-center">
+              <a href="/" className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-500">
+                kembali ke halaman utama
+              </a>
+            </div>
           </div>
         </main>
       )}

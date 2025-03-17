@@ -63,3 +63,16 @@ export interface IGetStudentInfo {
   id: string;
   userId: string;
 }
+
+export interface IParticipants {
+  name: string;
+  username: string;
+  class: string;
+  stage: string;
+  subject: string;
+}
+
+export interface IParticipantsList {
+  regional: string;
+  participant: IParticipants[];
+}

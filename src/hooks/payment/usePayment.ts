@@ -49,5 +49,18 @@ export const usePayment = () => {
     }
   };
 
-  return { updateStatus, detail, allbyuser };
+  const allbykolektif = async () => {
+    try {
+      const response: HttpResponse<IGetAllPayment[]> = await get(`/payment/kolektif`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("Get detail failed:", error);
+      throw error;
+    }
+  };
+
+  return { updateStatus, detail, allbyuser, allbykolektif };
 };

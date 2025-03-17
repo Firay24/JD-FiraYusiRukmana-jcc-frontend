@@ -134,7 +134,7 @@ const Event = () => {
                                 className={`${event.color} rounded-lg px-4 py-2 text-sm text-white`}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  router.push(`/member/event/create?seasonId=${event.seasonId}`);
+                                  router.push(`/member/event/create?seasonId=${event.seasonId}&region=${event.id}`);
                                 }}
                               >
                                 Daftar

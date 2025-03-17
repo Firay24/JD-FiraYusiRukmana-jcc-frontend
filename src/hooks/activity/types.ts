@@ -13,6 +13,7 @@ export interface IParticipant {
   payment: {
     id: string;
     status: StatusPayment;
+    invoice: string;
   };
   competition: {
     id: string;
@@ -42,6 +43,12 @@ export interface IListAllParticipant {
   data: IParticipant[];
 }
 
+export interface ISaveBatch {
+  id: string;
+  totalParticipant: number;
+  amount: number;
+}
+
 export type TSaveActivity = {
   id?: string;
   studentId: string;
@@ -61,6 +68,7 @@ export interface IStatusPayment {
 export interface IDetailActivity {
   id: string;
   participantId: string;
+  idjcc: string;
   paymentId: string;
   paymentDate: number;
   invoice: string;
@@ -95,6 +103,12 @@ interface Competition {
   price: number;
   stage: string;
   level: number;
+  student: {
+    name: string;
+    username: string;
+    class: string;
+    stage: string;
+  };
   season: {
     id: string;
     name: string;
