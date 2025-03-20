@@ -213,7 +213,7 @@ const Participants = () => {
                     participants.data.map((participant, index) => (
                       <tr key={index} className="border-b border-gray-200 odd:bg-white even:bg-gray-50">
                         <td className="px-6 py-4">{index + 1}</td>
-                        <td className="px-6 py-4">{`J${participant.idMember.toString().padStart(4, "0")}`}</td>
+                        <td className="px-6 py-4">{`J${participant.idMember.padStart(4, "0")}`}</td>
                         <td className="px-6 py-4">
                           <span className={`${participant.payment.status === "COMPLETED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} me-2 rounded-sm px-2.5 py-0.5 text-sm font-medium`}>{participant.payment.status === "COMPLETED" ? "Lunas" : "Belum"}</span>
                         </td>
@@ -255,6 +255,7 @@ const Participants = () => {
                             </label>
                             <select value={formData?.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} id="stage" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
                               <option value="COMPLETED">Lunas</option>
+                              <option value="CONFIRMED">Menunggu</option>
                               <option value="PENDING">Belum lunas</option>
                             </select>
                           </div>

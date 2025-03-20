@@ -111,10 +111,10 @@ const EventCreateContent = () => {
   }, []);
 
   useEffect(() => {
-    if (profileStudent) {
+    if (profileStudent && seasonId) {
       const fetchSubjects = async () => {
         try {
-          const responseSubjects = await listSubject();
+          const responseSubjects = await listSubject(profileStudent.id, seasonId);
           if (responseSubjects) {
             setSubjects(responseSubjects);
           }
@@ -122,7 +122,7 @@ const EventCreateContent = () => {
       };
       fetchSubjects();
     }
-  }, [profileStudent]);
+  }, [profileStudent, seasonId]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

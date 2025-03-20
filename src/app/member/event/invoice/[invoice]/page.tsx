@@ -254,7 +254,7 @@ const DetailInvoice = () => {
 
         {detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.PENDING && (
           <div className="mt-5 grid grid-cols-1 gap-2">
-            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20dengan%20rincian%20sebagai%20berikut%3A%0ANama%3A%20${profileStudent?.name}%0AKelas%3A%20${`Kelas ${profileStudent?.class} ${profileStudent?.stage}`}%0ADengan%20lomba%3A%0A${detailPaymentData.competition?.map((comp) => `- ${comp.subject.name}, ${comp.region.name}`).join("%0A")}%0ATerima%20kasih%20atas%20perhatiannya%20admin.`} target="_blank">
+            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20dengan%20rincian%20sebagai%20berikut%3A%0ANama%3A%20${profileStudent?.name}%0AKelas%3A%20${`Kelas ${profileStudent?.class} ${profileStudent?.stage}`}%0ANominal%3A%20${detailPaymentData.amount}%0ADengan%20lomba%3A%0A${detailPaymentData.competition?.map((comp) => `- ${comp.subject.name}, ${comp.region.name}`).join("%0A")}%0ATerima%20kasih%20atas%20perhatiannya%20admin.`} target="_blank">
               <button className="bg-primary w-full rounded-lg bg-base-purple p-2 text-white">Kirim Bukti Pembayaran</button>
             </a>
             <button onClick={handleSubmitStatusPayment} className="bg-primary w-full rounded-lg bg-base-green p-2 text-white">
