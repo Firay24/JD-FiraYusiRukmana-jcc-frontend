@@ -117,7 +117,7 @@ const Participants = () => {
     <div className="mb-16">
       <h1 className="text-2xl font-semibold">Peserta</h1>
       <div className="grid grid-cols-1 gap-3">
-        <div className="mt-3 grid grid-cols-5 gap-8">
+        <div className="mt-3 grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2">
             <label htmlFor="regional" className="mb-2 block text-gray-900">
               Regional
