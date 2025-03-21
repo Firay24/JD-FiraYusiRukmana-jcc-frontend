@@ -109,7 +109,7 @@ export default function page() {
                     <label htmlFor="floating_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4">
                       Password<span className="text-red-500">*</span>
                     </label>
-                    <p className="mt-2 text-xs italic text-gray-500">password harus mengandung karakter !@#$%&*</p>
+                    <p className="mt-2 text-xs italic text-gray-500">password minmal 8 karakter dan harus mengandung salah satu karakter !@#$%^&*_+\-=</p>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={repeatpassword} onChange={(e) => setRepeatPassword(e.target.value)} type="password" name="repeat_password" id="floating_repeat_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
@@ -152,7 +152,7 @@ export default function page() {
                       Daftar sebagai <span className="text-red-500">*</span>
                     </label>
                     <select value={roleUser} onChange={(e) => setRoleUser(e.target.value)} id="role" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
-                      <option value="participant">Peserta</option>
+                      <option value="participant">Individu</option>
                       <option value="facilitator">Kolektif</option>
                     </select>
                   </div>

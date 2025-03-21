@@ -45,6 +45,9 @@ const page = () => {
     SD: ["1", "2", "3", "4", "5", "6"],
     SMP: ["1", "2", "3"],
   };
+  const classDisplayMapping = {
+    SMP: { "1": "7", "2": "8", "3": "9" },
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -181,7 +184,7 @@ const page = () => {
                 <select value={formData?.class} onChange={(e) => setFormData({ ...formData, class: e.target.value })} id="classes" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
                   {classOptions[formData.stage as "TK" | "SD" | "SMP"]?.map((option, index) => (
                     <option key={index} value={option}>
-                      {`Kelas ${option}`}
+                      {formData.stage === "SMP" ? `Kelas ${classDisplayMapping[option as keyof typeof classDisplayMapping]}` : `Kelas ${option}`}
                     </option>
                   ))}
                 </select>
@@ -246,6 +249,7 @@ const page = () => {
                 <label htmlFor="floating_nik" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
                   NIK <span className="text-red-500">*</span>
                 </label>
+                {formData.nik.length !== 16 && <p className="mt-2 text-xs text-red-500">NIK harus 16 karakter</p>}
               </div>
               {/* <div className="group relative z-0 mb-5 w-full">
                 <input value={formData?.fatherName} onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })} type="text" name="floating_fatherName" id="floating_fatherName" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
