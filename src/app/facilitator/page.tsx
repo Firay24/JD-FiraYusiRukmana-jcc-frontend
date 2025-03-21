@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import { FaPlus, FaPowerOff } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { LuSearchX } from "react-icons/lu";
+import { MdOutlineQuestionMark } from "react-icons/md";
 import { TiWarning } from "react-icons/ti";
 import Select from "react-select";
 
@@ -45,6 +46,7 @@ const Facilitator = () => {
   const [loadingSchool, setLoadingSchool] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpenCreate, setIsModalOpenCreate] = useState<boolean>(false);
+  const [isModalOpenInfo, setIsModalOpenInfo] = useState<boolean>(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -165,7 +167,7 @@ const Facilitator = () => {
         ) : (
           <>
             <div className="flex justify-between">
-              <h2 className="text-2xl font-semibold">{`Halo, ${profile?.name}`}</h2>
+              <h2 className="text-2xl font-semibold">{`Halo, ${profile?.name?.split(" ")[0] || ""}`}</h2>
               <div onClick={() => setIsModalOpen(true)} className="flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2 text-red-400 hover:bg-neutral-100 hover:text-neutral-800">
                 <FaPowerOff />
                 <p>Keluar</p>
@@ -202,7 +204,44 @@ const Facilitator = () => {
           <FaPlus />
           <span className="sr-only">transaksi</span>
         </button>
+        <button onClick={() => setIsModalOpenInfo(true)} type="button" className="fixed bottom-[80px] right-5 me-2 inline-flex items-center rounded-full bg-yellow-300 p-2.5 text-center text-2xl font-medium text-gray-800 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">
+          <MdOutlineQuestionMark />
+          <span className="sr-only">info</span>
+        </button>
       </div>
+      {isModalOpenInfo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative w-full max-w-2xl p-4">
+            {/* Wrapper untuk memungkinkan scroll */}
+            <div className="relative max-h-[90vh] overflow-y-auto rounded-lg bg-white shadow-lg">
+              {/* Header Modal */}
+              <div className="sticky top-0 flex items-center justify-between rounded-t border-b border-gray-200 bg-white p-4 md:p-5">
+                <h3 className="text-xl font-semibold text-gray-900">Instruksi Pengisian</h3>
+                <button onClick={() => setIsModalOpenInfo(false)} className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+                  <IoClose size={18} />
+                </button>
+              </div>
+
+              {/* Konten Scrollable */}
+              <div className="flex flex-col gap-5 px-6 pb-6">
+                <ul className="max-w-md list-disc space-y-1 pl-3 text-gray-500">
+                  <li>Gunakan template yang sudah disediakan panitia</li>
+                  <li>Data pada template itu hanya sebagai contoh pengisian, hapus data tersebut jika ingin menambahkan data</li>
+                  <li>Dilarang mengubah nama kolom atau menghapus kolom</li>
+                  <li>Format pengisian harap dibuat sesuai dengan template, detail intruksi dapat dilihat di note masing-masing kolom</li>
+                  <li>Apabila ingin menambahkan data baru, data lama yang sudah ditambahkan mohon dihapus terlebih dahulu</li>
+                  <li>Kolektif hanya berlaku untuk jumlah kelipatan 11, diluar dari itu akan dikenakan tarif normal</li>
+                  <li>Diskon bundling hanya berlaku di jenis pendaftaran individu dan bukan untuk kolektif</li>
+                  <li>Apabila ada pertanyaan lebih lanjut, silahkan hubungi admin</li>
+                </ul>
+                <a href="/template-kolektif.xlsx" download="template-kolektif.xlsx" className="mt-2 block w-full rounded-xl bg-[#5570F1] p-3 text-center text-white">
+                  Download Template
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* modal create payment */}
       {isModalOpenCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

@@ -152,7 +152,7 @@ export default function page() {
                       Daftar sebagai <span className="text-red-500">*</span>
                     </label>
                     <select value={roleUser} onChange={(e) => setRoleUser(e.target.value)} id="role" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
-                      <option value="participant">Peserta</option>
+                      <option value="participant">Individu</option>
                       <option value="facilitator">Kolektif</option>
                     </select>
                   </div>
