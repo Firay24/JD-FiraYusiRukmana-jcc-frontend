@@ -66,9 +66,21 @@ export const useActivity = () => {
     }
   };
 
-  const participant = async ({ page, limit, idCompetition }: { page?: number; limit?: number; idCompetition: string }) => {
+  const participant = async (params: { page?: number; limit?: number; idCompetition?: string; stage?: string; level?: string; subjectId?: string; search?: string }) => {
     try {
-      const response: HttpResponse<IListParticipant> = await get(`/activity/participant?page=${page}&limit=${limit}&idCompetition=${idCompetition}`);
+      const queryParams = new URLSearchParams(
+        Object.entries(params)
+          .filter(([_, value]) => value !== undefined && value !== null)
+          .reduce(
+            (acc, [key, value]) => {
+              acc[key] = String(value);
+              return acc;
+            },
+            {} as Record<string, string>,
+          ),
+      );
+
+      const response: HttpResponse<IListParticipant> = await get(`/activity/participant?${queryParams.toString()}`);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {
@@ -79,7 +91,7 @@ export const useActivity = () => {
     }
   };
 
-  const listAll = async (params: { page?: number; limit?: number; seasonId?: string; regionId?: string; stage?: string; level?: string; subjectId?: string }) => {
+  const listAll = async (params: { page?: number; limit?: number; seasonId?: string; regionId?: string; stage?: string; level?: string; subjectId?: string; search?: string }) => {
     try {
       // Filter hanya parameter yang memiliki nilai
       const queryParams = new URLSearchParams(

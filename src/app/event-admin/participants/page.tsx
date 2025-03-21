@@ -36,11 +36,13 @@ const Participants = () => {
     SMP: ["1", "2", "3"],
   };
 
+  const [search, setSearch] = useState<string>("");
   const [selectedParticipant, setSelectedParticipant] = useState<IParticipant>();
   const [selectedRegional, setSelectedRegional] = useState<string>("");
   const [selectedStage, setSelectedStage] = useState<string>("TK");
   const [selectedClass, setSelectedClass] = useState<string>("");
   const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [typeSearch, setTypeSearch] = useState<string>("filter");
 
   const openModal = (participant: IParticipant) => {
     setFormData({
@@ -55,11 +57,28 @@ const Participants = () => {
     setIsModalOpen(false);
   };
 
+  const handleFilterButton = async () => {
+    try {
+      setLoading(true);
+      const response = await listAll({ page: page, limit: limit, regionId: selectedRegional, stage: selectedStage, level: selectedClass, subjectId: selectedSubject, search: "" });
+      setParticipants(response);
+    } catch (error) {
+      console.error("Failed to fetch roles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearchButton = async () => {
     try {
       setLoading(true);
-      const response = await listAll({ page: page, limit: limit, regionId: selectedRegional, stage: selectedStage, level: selectedClass, subjectId: selectedSubject });
-      setParticipants(response);
+      if (typeSearch === "all") {
+        const response = await listAll({ page: page, limit: limit, search: search });
+        setParticipants(response);
+      } else if (typeSearch === "filter") {
+        const response = await listAll({ page: page, limit: limit, regionId: selectedRegional, stage: selectedStage, level: selectedClass, subjectId: selectedSubject, search: search });
+        setParticipants(response);
+      }
     } catch (error) {
       console.error("Failed to fetch roles:", error);
     } finally {
@@ -72,7 +91,7 @@ const Participants = () => {
     try {
       await updateStatus({ id: idPayment, payload: { status: formData.status as StatusPayment } });
       await updateUser({ name: formData.name });
-      await handleSearchButton();
+      await handleFilterButton();
       closeModal();
     } catch (error) {
       console.error("Failed to update status:", error);
@@ -110,14 +129,16 @@ const Participants = () => {
   }, []);
 
   useEffect(() => {
-    handleSearchButton();
+    if (selectedRegional && selectedStage && selectedClass && selectedSubject) {
+      handleFilterButton();
+    }
   }, [page, limit]);
 
   return (
     <div className="mb-16">
       <h1 className="text-2xl font-semibold">Peserta</h1>
       <div className="grid grid-cols-1 gap-3">
-        <div className="mt-3 grid grid-cols-5 gap-8">
+        <div className="mt-3 grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2">
             <label htmlFor="regional" className="mb-2 block text-gray-900">
               Regional
@@ -170,10 +191,39 @@ const Participants = () => {
           </div>
         </div>
         <div>
-          <button onClick={handleSearchButton} type="button" className="me-2 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+          <button onClick={handleFilterButton} type="button" className="me-2 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
             <IoSearch />
             Cari
           </button>
+        </div>
+
+        {/* search */}
+        <div className="mt-4 border-t border-gray-300"></div>
+
+        <div className="mt-2 flex gap-3">
+          <div>
+            <select value={typeSearch} onChange={(e) => setTypeSearch(e.target.value)} className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+              <option value="all">All</option>
+              <option value="filter">Filter</option>
+            </select>
+          </div>
+          <div className="flex max-w-sm">
+            <label htmlFor="simple-search" className="sr-only">
+              Search
+            </label>
+            <div className="relative w-full">
+              <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
+                <IoSearch />
+              </div>
+              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} id="simple-search" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500" placeholder="Search branch name..." required />
+            </div>
+            <button onClick={handleSearchButton} className="ms-2 rounded-lg border border-blue-700 bg-blue-700 p-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <svg className="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+              </svg>
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
         </div>
 
         {/* table */}
@@ -191,7 +241,7 @@ const Participants = () => {
                       ID JCC
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Status
+                      ID Lomba
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Invoice
@@ -201,6 +251,9 @@ const Participants = () => {
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Asal Sekolah
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Status
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Action
@@ -213,15 +266,16 @@ const Participants = () => {
                     participants.data.map((participant, index) => (
                       <tr key={index} className="border-b border-gray-200 odd:bg-white even:bg-gray-50">
                         <td className="px-6 py-4">{index + 1}</td>
-                        <td className="px-6 py-4">{`J${participant.idMember.toString().padStart(4, "0")}`}</td>
-                        <td className="px-6 py-4">
-                          <span className={`${participant.payment.status === "COMPLETED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} me-2 rounded-sm px-2.5 py-0.5 text-sm font-medium`}>{participant.payment.status === "COMPLETED" ? "Lunas" : "Belum"}</span>
-                        </td>
+                        <td className="px-6 py-4">{`J${participant.idMember.padStart(4, "0")}`}</td>
+                        <td className="px-6 py-4">{participant.idParticipant}</td>
                         <td className="px-6 py-4">{participant.payment.invoice}</td>
                         <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                           {participant.name}
                         </th>
                         <td className="px-6 py-4">{participant.school}</td>
+                        <td className="px-6 py-4">
+                          <span className={`${participant.payment.status === "COMPLETED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} me-2 rounded-sm px-2.5 py-0.5 text-sm font-medium`}>{participant.payment.status === "COMPLETED" ? "Lunas" : "Belum"}</span>
+                        </td>
                         <td className="px-6 py-4">
                           <p onClick={() => openModal(participant)} className="cursor-pointer font-medium text-blue-600 hover:underline dark:text-blue-500">
                             Edit
@@ -255,10 +309,10 @@ const Participants = () => {
                             </label>
                             <select value={formData?.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} id="stage" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
                               <option value="COMPLETED">Lunas</option>
+                              <option value="CONFIRMED">Menunggu</option>
                               <option value="PENDING">Belum lunas</option>
                             </select>
                           </div>
-                          <p>{selectedParticipant.payment.id}</p>
                           <div className="mb-10 flex w-full items-center justify-center text-center">
                             <button type="submit" className="me-2 w-full items-center gap-2 rounded-lg bg-blue-700 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                               Simpan
@@ -278,7 +332,7 @@ const Participants = () => {
                     </svg>
                   </button>
 
-                  <p className="text-slate-600">
+                  <p className="text-gray-800">
                     Page <strong className="text-slate-800">{participants?.page}</strong> of&nbsp;<strong className="text-slate-800">{participants?.totalPages}</strong>
                   </p>
 
@@ -299,7 +353,7 @@ const Participants = () => {
                       setLimit(Number(e.target.value));
                       setPage(1);
                     }}
-                    className="rounded-full border border-gray-300 p-1 pl-4"
+                    className="rounded-full border border-gray-300 p-1 pl-4 text-gray-800"
                   >
                     <option value={20}>20</option>
                     <option value={50}>50</option>

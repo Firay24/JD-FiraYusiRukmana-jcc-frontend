@@ -3,18 +3,15 @@ import Navbar from "@/components/module/Navbar";
 import { navbarMenuMember } from "@/data/navbarMember";
 import React, { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
-import { MdHomeFilled, MdOutlineFamilyRestroom } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { CgGenderFemale } from "react-icons/cg";
-import { FaBook, FaPhone, FaRegUser, FaRunning } from "react-icons/fa";
-import { GiMusicalNotes } from "react-icons/gi";
+import { FaPhone, FaRegUser } from "react-icons/fa";
 import Container from "@/components/base/Container";
 import { useRouter } from "next/navigation";
 import { useStudent } from "@/hooks/student/useStudent";
-import { IStudentInfo, LevelInfo } from "@/hooks/student/type";
+import { IStudentInfo } from "@/hooks/student/type";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
-import { getLevelInfo } from "@/utils/getInfoLevel";
 import { FaIdCardClip } from "react-icons/fa6";
 import { BiSolidSchool } from "react-icons/bi";
 
@@ -22,7 +19,7 @@ const Profile = () => {
   // States
   const [isScrolled, setIsScrolled] = useState(false);
   const [dataProfile, setDataProfile] = useState<IStudentInfo>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   // const [levelInfo, setLevelInfo] = useState<LevelInfo>();
 
   // Hooks
@@ -81,7 +78,7 @@ const Profile = () => {
                     <img className="h-10 w-10 rounded-full object-cover object-center" src="/img/profileImg.jpeg" alt="avatar" />
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-white">{`Hello ${dataProfile?.name}`}</p>
+                    <p className="text-lg font-bold text-white">{`Halo, ${dataProfile?.name?.split(" ")[0] || ""}`}</p>
                     <p className="text-sm text-green-800">{dataProfile?.username}</p>
                   </div>
                 </div>

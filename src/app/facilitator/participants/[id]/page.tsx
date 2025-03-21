@@ -228,7 +228,7 @@ const Participants = () => {
 
         {detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.PENDING && (
           <div className="mt-5 grid grid-cols-1 gap-2">
-            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20kolektif%20dengan%20id%20invoice%20yaitu%20${detailPaymentData.invoice}%0ATerima%20kasih%20atas%20perhatiannya%C2%A0admin.`} target="_blank">
+            <a href={`https://wa.me/6285190079298?text=Halo%20Admin%20JCC%2C%20izin%20mengirimkan%20bukti%20transfer%20pendaftaran%20kolektif%20dengan%20id%20invoice%20yaitu%20${detailPaymentData.invoice}%0ANominal%3A%20${detailPaymentData.amount}%0ATerima%20kasih%20atas%20perhatiannya%C2%A0admin.`} target="_blank">
               <button className="bg-primary w-full rounded-lg bg-base-purple p-2 text-white">Kirim Bukti Pembayaran</button>
             </a>
             <button onClick={handleSubmitStatusPayment} className="bg-primary w-full rounded-lg bg-base-green p-2 text-white">
