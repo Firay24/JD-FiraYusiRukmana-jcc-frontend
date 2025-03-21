@@ -22,7 +22,7 @@ const Profile = () => {
   // States
   const [isScrolled, setIsScrolled] = useState(false);
   const [dataProfile, setDataProfile] = useState<IStudentInfo>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   // const [levelInfo, setLevelInfo] = useState<LevelInfo>();
 
   // Hooks
@@ -81,7 +81,7 @@ const Profile = () => {
                     <img className="h-10 w-10 rounded-full object-cover object-center" src="/img/profileImg.jpeg" alt="avatar" />
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-white">{`Hello ${dataProfile?.name}`}</p>
+                    <p className="text-lg font-bold text-white">{`Halo, ${dataProfile?.name?.split(" ")[0] || ""}`}</p>
                     <p className="text-sm text-green-800">{dataProfile?.username}</p>
                   </div>
                 </div>
