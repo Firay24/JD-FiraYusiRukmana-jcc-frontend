@@ -8,6 +8,8 @@ import { IListParticipant } from "@/hooks/activity/types";
 import { useEvent } from "@/hooks/event/useEvent";
 import { useSubject } from "@/hooks/subject/useSubject";
 import { PiEmptyBold } from "react-icons/pi";
+import { useStudent } from "@/hooks/student/useStudent";
+import { IGetStudentInfo } from "@/hooks/student/type";
 
 type StageType = "TK" | "SD" | "SMP";
 
@@ -15,6 +17,9 @@ const Leaderboard = () => {
   const { participant } = useActivity();
   const { eventId } = useEvent();
   const { listSubject } = useSubject();
+  const { profile } = useStudent();
+
+  const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
   const [listParticipant, setParticipant] = useState<IListParticipant>();
   const [isScrolled, setIsScrolled] = useState(false);
   const [jenjang, setJenjang] = useState<StageType>("TK");
@@ -22,6 +27,7 @@ const Leaderboard = () => {
   const [level, setLevel] = useState("");
   const [subjectId, setSubjectId] = useState<string>("");
   const [isloading, setIsLoading] = useState<boolean>(false);
+  const [rangking, setRanking] = useState<any>({ ranking: 0, skor: 0 });
 
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(20);
@@ -67,6 +73,22 @@ const Leaderboard = () => {
   }, []);
 
   useEffect(() => {
+    const fetchProfileStudent = async () => {
+      try {
+        setIsLoading(true);
+        const responseProfile = await profile();
+        if (responseProfile) {
+          setProfileStuden(responseProfile);
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfileStudent();
+  }, []);
+
+  useEffect(() => {
     const fetchSubject = async () => {
       try {
         const response = await listSubject();
@@ -85,6 +107,19 @@ const Leaderboard = () => {
     }
   }, [page, limit]);
 
+  useEffect(() => {
+    if (listParticipant && listParticipant.data.length > 0) {
+      listParticipant.data.forEach((participant, index) => {
+        if (participant.id === profileStudent?.id) {
+          setRanking({
+            ranking: index + 1,
+            skor: participant.score,
+          });
+        }
+      });
+    }
+  }, [listParticipant]);
+
   return (
     <div className="min-h-screen bg-base-gray">
       {/* navbar */}
@@ -92,20 +127,20 @@ const Leaderboard = () => {
 
       <div className="grid grid-cols-1 gap-4 px-4">
         {/* static */}
-        {/* <div className="grid grid-cols-3 items-end justify-between gap-4 rounded-lg bg-base-purple p-4">
+        <div className="grid grid-cols-3 items-end justify-between gap-4 rounded-lg bg-base-purple p-4">
           <div className="text-center text-white">
-            <p className="text-xl font-semibold">2</p>
-            <p className="text-xs">subject</p>
+            <p className="text-xl font-semibold">{listParticipant?.totalItems ? listParticipant.totalItems : 0}</p>
+            <p className="text-xs">peserta</p>
           </div>
           <div className="text-center text-white">
-            <p className="text-2xl font-bold text-base-yellow">175</p>
-            <p className="text-xs">dari 200</p>
+            <p className="text-2xl font-bold text-base-yellow">{rangking.ranking}</p>
+            <p className="text-xs">rangking</p>
           </div>
           <div className="text-center text-white">
-            <p className="text-xl font-semibold">50</p>
+            <p className="text-xl font-semibold">{rangking.skor}</p>
             <p className="text-xs">jumlah poin</p>
           </div>
-        </div> */}
+        </div>
 
         {/* table */}
         <div className="mb-6 grid grid-cols-1 gap-5 rounded-lg bg-white p-4">
@@ -194,20 +229,19 @@ const Leaderboard = () => {
             <div className="relative overflow-x-auto sm:rounded-lg">
               {listParticipant && listParticipant.data.length > 0 ? (
                 <div>
-                  <p>{`Jumlah peserta: ${listParticipant.totalItems}`}</p>
                   <table className="mt-2 w-full text-left text-sm text-gray-500 rtl:text-right">
                     <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                       <tr>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="p-1">
                           No
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="p-1">
                           Nama
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="p-1">
                           Nilai
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="p-1">
                           Asal Sekolah
                         </th>
                       </tr>
@@ -215,13 +249,13 @@ const Leaderboard = () => {
                     <tbody>
                       {listParticipant &&
                         listParticipant.data.map((participant, index) => (
-                          <tr key={index} className="border-b odd:bg-white even:bg-gray-50">
-                            <td className="px-6 py-4">{index + 1}</td>
-                            <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                          <tr key={index} className={`border-b ${profileStudent?.id === participant.id ? "bg-base-yellow" : "bg-gray-50"}`}>
+                            <td className="p-1">{index + 1}</td>
+                            <th scope="row" className="whitespace-nowrap p-1 font-medium text-gray-900">
                               {participant.name}
                             </th>
-                            <td className="px-6 py-4">{participant.score}</td>
-                            <td className="px-6 py-4">{participant.school}</td>
+                            <td className="p-1">{participant.score}</td>
+                            <td className="p-1">{participant.school}</td>
                           </tr>
                         ))}
                     </tbody>
