@@ -152,7 +152,12 @@ const Facilitator = () => {
     }
   }, [stage]);
 
-  useEffect(() => {}, [paymentId]);
+  useEffect(() => {
+    if (paymentId) {
+      router.push(`/facilitator/participants/${paymentId}`);
+      setIsModalOpenCreate(false);
+    }
+  }, [paymentId]);
 
   return (
     <ContainerFacilitator>
@@ -224,7 +229,7 @@ const Facilitator = () => {
 
               {/* Konten Scrollable */}
               <div className="flex flex-col gap-5 px-6 pb-6">
-                <ul className="max-w-md list-disc space-y-1 pl-3 text-gray-500">
+                <ul className="w-full list-disc space-y-1 pl-3 text-gray-500">
                   <li>Gunakan template yang sudah disediakan panitia</li>
                   <li>Data pada template itu hanya sebagai contoh pengisian, hapus data tersebut jika ingin menambahkan data</li>
                   <li>Dilarang mengubah nama kolom atau menghapus kolom</li>
