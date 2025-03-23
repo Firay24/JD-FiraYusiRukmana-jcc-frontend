@@ -118,7 +118,7 @@ const Leaderboard = () => {
       const allDataFetched = await fetchAllData();
 
       if (allDataFetched.length > 0) {
-        generatePDF(allDataFetched, `${jenjang}-${level}-${matpel}`, selectedRegional);
+        generatePDF(allDataFetched, `${jenjang}-${level}-${matpel}`, selectedRegional === "all" ? "all" : selectedRegional);
       } else {
         console.warn("No data available to download.");
       }
@@ -140,6 +140,11 @@ const Leaderboard = () => {
 
         const participantResponse = await participant({ page: page, limit, idCompetition: newIdCompetition, search: "" });
         setParticipant(participantResponse);
+        participantResponse.data.map((item: Participant, index) => {
+          if (item.id === profileStudent?.id) {
+            setRanking({ ranking: index + 1, skor: item.score });
+          }
+        });
       }
     } catch (error) {
       console.error("Error during handleSearch:", error);
@@ -223,24 +228,6 @@ const Leaderboard = () => {
       handleFilter();
     }
   }, [page, limit]);
-
-  useEffect(() => {
-    if (listParticipant && listParticipant.data.length > 0) {
-      listParticipant.data.forEach((participant, index) => {
-        if (participant.id === profileStudent?.id) {
-          setRanking({
-            ranking: index + 1,
-            skor: participant.score,
-          });
-        } else {
-          setRanking({
-            ranking: 0,
-            skor: 0,
-          });
-        }
-      });
-    }
-  }, [listParticipant]);
 
   return (
     <div className="min-h-screen bg-base-gray">

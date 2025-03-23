@@ -117,7 +117,7 @@ const Event = () => {
                       <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md">
                         <div className={`mr-4 w-1 ${event.color} rounded-full`} />
                         <div className="flex flex-col space-y-2">
-                          <div className="grid grid-cols-2 items-center">
+                          <div className="grid grid-cols-1 items-center">
                             <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
                             {/* <a href={`/member/event/${event.id}`} className="text-right font-medium text-blue-600 hover:underline dark:text-blue-500">
                               Read more
