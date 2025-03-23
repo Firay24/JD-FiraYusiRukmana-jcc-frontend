@@ -16,6 +16,7 @@ export interface PrfoileResponse {
   poin: number;
   totalActivity: number;
   avarageScore: number;
+  gender: boolean;
 }
 
 export interface LevelInfo {

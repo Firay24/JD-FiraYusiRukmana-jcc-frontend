@@ -12,7 +12,7 @@ const DashboardEventAdmin = () => {
   const { statisticReport } = useStatistics();
 
   const [regional, setRegional] = useState<IRegional[]>([]);
-  const [selectedRegional, setSelectedRegional] = useState<string>("");
+  const [selectedRegional, setSelectedRegional] = useState<string>("all");
   const [report, setReport] = useState<IReportDataResponse>();
   const [allClasses, setAllClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -20,7 +20,10 @@ const DashboardEventAdmin = () => {
   const handleSearchButton = async () => {
     if (selectedRegional) {
       try {
-        if (selectedRegional) {
+        if (selectedRegional === "all") {
+          const response = await statisticReport();
+          setReport(response);
+        } else {
           const response = await statisticReport(selectedRegional);
           setReport(response);
         }
@@ -38,7 +41,6 @@ const DashboardEventAdmin = () => {
         setLoading(true);
         const response = await listRegional();
         setRegional(response);
-        setSelectedRegional(response[1].id);
       } catch (error) {
         console.error("Failed to fetch roles:", error);
       } finally {
@@ -53,7 +55,7 @@ const DashboardEventAdmin = () => {
     const fetchStatistic = async () => {
       try {
         if (regional) {
-          const response = await statisticReport(regional[1].id);
+          const response = await statisticReport();
           setReport(response);
         }
       } catch (error) {
@@ -88,6 +90,7 @@ const DashboardEventAdmin = () => {
         <div className="flex gap-5">
           <div>
             <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+              <option value="all">Semua Regional</option>
               {regional &&
                 regional.length > 0 &&
                 regional.map((regional) => (

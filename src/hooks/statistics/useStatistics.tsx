@@ -6,9 +6,10 @@ export const useStatistics = () => {
   const router = useRouter();
   const { get } = useHttp();
 
-  const statisticReport = async (idRegional: string) => {
+  const statisticReport = async (idRegional?: string) => {
     try {
-      const response: HttpResponse<IReportDataResponse> = await get(`/statistics/${idRegional}`);
+      const url = idRegional ? `/statistics/summary?id=${idRegional}` : `/statistics/summary`;
+      const response: HttpResponse<IReportDataResponse> = await get(url);
       return response.data;
     } catch (error) {
       console.error("Get failed:", error);

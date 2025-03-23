@@ -82,7 +82,7 @@ const HomeMember = () => {
             <div className="rounded-lg bg-white p-4">
               <div className="flex items-center gap-2">
                 <div>
-                  <img className="h-auto w-12 rounded-full" src="/img/profileImg.jpeg" alt="avatar" />
+                  <img className="h-auto w-12 rounded-full" src={studentProfile?.gender ? "/img/jj.png" : "/img/ss.png"} alt="avatar" />
                 </div>
                 <div>
                   <p className="text-lg font-bold">{`Hello ${studentProfile?.nama ? getFirstName(studentProfile?.nama) : ""}`}</p>
