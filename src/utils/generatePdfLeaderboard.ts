@@ -8,7 +8,11 @@ export const generatePDF = async (data: Participant[], namefile: string, region:
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
 
-  doc.text(`Hasil JUNIO Regional ${region} ${namefile.replaceAll("-", " ")}`, 14, 10);
+  if (region === "all") {
+    doc.text(`Hasil JUNIO ${namefile.replaceAll("-", " ")}`, 14, 10);
+  } else {
+    doc.text(`Hasil JUNIO Regional ${region} ${namefile.replaceAll("-", " ")}`, 14, 10);
+  }
 
   // **Hapus duplikasi berdasarkan ID**
   const uniqueData = data.filter((item, index, self) => index === self.findIndex((t) => t.idMember === item.idMember));
@@ -19,7 +23,7 @@ export const generatePDF = async (data: Participant[], namefile: string, region:
   // **Tambahkan tabel ke PDF**
   autoTable(doc, {
     startY: 20,
-    head: [["No", "ID JCC", "Nama", "Asal Sekolah", "Nilai"]],
+    head: [["Rank", "ID JCC", "Nama", "Asal Sekolah", "Nilai"]],
     body: tableData,
   });
 
@@ -48,5 +52,9 @@ export const generatePDF = async (data: Participant[], namefile: string, region:
   }
 
   // **Unduh PDF**
-  doc.save(`pemenang-junio-regional${region}-${namefile}.pdf`);
+  if (region === "all") {
+    doc.save(`pemenang-junio-${namefile}.pdf`);
+  } else {
+    doc.save(`pemenang-junio-regional${region}-${namefile}.pdf`);
+  }
 };
