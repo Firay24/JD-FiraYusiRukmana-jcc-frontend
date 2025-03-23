@@ -84,7 +84,7 @@ const HistoruyActivity = () => {
                 <p className="text-6xl text-gray-200">
                   <PiEmptyBold />
                 </p>
-                <p>Data kosong karena Anda belum mengikuti perlombaan apapaun</p>
+                <p>Data kosong karena Anda belum mengikuti perlombaan apapun</p>
               </div>
             )}
           </div>

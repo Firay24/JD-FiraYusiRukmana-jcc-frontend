@@ -15,7 +15,7 @@ export const eventsDummy = [
     category: "all",
     seasonId: "c2ea4ab1f7114bbb8058",
     title: "JCC Regional 2",
-    description: "Perlombaan akademik TK, SD dan SMP di SMAN 1 Cluring",
+    description: "Perlombaan akademik TK, SD dan SMP di SMPN 1 Cluring",
     date: "20 April 2025",
     time: "07.00 - 15.00 WIB",
     color: "bg-blue-500",
