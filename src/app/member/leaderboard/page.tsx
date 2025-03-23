@@ -118,7 +118,7 @@ const Leaderboard = () => {
       const allDataFetched = await fetchAllData();
 
       if (allDataFetched.length > 0) {
-        generatePDF(allDataFetched, `${jenjang}-${level}-${matpel}`);
+        generatePDF(allDataFetched, `${jenjang}-${level}-${matpel}`, selectedRegional);
       } else {
         console.warn("No data available to download.");
       }
@@ -343,7 +343,7 @@ const Leaderboard = () => {
                 ) : (
                   <FiDownload />
                 )}
-                {isloadingDownload ? "Loading ..." : "Unduh"}
+                {isloadingDownload ? "Loading ..." : "Unduh PDF"}
               </button>
             )}
           </div>

@@ -169,6 +169,7 @@ export interface IListActivity {
 export interface Participant {
   id: string;
   score: number;
+  idMember: string;
   name: string;
   school: string;
   class: string;

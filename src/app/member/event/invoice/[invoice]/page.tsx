@@ -219,7 +219,7 @@ const DetailInvoice = () => {
                 <li>Lakukan pembayaran ke rekening di atas</li>
                 <li>Screenshoot bukti pembayaran</li>
                 <li>Kirim bukti pembayaran melalui tombol "Kirim Bukti Pembayaran"</li>
-                <li>Anda akan diarahkan ke pesan whatsapp, lengkapi nama pengirim dan asal bank</li>
+                <li>Anda akan diarahkan ke pesan whatsapp, kirim template chat yang sudah disiapkan dan jangan lupa kirim foto bukti pembayaran</li>
                 <li>Setelah berhasil mengirim ke admin, lalu klik tombol "Tandai Sudah Membayar"</li>
                 <li>Tunggu admin melakukan konfirmasi apakah sudah membayar</li>
               </ul>

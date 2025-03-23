@@ -18,9 +18,9 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendar } from "react-icons/fa";
 
 const tabs = [
-  { id: "all", label: "All" },
-  { id: "invoice", label: "Invoice" },
-  { id: "my-event", label: "My Event" },
+  { id: "all", label: "Semua" },
+  { id: "invoice", label: "Pembayaran" },
+  { id: "my-event", label: "Lombaku" },
 ];
 
 const Event = () => {
@@ -82,7 +82,7 @@ const Event = () => {
   return (
     <div className="min-h-screen bg-base-gray">
       {/* nav */}
-      <Navbar menu={navbarMenuMember} isScrolled={isScrolled} isLogged title="Events" />
+      <Navbar menu={navbarMenuMember} isScrolled={isScrolled} isLogged title="Event Lomba" />
       <Container>
         <div className="p-4">
           {/* Tabs */}
@@ -119,9 +119,9 @@ const Event = () => {
                         <div className="flex flex-col space-y-2">
                           <div className="grid grid-cols-2 items-center">
                             <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
-                            <a href={`/member/event/${event.id}`} className="text-right font-medium text-blue-600 hover:underline dark:text-blue-500">
+                            {/* <a href={`/member/event/${event.id}`} className="text-right font-medium text-blue-600 hover:underline dark:text-blue-500">
                               Read more
-                            </a>
+                            </a> */}
                           </div>
                           <p className="text-sm text-gray-600">{event.description}</p>
                           <div className="flex items-center justify-between text-sm text-gray-500">
@@ -137,7 +137,7 @@ const Event = () => {
                                   router.push(`/member/event/create?seasonId=${event.seasonId}&region=${event.id}`);
                                 }}
                               >
-                                Daftar
+                                Ayo Daftar
                               </button>
                             ) : (
                               <button disabled className={`rounded-lg bg-gray-300 px-4 py-2 text-sm text-gray-500`}>
@@ -196,7 +196,7 @@ const Event = () => {
                     ) : (
                       <div className="flex flex-col items-center justify-center pt-6 text-gray-400">
                         <PiEmptyBold size={100} />
-                        <p className="mt-2">Tidak ada Event Anda saat ini</p>
+                        <p className="mt-2">Tidak ada Event Lomba Anda saat ini</p>
                       </div>
                     )}
                   </div>
