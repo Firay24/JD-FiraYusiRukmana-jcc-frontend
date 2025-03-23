@@ -14,7 +14,7 @@ export const generatePDF = async (data: Participant[], namefile: string, region:
   const uniqueData = data.filter((item, index, self) => index === self.findIndex((t) => t.idMember === item.idMember));
 
   // **Konversi data ke format array untuk autoTable**
-  const tableData = uniqueData.map((item: Participant, index: number) => [index + 1, item.idMember, item.name, item.school, item.score]);
+  const tableData = uniqueData.map((item: Participant, index: number) => [index + 1, item.idMember.padStart(4, "0"), item.name, item.school, item.score]);
 
   // **Tambahkan tabel ke PDF**
   autoTable(doc, {
