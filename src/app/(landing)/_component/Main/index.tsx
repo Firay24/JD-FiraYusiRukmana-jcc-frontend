@@ -170,7 +170,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
       <Container style={{ marginTop: "180px" }}>
         <div id="timeline" className="flex flex-col items-center justify-center gap-2">
           <h2 className="text-3xl font-semibold text-neutral-800 md:text-5xl">Timeline Kegiatan</h2>
-          <p className="mt-4 w-[90%] text-center text-xl text-black text-neutral-600 md:max-w-[60%]">Setiap peserta hanya boleh mengikuti perlombaan di 1 (satu) regional. Namun, bisa leluasa untuk mendaftar di tanggal dan regional ternyaman manapun sesuai jadwal yang tersedia.</p>
+          <p className="mt-4 w-[90%] text-center text-xl text-black text-neutral-600 md:max-w-[60%]">Setiap peserta hanya boleh mengikuti perlombaan di 1 (Satu) Regional. Peserta dari regional sebelumnya diperbolehkan mengikuti di regional lain dengan syarat matpel yang diambil berbeda</p>
         </div>
         <div className="relative mx-10 mt-10 grid max-w-full grid-cols-1 gap-x-20 md:mx-20 md:grid-cols-3">
           <ol className="relative col-span-1 ml-0 border-s border-gray-200 md:col-span-2 md:ml-4">

@@ -32,7 +32,8 @@ export default function page() {
   const [birthdate, setBirthdate] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [gender, setGender] = useState<string>("laki-laki");
-  const [isLoadingLogged, setIsLoadingLogged] = useState(false);
+  const [isLoadingLogged, setIsLoadingLogged] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,6 +76,12 @@ export default function page() {
     setRoleid(roleid || "");
   }, [roles, roleUser]);
 
+  useEffect(() => {
+    if (name && username && password && repeatpassword && phoneNumber && birthdate) {
+      setIsDisabled(false);
+    }
+  }, [name, username, password, repeatpassword, phoneNumber, birthdate]);
+
   return (
     <>
       {isLoadingLogged ? (
@@ -109,7 +116,7 @@ export default function page() {
                     <label htmlFor="floating_password" className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4">
                       Password<span className="text-red-500">*</span>
                     </label>
-                    <p className="mt-2 text-xs italic text-gray-500">password minmal 8 karakter dan harus mengandung salah satu karakter !@#$%^&*_+\-=</p>
+                    <p className="mt-2 text-xs italic text-gray-500">password minimal 8 karakter dan harus mengandung salah satu karakter !@#$%^&*_+\-=</p>
                   </div>
                   <div className="group relative z-0 mb-5 w-full">
                     <input value={repeatpassword} onChange={(e) => setRepeatPassword(e.target.value)} type="password" name="repeat_password" id="floating_repeat_password" className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " required />
@@ -157,7 +164,7 @@ export default function page() {
                     </select>
                   </div>
                 </div>
-                <button type="submit" className="w-full max-w-md rounded-full border border-gray-200 bg-[#0575E6] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#0369A1] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                <button disabled={isDisabled} type="submit" className={`w-full ${isDisabled ? "cursor-not-allowed bg-gray-400" : "bg-[#0575E6]"} max-w-md rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-white hover:bg-[#0369A1] focus:outline-none focus:ring-4 focus:ring-gray-100`}>
                   Daftar
                 </button>
               </form>

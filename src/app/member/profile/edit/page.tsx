@@ -17,6 +17,7 @@ const page = () => {
   const { list } = useSchollStore();
   const { profile, save } = useStudent();
   const { updateUser, user } = useProfileStore();
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const [formData, setFormData] = useState<ProfileStudent>({
     id: "",
@@ -118,6 +119,14 @@ const page = () => {
   }, []);
 
   useEffect(() => {
+    if (formData.stage && formData.class && formData.stage in classOptions && formData.class in classOptions[formData.stage] && formData.idSchool && formData.address && formData.nik.length === 16) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [formData]);
+
+  useEffect(() => {
     const fetchDataSchool = async (stage: string) => {
       try {
         const responseSchools = await list(stage);
@@ -184,7 +193,7 @@ const page = () => {
                 <select value={formData?.class} onChange={(e) => setFormData({ ...formData, class: e.target.value })} id="classes" className="w-full border-none bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
                   {classOptions[formData.stage as "TK" | "SD" | "SMP"]?.map((option, index) => (
                     <option key={index} value={option}>
-                      {formData.stage === "SMP" ? `Kelas ${classDisplayMapping[option as keyof typeof classDisplayMapping]}` : `Kelas ${option}`}
+                      {formData.stage === "SMP" ? `Kelas ${classDisplayMapping.SMP[option as "1" | "2" | "3"]}` : formData.stage === "TK" ? "Kelas TK" : `Kelas ${option}`}
                     </option>
                   ))}
                 </select>
@@ -263,7 +272,7 @@ const page = () => {
                   Nama Ibu <span className="text-red-500">*</span>
                 </label>
               </div> */}
-              <button type="submit" className="mt-2 w-full rounded-xl bg-[#5570F1] p-3 text-white">
+              <button type="submit" disabled={isDisabled} className={`mt-2 w-full rounded-xl bg-[#5570F1] p-3 text-white ${isDisabled ? "opacity-50" : ""}`}>
                 {isLoadingSubmit ? "Loading" : "Simpan"}
               </button>
             </form>

@@ -147,25 +147,28 @@ const EventCreateContent = () => {
                     </label>
                     <div className="grid grid-cols-1 gap-1">
                       {subjects &&
-                        subjects.map((subject, index) => {
-                          const isChecked = selectedSubjects.some((s) => s.id === subject.id);
-                          return (
-                            <div key={index} className="mb-4 flex items-center">
-                              <input id={`checkbox-${subject.id}`} type="checkbox" checked={isChecked} onChange={() => handleSelectSubject(subject)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-                              <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-gray-900">
-                                {subject.name === "ipa" || subject.name === "ips"
-                                  ? subject.name.toUpperCase()
-                                  : subject.name
-                                      .split(" ")
-                                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                                      .join(" ")}
-                              </label>
-                            </div>
-                          );
-                        })}
+                        subjects
+                          .filter((subject) => !(profileStudent?.stage === "TK" && subject.name.toLowerCase() === "ips"))
+                          .map((subject, index) => {
+                            const isChecked = selectedSubjects.some((s) => s.id === subject.id);
+                            return (
+                              <div key={index} className="mb-4 flex items-center">
+                                <input id={`checkbox-${subject.id}`} type="checkbox" checked={isChecked} onChange={() => handleSelectSubject(subject)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+                                <label htmlFor={`checkbox-${subject.id}`} className="ms-2 text-sm font-medium text-gray-900">
+                                  {subject.name === "ipa" || subject.name === "ips"
+                                    ? subject.name.toUpperCase()
+                                    : subject.name
+                                        .split(" ")
+                                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                        .join(" ")}
+                                </label>
+                              </div>
+                            );
+                          })}
                     </div>
+
                     <button type="submit" className="mt-4 w-full rounded-xl bg-[#5570F1] p-3 text-white">
-                      {isLoadingSubmit ? "Loading..." : "Simpan"}
+                      {isLoadingSubmit ? "Loading..." : "Simpan dan Lanjut ke Pembayaran"}
                     </button>
                   </div>
                 </form>

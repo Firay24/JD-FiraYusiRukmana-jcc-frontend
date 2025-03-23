@@ -11,6 +11,7 @@ import Container from "@/components/base/Container";
 import { useActivity } from "@/hooks/activity/useActivity";
 import { IListActivityStudent } from "@/hooks/activity/types";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
+import { PiEmptyBold } from "react-icons/pi";
 
 const HistoruyActivity = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -75,7 +76,18 @@ const HistoruyActivity = () => {
             <SkeletonLoader rows={5} />
           </div>
         ) : (
-          <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">{listActivities && listActivities.length > 0 ? <Table listActivities={listActivities} /> : <div>Data Kosong</div>}</div>
+          <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">
+            {listActivities && listActivities.length > 0 ? (
+              <Table listActivities={listActivities} />
+            ) : (
+              <div className="flex flex-col items-center gap-4 p-4 text-center">
+                <p className="text-6xl text-gray-200">
+                  <PiEmptyBold />
+                </p>
+                <p>Data kosong karena Anda belum mengikuti perlombaan apapaun</p>
+              </div>
+            )}
+          </div>
         )}
         {/* Achievement */}
         {/* <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">
