@@ -119,7 +119,7 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    if (formData.stage && formData.class && formData.stage in classOptions && formData.class in classOptions[formData.stage] && formData.idSchool && formData.address && formData.nik.length === 16) {
+    if (formData.stage && formData.class && formData.stage in classOptions && classOptions[formData.stage].includes(formData.class) && formData.idSchool && formData.address && formData.nik.length === 16) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
