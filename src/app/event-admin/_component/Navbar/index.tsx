@@ -56,7 +56,7 @@ const NavbarEventAdmin = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) =
       )}
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-full max-w-2xl p-4">
             <div className="relative rounded-lg bg-white shadow-lg">
               <div className="flex items-center justify-between rounded-t border-b border-gray-200 p-4 md:p-5">
