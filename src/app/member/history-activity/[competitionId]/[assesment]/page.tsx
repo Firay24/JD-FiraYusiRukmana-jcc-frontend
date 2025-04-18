@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { useEvent } from "@/hooks/event/useEvent";
 import { TiWarning } from "react-icons/ti";
 
 const AssesmentResult = () => {
@@ -53,7 +52,7 @@ const AssesmentResult = () => {
               }}
             >
               {pdfExists ? (
-                <Worker workerUrl={`https://unpkg.com/pdfjs-dist@5.1.91/legacy/build/pdf.worker.min.js`}>
+                <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js`}>
                   <Viewer fileUrl={pdfUrl} defaultScale={1.2} />
                   <div className="absolute left-0 top-0 h-24 w-full bg-white" />
                 </Worker>
