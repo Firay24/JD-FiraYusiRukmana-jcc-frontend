@@ -1,6 +1,6 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
-import { IGetStudentInfo, IParticipantsList, IStudentInfo, PrfoileResponse, TPayloadSave } from "./type";
+import { IGetStudentInfo, IParticipantsList, IStudentInfo, IStudentParticipants, PrfoileResponse, TPayloadSave } from "./type";
 
 export const useStudent = () => {
   const router = useRouter();
@@ -58,5 +58,18 @@ export const useStudent = () => {
     }
   };
 
-  return { profileDashboard, save, profile, listParticipantByKolektif };
+  const listParcipants = async ({ seasonId, regionId }: { seasonId: string; regionId: string }) => {
+    try {
+      const response: HttpResponse<IStudentParticipants[]> = await get(`/student/list/all?seasonId=${seasonId}&regionId=${regionId}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { profileDashboard, save, profile, listParticipantByKolektif, listParcipants };
 };

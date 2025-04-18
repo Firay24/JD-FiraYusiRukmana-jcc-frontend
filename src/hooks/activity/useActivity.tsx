@@ -91,7 +91,7 @@ export const useActivity = () => {
     }
   };
 
-  const listAll = async (params: { page?: number; limit?: number; seasonId?: string; regionId?: string; stage?: string; level?: string; subjectId?: string; search?: string }) => {
+  const listAll = async (params: { page?: number; limit?: number; seasonId?: string; regionId?: string; stage?: string; level?: string; subjectId?: string; search?: string; date?: number }) => {
     try {
       // Filter hanya parameter yang memiliki nilai
       const queryParams = new URLSearchParams(
