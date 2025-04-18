@@ -10,6 +10,15 @@ export type TPayloadSave = {
   idUser: string;
 };
 
+export interface IStudentParticipants {
+  idMember: string;
+  name: string;
+  school: string;
+  class: string;
+  stage: string;
+  subject: string[];
+}
+
 export interface PrfoileResponse {
   nama: string;
   username: string;

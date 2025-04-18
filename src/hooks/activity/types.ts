@@ -14,6 +14,8 @@ export interface IParticipant {
     id: string;
     status: StatusPayment;
     invoice: string;
+    amount: number;
+    date: number;
   };
   competition: {
     id: string;
