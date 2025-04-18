@@ -53,7 +53,7 @@ const AssesmentResult = () => {
               }}
             >
               {pdfExists ? (
-                <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+                <Worker workerUrl={`https://unpkg.com/pdfjs-dist@5.1.91/build/pdf.worker.min.js`}>
                   <Viewer fileUrl={pdfUrl} defaultScale={1.2} />
                   <div className="absolute left-0 top-0 h-24 w-full bg-white" />
                 </Worker>
