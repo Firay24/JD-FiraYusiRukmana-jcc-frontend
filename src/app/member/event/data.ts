@@ -19,7 +19,7 @@ export const eventsDummy = [
     date: "20 April 2025",
     time: "07.00 - 15.00 WIB",
     color: "bg-blue-500",
-    status: true,
+    status: false,
   },
   {
     id: 3,
