@@ -16,6 +16,10 @@ const menuSidebar = [
     path: "/event-admin/participants",
   },
   {
+    label: "Kelas",
+    path: "/event-admin/classes",
+  },
+  {
     label: "Sekolah",
     path: "/event-admin/schools",
   },

@@ -1,6 +1,7 @@
 import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
 import { IGetStudentInfo, IParticipantsList, IStudentInfo, IStudentParticipants, PrfoileResponse, TPayloadSave } from "./type";
+import { IParticipantsClasses } from "@/app/event-admin/classes/exportClassToExcel";
 
 export const useStudent = () => {
   const router = useRouter();
@@ -71,5 +72,18 @@ export const useStudent = () => {
     }
   };
 
-  return { profileDashboard, save, profile, listParticipantByKolektif, listParcipants };
+  const listParcipantsClass = async ({ seasonId, regionId }: { seasonId: string; regionId: string }) => {
+    try {
+      const response: HttpResponse<IParticipantsClasses[]> = await get(`/student/list/classes?seasonId=${seasonId}&regionId=${regionId}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { profileDashboard, save, profile, listParticipantByKolektif, listParcipants, listParcipantsClass };
 };

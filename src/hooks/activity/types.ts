@@ -20,6 +20,7 @@ export interface IParticipant {
   competition: {
     id: string;
     name: string;
+    room: string;
     subject: {
       id: string;
       name: string;
