@@ -37,7 +37,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     address: "Cluring",
     date: 1745122410,
     status: true,
-    regis: true,
+    regis: false,
     location: "SMPN 1 Cluring",
     path: "/posterRegional2.png",
     juknis: "/juknis-season1.pdf",
