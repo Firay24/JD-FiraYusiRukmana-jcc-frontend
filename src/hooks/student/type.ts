@@ -10,13 +10,18 @@ export type TPayloadSave = {
   idUser: string;
 };
 
+interface SubjectArray {
+  name: string;
+  room: string;
+}
+
 export interface IStudentParticipants {
   idMember: string;
   name: string;
   school: string;
   class: string;
   stage: string;
-  subject: string[];
+  subject: SubjectArray[];
 }
 
 export interface PrfoileResponse {

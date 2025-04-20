@@ -9,10 +9,14 @@ export const exportToExcel = (data: IStudentParticipants[], fileName = "peserta-
     Nama: toTitleCase(item.name),
     Sekolah: item.school,
     Kelas: `${item.stage} Kelas ${item.class}`,
-    Matpel1: item.subject[0] || "",
-    Matpel2: item.subject[1] || "",
-    Matpel3: item.subject[2] || "",
-    Matpel4: item.subject[3] || "",
+    Matpel1: item.subject[0].name || "",
+    RoomMatpel1: item.subject[0].room || "",
+    Matpel2: item.subject[1] ? item.subject[1].name : "",
+    RoomMatpel2: item.subject[1] ? item.subject[1].room : "",
+    Matpel3: item.subject[2] ? item.subject[2].name : "",
+    RoomMatpel3: item.subject[2] ? item.subject[2].room : "",
+    Matpel4: item.subject[3] ? item.subject[3].name : "",
+    RoomMatpel4: item.subject[3] ? item.subject[3].room : "",
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(sheetData);

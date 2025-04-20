@@ -2,6 +2,20 @@ import { HttpResponse, useHttp } from "../http/useHttp";
 import { useRouter } from "next/navigation";
 import { IReportDataResponse } from "./types";
 
+interface IRank {
+  name: string;
+  school: string;
+  score: number;
+}
+
+export interface ICompetitionRank {
+  competitionName: string;
+  subject: string;
+  stage: string;
+  level: number;
+  rank: IRank[];
+}
+
 export const useStatistics = () => {
   const router = useRouter();
   const { get } = useHttp();
@@ -17,5 +31,18 @@ export const useStatistics = () => {
     }
   };
 
-  return { statisticReport };
+  const statisticRank = async ({ seasonId, regionId }: { seasonId: string; regionId?: string }) => {
+    try {
+      const response: HttpResponse<ICompetitionRank[]> = await get(`/statistics/rank?seasonId=${seasonId}&regionId=${regionId}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { statisticReport, statisticRank };
 };

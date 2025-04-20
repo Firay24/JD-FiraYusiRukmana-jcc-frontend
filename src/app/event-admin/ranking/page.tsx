@@ -1,0 +1,171 @@
+"use client";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
+import { useRegional } from "@/hooks/regional/useRegional";
+import { IReportDataResponse } from "@/hooks/statistics/types";
+import { ICompetitionRank, useStatistics } from "@/hooks/statistics/useStatistics";
+import { IRegional } from "@/types/global";
+import React, { useEffect, useState } from "react";
+import { FaUserGroup } from "react-icons/fa6";
+import { IoSearch } from "react-icons/io5";
+
+const DashboardEventAdmin = () => {
+  const { listRegional } = useRegional();
+  const { statisticRank } = useStatistics();
+
+  const [regional, setRegional] = useState<IRegional[]>([]);
+  const [selectedRegional, setSelectedRegional] = useState<string>("bbb1d7b9502246b2ba2b");
+  const [report, setReport] = useState<ICompetitionRank[]>();
+  const [allClasses, setAllClasses] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const handleSearchButton = async () => {
+    if (selectedRegional) {
+      try {
+        if (selectedRegional === "all") {
+          const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058" });
+          setReport(response);
+        } else {
+          const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+          setReport(response);
+        }
+      } catch (error) {
+        console.error("Failed to fetch roles:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchRegional = async () => {
+      try {
+        setLoading(true);
+        const response = await listRegional();
+        setRegional(response);
+      } catch (error) {
+        console.error("Failed to fetch roles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRegional();
+  }, []);
+
+  useEffect(() => {
+    const fetchStatistic = async () => {
+      try {
+        if (regional) {
+          const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+          setReport(response);
+        }
+      } catch (error) {
+        console.error("Failed to fetch roles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (selectedRegional) {
+      fetchStatistic();
+    }
+  }, [regional]);
+
+  // useEffect(() => {
+  //   if (report) {
+  //     const allClasses = Object.entries(report).flatMap(([stage, levels]) =>
+  //       Object.keys(levels).map((level) => ({
+  //         stage,
+  //         level,
+  //         subjects: levels[level],
+  //       })),
+  //     );
+  //     setAllClasses(allClasses);
+  //   }
+  // }, [report]);
+
+  return (
+    <div className="mb-16">
+      <h1 className="text-2xl font-semibold">Rangking</h1>
+      <div className="mt-5 grid grid-cols-1 gap-3">
+        <div className="flex gap-5">
+          <div>
+            <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+              <option value="all">Semua Regional</option>
+              {regional &&
+                regional.length > 0 &&
+                regional.map((regional) => (
+                  <option key={regional.id} value={regional.id}>
+                    {regional.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div>
+            <button onClick={handleSearchButton} type="button" className="me-2 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <IoSearch />
+              Cari
+            </button>
+          </div>
+        </div>
+
+        {/* table */}
+        <div className="mt-5">
+          <div className="relative overflow-x-auto">
+            {loading ? (
+              <div className="grid grid-cols-1 gap-3">
+                <SkeletonLoader rows={2} />
+                <SkeletonLoader rows={2} />
+                <SkeletonLoader rows={2} />
+                <SkeletonLoader rows={2} />
+              </div>
+            ) : report && report.length > 0 ? (
+              report.map((item, index) => (
+                <div key={index} className="mb-6">
+                  <p className="pb-2 font-semibold text-gray-700">{item.competitionName}</p>
+
+                  {item.rank && item.rank.length > 0 ? (
+                    <table className="w-full text-left text-sm text-gray-500 rtl:text-right">
+                      <thead className="text-xs uppercase text-gray-700">
+                        <tr>
+                          <th scope="col" className="bg-gray-100 px-6 py-3">
+                            No
+                          </th>
+                          <th scope="col" className="bg-gray-100 px-6 py-3">
+                            Nama
+                          </th>
+                          <th scope="col" className="bg-gray-100 px-6 py-3">
+                            Sekolah
+                          </th>
+                          <th scope="col" className="bg-gray-100 px-6 py-3">
+                            Nilai
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {item.rank.map((rankItem, rankIndex) => (
+                          <tr key={rankIndex} className="border-b border-gray-200">
+                            <td className="px-6 py-4">{rankIndex + 1}</td>
+                            <td className="px-6 py-4">{rankItem.name}</td>
+                            <td className="px-6 py-4">{rankItem.school}</td>
+                            <td className="px-6 py-4">{rankItem.score}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p className="italic text-gray-500">Tidak ada peserta</p>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="italic text-gray-500">Tidak ada data kompetisi</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardEventAdmin;

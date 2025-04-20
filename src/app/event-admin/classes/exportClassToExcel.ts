@@ -2,6 +2,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toTitleCase } from "@/utils/toTitleCase";
 import { parse } from "path";
+import { shortenName } from "@/utils/shortName";
 
 export interface IParticipantsClasses {
   idMember: string;
@@ -15,9 +16,12 @@ export interface IParticipantsClasses {
 
 export const exportClassToExcel = (data: IParticipantsClasses[], fileName = "peserta-jcc-class.xlsx") => {
   const sheetData = data.map((item, index) => ({
+    Sertif: `${index + 1 + 345}/JCC/PRT/IV/2025`,
     ID: `J${item.idMember.padStart(4, "0")}`,
     Nama: toTitleCase(item.name),
-    Kelas: `${item.stage} ${item.stage === "SMP" ? Number(item.class) + 6 : item.class || "-"}`,
+    // Kelas: `${item.stage} ${item.stage === "SMP" ? Number(item.class) + 6 : item.class || "-"}`,
+    Kelas: item.stage === "SMP" ? Number(item.class) + 6 : item.class,
+    Jenjang: item.stage,
     Sekolah: item.school,
     Ruang: item.room,
     Matpel: item.mapel.toUpperCase(),
