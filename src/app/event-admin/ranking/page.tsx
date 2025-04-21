@@ -5,8 +5,10 @@ import { IReportDataResponse } from "@/hooks/statistics/types";
 import { ICompetitionRank, useStatistics } from "@/hooks/statistics/useStatistics";
 import { IRegional } from "@/types/global";
 import React, { useEffect, useState } from "react";
+import { FaRegFileExcel } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
+import { exportRankToExcel } from "./exportDataRankToExcel";
 
 const DashboardEventAdmin = () => {
   const { listRegional } = useRegional();
@@ -17,6 +19,7 @@ const DashboardEventAdmin = () => {
   const [report, setReport] = useState<ICompetitionRank[]>();
   const [allClasses, setAllClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingExport, setLoadingExport] = useState<boolean>(false);
 
   const handleSearchButton = async () => {
     if (selectedRegional) {
@@ -33,6 +36,23 @@ const DashboardEventAdmin = () => {
       } finally {
         setLoading(false);
       }
+    }
+  };
+
+  const handleExport = async () => {
+    setLoadingExport(true);
+
+    try {
+      if (report) {
+        exportRankToExcel(report);
+      } else {
+        const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+        exportRankToExcel(response);
+      }
+    } catch (error) {
+      console.error("Failed to export data:", error);
+    } finally {
+      setLoadingExport(false);
     }
   };
 
@@ -88,23 +108,31 @@ const DashboardEventAdmin = () => {
     <div className="mb-16">
       <h1 className="text-2xl font-semibold">Rangking</h1>
       <div className="mt-5 grid grid-cols-1 gap-3">
-        <div className="flex gap-5">
-          <div>
-            <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
-              <option value="all">Semua Regional</option>
-              {regional &&
-                regional.length > 0 &&
-                regional.map((regional) => (
-                  <option key={regional.id} value={regional.id}>
-                    {regional.name}
-                  </option>
-                ))}
-            </select>
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="flex gap-5">
+            <div>
+              <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+                <option value="all">Semua Regional</option>
+                {regional &&
+                  regional.length > 0 &&
+                  regional.map((regional) => (
+                    <option key={regional.id} value={regional.id}>
+                      {regional.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div>
+              <button onClick={handleSearchButton} type="button" className="me-2 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                <IoSearch />
+                Cari
+              </button>
+            </div>
           </div>
-          <div>
-            <button onClick={handleSearchButton} type="button" className="me-2 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
-              <IoSearch />
-              Cari
+          <div className="flex justify-end">
+            <button onClick={handleExport} type="button" className="me-2 inline-flex w-20 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <FaRegFileExcel />
+              <p>{loadingExport ? "Loading" : "Export Data"}</p>
             </button>
           </div>
         </div>
