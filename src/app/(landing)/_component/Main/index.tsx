@@ -174,7 +174,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
         </div>
         <div className="relative mx-10 mt-10 grid max-w-full grid-cols-1 gap-x-20 md:mx-20 md:grid-cols-3">
           <ol className="relative col-span-1 ml-0 border-s border-gray-200 md:col-span-2 md:ml-4">
-            {regionalTimeline.slice(0, 5).map((item, index) => (
+            {regionalTimeline.slice(0, 4).map((item, index) => (
               <li key={index} className="mb-10 ms-6">
                 <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-base-navy ring-8 ring-white">
                   <MdOutlineMyLocation />
@@ -239,7 +239,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
             ))}
           </ol>
           <ol className="relative border-s border-gray-200">
-            {regionalTimeline.slice(5, 11).map((item, index) => (
+            {regionalTimeline.slice(4, 8).map((item, index) => (
               <li key={index} className="mb-10 ms-6">
                 <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-base-navy ring-8 ring-white">
                   <MdOutlineMyLocation />
