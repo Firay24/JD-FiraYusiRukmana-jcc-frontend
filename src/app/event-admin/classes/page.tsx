@@ -111,7 +111,15 @@ const Participants = () => {
 
     try {
       const response = await listParcipantsClass({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
-      exportClassToExcel(response);
+      if (response) {
+        const roomOrder = ["J1", "J2", "J3", "J4"];
+
+        const sortedParticipants = response.sort((a, b) => {
+          return roomOrder.indexOf(a.room) - roomOrder.indexOf(b.room);
+        });
+
+        exportClassToExcel(sortedParticipants);
+      }
     } catch (error) {
       console.error("Failed to export data:", error);
     } finally {
@@ -125,7 +133,7 @@ const Participants = () => {
         setLoading(true);
         const response = await listRegional();
         setRegional(response);
-        setSelectedRegional(response[1].id);
+        setSelectedRegional(response[2].id);
       } catch (error) {
         console.error("Failed to fetch roles:", error);
       } finally {

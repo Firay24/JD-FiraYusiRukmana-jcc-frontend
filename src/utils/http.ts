@@ -1,6 +1,6 @@
 export type Config = RequestInit & { query?: Record<string, string | number> };
 
-const baseHttp = async <T = any>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: any, config?: Config): Promise<T> => {
+const baseHttp = async <T = any>(url: string, method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH", body?: any, config?: Config): Promise<T> => {
   try {
     let requestUrl = url;
 
@@ -43,6 +43,8 @@ export const http = {
   post: async <T = any>(url: string, body?: any, config?: Config): Promise<T> => baseHttp(url, "POST", body, config),
 
   put: async <T = any>(url: string, body?: any, config?: Config): Promise<T> => baseHttp(url, "PUT", body, config),
+
+  patch: async <T = any>(url: string, body?: any, config?: Config): Promise<T> => baseHttp(url, "PATCH", body, config),
 
   delete: async <T = any>(url: string, config?: Config): Promise<T> => baseHttp(url, "DELETE", undefined, config),
 };

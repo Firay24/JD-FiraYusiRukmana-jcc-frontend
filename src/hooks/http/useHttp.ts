@@ -68,6 +68,13 @@ export const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedire
     [withLoading],
   );
 
+  const patch = useCallback(
+    <T>(url: string, body?: any, config?: Config) => {
+      return withLoading(() => http.patch<HttpResponse<T>>(apiUrl + url, body, config));
+    },
+    [withLoading],
+  );
+
   const del = useCallback(
     <T>(url: string, config?: Config) => {
       return withLoading(() => http.delete<HttpResponse<T>>(apiUrl + url, config));
@@ -75,5 +82,5 @@ export const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedire
     [withLoading],
   );
 
-  return { get, post, put, delete: del };
+  return { get, post, put, delete: del, patch };
 };

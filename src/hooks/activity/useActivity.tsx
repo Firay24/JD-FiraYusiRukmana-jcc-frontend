@@ -10,13 +10,31 @@ type TCreateAcitivityResponse = {
   id: string;
 };
 
+type TAttedance = {
+  id: string;
+  attedance: boolean;
+};
+
 export const useActivity = () => {
   const router = useRouter();
-  const { post, get } = useHttp();
+  const { post, get, patch } = useHttp();
 
   const save = async (data: TSaveActivity) => {
     try {
       const response: HttpResponse<TSaveActivityResponse> = await post("/activity/save", data);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  const updateAttedance = async (data: TAttedance) => {
+    try {
+      const response: HttpResponse<TAttedance> = await patch("/activity/attendance", data);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {
@@ -136,5 +154,5 @@ export const useActivity = () => {
     }
   };
 
-  return { save, detail, listbyidstudent, create, participant, listAll, uploadBatch };
+  return { save, detail, listbyidstudent, create, participant, listAll, uploadBatch, updateAttedance };
 };

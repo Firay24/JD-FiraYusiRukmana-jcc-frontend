@@ -3,9 +3,11 @@ import { useRouter } from "next/navigation";
 import { IReportDataResponse } from "./types";
 
 interface IRank {
+  id: string;
   name: string;
   school: string;
   score: number;
+  attedance: boolean;
 }
 
 export interface ICompetitionRank {

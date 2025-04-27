@@ -9,13 +9,15 @@ import { FaRegFileExcel } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { exportRankToExcel } from "./exportDataRankToExcel";
+import { useActivity } from "@/hooks/activity/useActivity";
 
 const DashboardEventAdmin = () => {
   const { listRegional } = useRegional();
   const { statisticRank } = useStatistics();
+  const { updateAttedance } = useActivity();
 
   const [regional, setRegional] = useState<IRegional[]>([]);
-  const [selectedRegional, setSelectedRegional] = useState<string>("bbb1d7b9502246b2ba2b");
+  const [selectedRegional, setSelectedRegional] = useState<string>("9a0fd596d81546d6b1e7");
   const [report, setReport] = useState<ICompetitionRank[]>();
   const [allClasses, setAllClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -108,7 +110,7 @@ const DashboardEventAdmin = () => {
     <div className="mb-16">
       <h1 className="text-2xl font-semibold">Rangking</h1>
       <div className="mt-5 grid grid-cols-1 gap-3">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-y-2 md:grid-cols-2">
           <div className="flex gap-5">
             <div>
               <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
@@ -130,9 +132,9 @@ const DashboardEventAdmin = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            <button onClick={handleExport} type="button" className="me-2 inline-flex w-20 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+            <button onClick={handleExport} type="button" className="me-2 inline-flex w-full min-w-[200px] items-center justify-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:w-20">
               <FaRegFileExcel />
-              <p>{loadingExport ? "Loading" : "Export Data"}</p>
+              <p>{loadingExport ? "Loading ..." : "Export Data"}</p>
             </button>
           </div>
         </div>
@@ -160,6 +162,9 @@ const DashboardEventAdmin = () => {
                             No
                           </th>
                           <th scope="col" className="bg-gray-100 px-6 py-3">
+                            Sertif
+                          </th>
+                          <th scope="col" className="bg-gray-100 px-6 py-3">
                             Nama
                           </th>
                           <th scope="col" className="bg-gray-100 px-6 py-3">
@@ -174,6 +179,54 @@ const DashboardEventAdmin = () => {
                         {item.rank.map((rankItem, rankIndex) => (
                           <tr key={rankIndex} className="border-b border-gray-200">
                             <td className="px-6 py-4">{rankIndex + 1}</td>
+                            <td className="px-6 py-4">
+                              <input
+                                type="checkbox"
+                                checked={rankItem.attedance || false}
+                                onChange={async (e) => {
+                                  const newChecked = e.target.checked;
+
+                                  // Langsung update data lokal (state `report`)
+                                  setReport((prevReport) => {
+                                    if (!prevReport) return prevReport;
+                                    return prevReport.map((competition) => ({
+                                      ...competition,
+                                      rank: competition.rank.map((r) => {
+                                        if (r.id === rankItem.id) {
+                                          return { ...r, attedance: newChecked };
+                                        }
+                                        return r;
+                                      }),
+                                    }));
+                                  });
+
+                                  // Baru kirim request ke server
+                                  try {
+                                    await updateAttedance({
+                                      id: rankItem.id,
+                                      attedance: newChecked,
+                                    });
+                                    console.log("Attendance updated");
+                                  } catch (error) {
+                                    console.error("Failed to update attendance", error);
+                                    // OPTIONAL: Kalau gagal, rollback data
+                                    setReport((prevReport) => {
+                                      if (!prevReport) return prevReport;
+                                      return prevReport.map((competition) => ({
+                                        ...competition,
+                                        rank: competition.rank.map((r) => {
+                                          if (r.id === rankItem.id) {
+                                            return { ...r, attedance: !newChecked };
+                                          }
+                                          return r;
+                                        }),
+                                      }));
+                                    });
+                                  }
+                                }}
+                                className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                              />
+                            </td>
                             <td className="px-6 py-4">{rankItem.name}</td>
                             <td className="px-6 py-4">{rankItem.school}</td>
                             <td className="px-6 py-4">{rankItem.score}</td>
