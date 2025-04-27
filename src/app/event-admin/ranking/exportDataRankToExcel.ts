@@ -14,6 +14,7 @@ export const exportRankToExcel = (data: ICompetitionRank[], fileName = "rank-jcc
         Nama: toTitleCase(item.name),
         Sekolah: item.school,
         Jenjang: jenjang + `-JUARA ${index + 1}`,
+        Keterangan: item.attedance ? "Sudah" : "Belum",
       });
     });
   });
