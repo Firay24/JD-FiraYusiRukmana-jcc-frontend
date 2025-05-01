@@ -133,7 +133,11 @@ const Participants = () => {
         setLoading(true);
         const response = await listRegional();
         setRegional(response);
-        setSelectedRegional(response[2].id);
+
+        const regionCurrent = response.find((item) => item.region === 4);
+        if (regionCurrent) {
+          setSelectedRegional(regionCurrent.id);
+        }
       } catch (error) {
         console.error("Failed to fetch roles:", error);
       } finally {

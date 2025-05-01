@@ -41,6 +41,11 @@ const DashboardEventAdmin = () => {
         setLoading(true);
         const response = await listRegional();
         setRegional(response);
+
+        const regionCurrent = response.find((item) => item.region === 4);
+        if (regionCurrent) {
+          setSelectedRegional(regionCurrent.id);
+        }
       } catch (error) {
         console.error("Failed to fetch roles:", error);
       } finally {
@@ -55,7 +60,7 @@ const DashboardEventAdmin = () => {
     const fetchStatistic = async () => {
       try {
         if (regional) {
-          const response = await statisticReport();
+          const response = await statisticReport(selectedRegional);
           setReport(response);
         }
       } catch (error) {

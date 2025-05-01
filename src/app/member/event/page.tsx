@@ -113,15 +113,13 @@ const Event = () => {
                 <div className="mt-4 grid grid-cols-1 gap-x-2 gap-y-4 md:grid-cols-2">
                   {eventsDummy
                     .filter((event) => event.category === activeTab || activeTab === "all")
+                    .sort((a, b) => b.id - a.id)
                     .map((event) => (
                       <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md">
                         <div className={`mr-4 w-1 ${event.color} rounded-full`} />
                         <div className="flex w-full flex-col space-y-2">
                           <div className="grid grid-cols-1 items-center">
                             <h3 className="text-lg font-semibold text-gray-800">{event.title}</h3>
-                            {/* <a href={`/member/event/${event.id}`} className="text-right font-medium text-blue-600 hover:underline dark:text-blue-500">
-                              Read more
-                            </a> */}
                           </div>
                           <p className="text-sm text-gray-600">{event.description}</p>
                           <div className="flex items-center justify-between text-sm text-gray-500">
@@ -140,7 +138,7 @@ const Event = () => {
                                 Ayo Daftar
                               </button>
                             ) : (
-                              <button disabled className={`rounded-lg bg-gray-300 px-4 py-2 text-sm text-gray-500`}>
+                              <button disabled className="rounded-lg bg-gray-300 px-4 py-2 text-sm text-gray-500">
                                 Ditutup
                               </button>
                             )}

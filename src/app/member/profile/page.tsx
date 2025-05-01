@@ -104,7 +104,7 @@ const Profile = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div>
-                    <img className="h-10 w-10 rounded-full object-cover object-center" src="/img/profileImg.jpeg" alt="avatar" />
+                    <img className="h-auto w-12 rounded-full" src={dataProfile?.gender ? "/img/jj.png" : "/img/ss.png"} alt="avatar" />
                   </div>
                   <div>
                     <p className="text-lg font-bold text-white">{`Halo, ${dataProfile?.name?.split(" ")[0] || ""}`}</p>
