@@ -2,10 +2,12 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { IStudentParticipants } from "@/hooks/student/type";
 import { toTitleCase } from "./toTitleCase";
+import { shortenName } from "./shortName";
 
 export const exportToExcel = (data: IStudentParticipants[], fileName = "peserta-jcc.xlsx") => {
   const sheetData = data.map((item, index) => ({
     ID: `J${item.idMember.padStart(4, "0")}`,
+    // Nama: toTitleCase(shortenName(item.name)),
     Nama: toTitleCase(item.name),
     Sekolah: item.school,
     Kelas: `${item.stage} Kelas ${item.class}`,
