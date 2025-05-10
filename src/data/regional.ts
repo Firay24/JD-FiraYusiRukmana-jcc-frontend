@@ -11,7 +11,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     location: "SMAN Pesanggaran",
     path: "/posterRegional1.png",
     juknis: "/juknis-regional1.pdf",
-    description: "Pendaftaran dibuka 4 - 18 Februari 2025, segera daftarkan sekarang",
+    description: "Kegiatan telah dilaksanakan",
     kisikisi: [
       {
         label: "Matematika",
@@ -41,7 +41,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     location: "SMPN 1 Cluring",
     path: "/posterRegional2.png",
     juknis: "/juknis-season1.pdf",
-    description: "Pendaftaran dibuka 24 Maret - 13 April 2025, segera daftarkan sekarang",
+    description: "Kegiatan telah dilaksanakan",
     kisikisi: [
       {
         label: "Matematika",
@@ -67,11 +67,11 @@ export const regionalTimeline: IRegionalTimeline[] = [
     address: "Srono",
     date: 1745727210,
     status: true,
-    regis: true,
+    regis: false,
     location: "MAN 3 Banyuwangi",
     path: "/posterRegional3.png",
     juknis: "/juknis-season1.pdf",
-    description: "Pendaftaran dibuka 24 Maret - 20 April 2025, segera daftarkan sekarang",
+    description: "Kegiatan telah dilaksanakan",
     kisikisi: [
       {
         label: "Matematika",
@@ -127,11 +127,11 @@ export const regionalTimeline: IRegionalTimeline[] = [
     address: "Purwoharjo",
     date: 1746936810,
     status: true,
-    regis: true,
+    regis: false,
     location: "Purwoharjo",
     path: "/posterRegional5.png",
     juknis: "/juknis-season1.pdf",
-    description: "Pendaftaran dibuka 17 April - 9 Mei 2025, segera daftarkan sekarang",
+    description: "Pendaftaran ditutup",
     kisikisi: [
       {
         label: "Matematika",
