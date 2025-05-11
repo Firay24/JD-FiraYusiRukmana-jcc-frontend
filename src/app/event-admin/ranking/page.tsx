@@ -162,7 +162,7 @@ const DashboardEventAdmin = () => {
                             No
                           </th>
                           <th scope="col" className="bg-gray-100 px-6 py-3">
-                            Sertif
+                            Keterangan
                           </th>
                           <th scope="col" className="bg-gray-100 px-6 py-3">
                             Nama
@@ -173,12 +173,19 @@ const DashboardEventAdmin = () => {
                           <th scope="col" className="bg-gray-100 px-6 py-3">
                             Nilai
                           </th>
+                          <th scope="col" className="bg-gray-100 px-6 py-3">
+                            Sertif
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {item.rank.map((rankItem, rankIndex) => (
                           <tr key={rankIndex} className="border-b border-gray-200">
                             <td className="px-6 py-4">{rankIndex + 1}</td>
+                            <td className="px-6 py-4">{rankItem.ket !== 0 ? `Juara ${rankItem.ket}` : rankIndex < 3 ? `Juara ${rankIndex + 1}` : rankItem.ket}</td>
+                            <td className="px-6 py-4">{rankItem.name}</td>
+                            <td className="px-6 py-4">{rankItem.school}</td>
+                            <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
                               <input
                                 type="checkbox"
@@ -227,9 +234,6 @@ const DashboardEventAdmin = () => {
                                 className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                               />
                             </td>
-                            <td className="px-6 py-4">{rankItem.name}</td>
-                            <td className="px-6 py-4">{rankItem.school}</td>
-                            <td className="px-6 py-4">{rankItem.score}</td>
                           </tr>
                         ))}
                       </tbody>

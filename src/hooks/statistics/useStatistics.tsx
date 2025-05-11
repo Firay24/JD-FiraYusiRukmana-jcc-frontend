@@ -8,6 +8,7 @@ interface IRank {
   school: string;
   score: number;
   attedance: boolean;
+  ket: number;
 }
 
 export interface ICompetitionRank {
