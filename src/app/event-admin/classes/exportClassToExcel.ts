@@ -16,7 +16,7 @@ export interface IParticipantsClasses {
 
 export const exportClassToExcel = (data: IParticipantsClasses[], fileName = "peserta-jcc-class.xlsx") => {
   const sheetData = data.map((item, index) => ({
-    Sertif: `${index + 1 + 345}/JCC/PRT/IV/2025`,
+    Sertif: `${index + 1 + 402}/JCC/PRT/IV/2025`,
     ID: `J${item.idMember.padStart(4, "0")}`,
     Nama: toTitleCase(item.name),
     // Nama: toTitleCase(shortenName(item.name)),
