@@ -42,7 +42,7 @@ const DashboardEventAdmin = () => {
         const response = await listRegional();
         setRegional(response);
 
-        const regionCurrent = response.find((item) => item.region === 4);
+        const regionCurrent = response.find((item) => item.region === 6);
         if (regionCurrent) {
           setSelectedRegional(regionCurrent.id);
         }
