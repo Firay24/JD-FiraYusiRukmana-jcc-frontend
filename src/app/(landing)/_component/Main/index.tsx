@@ -173,7 +173,7 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
           <p className="mt-4 w-[90%] text-center text-xl text-black text-neutral-600 md:max-w-[60%]">Setiap peserta hanya boleh mengikuti perlombaan di 1 (Satu) Regional. Peserta dari regional sebelumnya diperbolehkan mengikuti di regional lain dengan syarat matpel yang diambil berbeda</p>
         </div>
         <div className="relative mx-10 mt-10 grid max-w-full grid-cols-1 gap-x-20 md:mx-20 md:grid-cols-3">
-          <ol className="relative col-span-1 ml-0 border-s border-gray-200 md:col-span-2 md:ml-4">
+          <ol className="relative col-span-1 ml-0 border-s border-gray-200 md:ml-4">
             {regionalTimeline.slice(0, 3).map((item, index) => (
               <li key={index} className="mb-10 ms-6">
                 <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-base-navy ring-8 ring-white">
@@ -238,14 +238,14 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
               </li>
             ))}
           </ol>
-          <ol className="relative border-s border-gray-200">
+          <ol className="relative border-s border-gray-200 md:col-span-2">
             {regionalTimeline.slice(3, 7).map((item, index) => (
               <li key={index} className="mb-10 ms-6">
                 <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-base-navy ring-8 ring-white">
                   <MdOutlineMyLocation />
                 </span>
                 <h3 className="mb-1 flex items-center text-lg font-semibold text-gray-900">
-                  {`Regional ${item.regional.toString()}`} {item.status ? <span className="me-2 ms-3 rounded-sm bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800">Pendaftaran Ditutup</span> : null}
+                  {`Regional ${item.regional.toString()}`} {item.status ? <span className={`${item.regis ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} me-2 ms-3 rounded-sm px-2.5 py-0.5 text-sm font-medium`}>{`${item.regis ? "Pendaftaran Dibuka" : "Pendaftaran Ditutup"}`}</span> : null}
                 </h3>
                 <time className="mb-2 block text-sm font-normal leading-none text-gray-400">{item.location}</time>
                 <div className="flex items-center gap-2 text-base font-normal text-gray-500">
@@ -253,14 +253,52 @@ const MainLandingPage = ({ convertEpochToDate }: MainLandingProps) => {
                   <p>{convertEpochToDateLong(item.date)}</p>
                 </div>
                 {item.description ? <p className="mb-4 text-base font-normal text-gray-500">{item.description}</p> : null}
-                {item.status ? (
-                  <a href="#" className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
-                    <svg className="me-2.5 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
-                      <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
-                    </svg>{" "}
-                    Download poster
-                  </a>
+                {item.regis ? (
+                  <div className="flex flex-col gap-3 md:flex-row">
+                    <a href={item.path} download="PosterJunio-Regional1.png" className="inline-flex w-fit items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                      <svg className="me-2.5 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
+                        <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                      </svg>{" "}
+                      Download poster
+                    </a>
+                    <a href={item.juknis} download="juknis-season1.pdf" className="inline-flex w-fit items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                      <svg className="me-2.5 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
+                        <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                      </svg>{" "}
+                      Download Juknis
+                    </a>
+                    <div className="flex w-72 items-center gap-3">
+                      <div className="relative w-full">
+                        <button className="flex w-full items-center justify-between rounded-lg border p-2 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
+                          {selectedSubject || "Pilih Mata Pelajaran"}
+                          <IoIosArrowDown className="h-5 w-5" />
+                        </button>
+                        {isOpen && (
+                          <ul className="absolute z-10 mt-1 w-full rounded-lg border bg-white shadow-md">
+                            {item.kisikisi &&
+                              item.kisikisi.map(({ label, path }) => (
+                                <li
+                                  key={label}
+                                  className="cursor-pointer p-2 hover:bg-gray-100"
+                                  onClick={() => {
+                                    setSelectedSubject(label);
+                                    setSelectedPath(path);
+                                    setIsOpen(false);
+                                  }}
+                                >
+                                  {label}
+                                </li>
+                              ))}
+                          </ul>
+                        )}
+                      </div>
+                      <button className={`w-fit rounded-md p-2 text-white transition ${selectedPath ? "bg-blue-500 hover:bg-blue-600" : "cursor-not-allowed bg-gray-400"}`} onClick={handleDownload} disabled={!selectedPath}>
+                        <IoMdDownload />
+                      </button>
+                    </div>
+                  </div>
                 ) : null}
               </li>
             ))}
