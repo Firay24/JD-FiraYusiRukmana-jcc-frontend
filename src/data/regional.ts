@@ -179,7 +179,7 @@ export const regionalTimeline: IRegionalTimeline[] = [
     id: 6,
     regional: 6,
     address: "Genteng",
-    date: 1750038766,
+    date: 1749972612,
     status: true,
     regis: true,
     location: "SMAN 1 Genteng",
