@@ -71,8 +71,13 @@ const Participants = () => {
   const handleFilterButton = async () => {
     try {
       setLoading(true);
-      const response = await listAll({ page: page, limit: limit, regionId: selectedRegional, stage: selectedStage, level: selectedClass, subjectId: selectedSubject, search: "" });
-      setParticipants(response);
+      if (selectedRegional === "all") {
+        const response = await listAll({ page: page, limit: limit });
+        setParticipants(response);
+      } else {
+        const response = await listAll({ page: page, limit: limit, regionId: selectedRegional, stage: selectedStage, level: selectedClass, subjectId: selectedSubject, search: "" });
+        setParticipants(response);
+      }
     } catch (error) {
       console.error("Failed to fetch roles:", error);
     } finally {
@@ -113,8 +118,13 @@ const Participants = () => {
     setLoadingExport(true);
 
     try {
-      const response = await listParcipants({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
-      exportToExcel(response);
+      if (selectedRegional === "all") {
+        const response = await listParcipants({ seasonId: "c2ea4ab1f7114bbb8058" });
+        exportToExcel(response);
+      } else {
+        const response = await listParcipants({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+        exportToExcel(response);
+      }
     } catch (error) {
       console.error("Failed to export data:", error);
     } finally {
@@ -174,6 +184,7 @@ const Participants = () => {
               Regional
             </label>
             <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+              <option value="all">Semua Regional</option>
               {regional &&
                 regional.length > 0 &&
                 regional.map((regional) => (

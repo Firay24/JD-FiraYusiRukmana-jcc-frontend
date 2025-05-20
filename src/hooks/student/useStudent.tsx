@@ -59,10 +59,15 @@ export const useStudent = () => {
     }
   };
 
-  const listParcipants = async ({ seasonId, regionId }: { seasonId: string; regionId: string }) => {
+  const listParcipants = async ({ seasonId, regionId }: { seasonId: string; regionId?: string }) => {
     try {
-      const response: HttpResponse<IStudentParticipants[]> = await get(`/student/list/all?seasonId=${seasonId}&regionId=${regionId}`);
-      return response.data;
+      if (regionId) {
+        const response: HttpResponse<IStudentParticipants[]> = await get(`/student/list/all?seasonId=${seasonId}&regionId=${regionId}`);
+        return response.data;
+      } else {
+        const response: HttpResponse<IStudentParticipants[]> = await get(`/student/list/all?seasonId=${seasonId}`);
+        return response.data;
+      }
     } catch (error: any) {
       if (error.statusCode === 401) {
         router.push("/auth/sign-in");
