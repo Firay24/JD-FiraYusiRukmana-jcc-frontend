@@ -153,7 +153,7 @@ const HomeMember = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
-                    <p className="text-xl font-semibold">{studentProfile?.avarageScore}</p>
+                    <p className="text-xl font-semibold">{studentProfile?.avarageScore.toFixed(2)}</p>
                     <p className="text-sm text-neutral-400">nilai</p>
                   </div>
                   <div className="cursor-pointer text-xl text-neutral-500 hover:text-neutral-700">
