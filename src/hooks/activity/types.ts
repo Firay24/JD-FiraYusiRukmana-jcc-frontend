@@ -75,6 +75,7 @@ export interface IDetailActivity {
   paymentId: string;
   paymentDate: number;
   invoice: string;
+  noSertif: number;
   student: {
     name: string;
     school: string;
