@@ -13,6 +13,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import CertifTemplate1 from "./template-certif.png";
 import Image from "next/image";
+import generateCertificateNumber from "@/utils/generateCertificateNumber";
 
 const DetailActivity = () => {
   const params = useParams();
@@ -141,7 +142,7 @@ const DetailActivity = () => {
                 <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
 
                 {/* text */}
-                <p className="absolute left-1/2 top-[27%] -translate-x-1/2 transform text-[22px] text-[#404040]">No: 228/JCC/CHP/IV/2025</p>
+                <p className="absolute left-1/2 top-[27%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(detailActivity.noSertif, detailActivity.events.date)}`}</p>
                 <p className="absolute left-1/2 top-[38%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{detailActivity.student.name}</p>
                 <p className="absolute left-1/2 top-[47%] -translate-x-1/2 transform text-[30px] font-light text-[#404040]" style={{ letterSpacing: "10px" }}>
                   SEBAGAI PESERTA

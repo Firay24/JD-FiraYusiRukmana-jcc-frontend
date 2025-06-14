@@ -112,7 +112,7 @@ const Participants = () => {
     try {
       const response = await listParcipantsClass({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
       if (response) {
-        const roomOrder = ["J1", "J2", "J3", "J4"];
+        const roomOrder = ["J0", "J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8", "J9", "E1", "E2", "E3", "E5", "E6", "E7", "E8"];
 
         const sortedParticipants = response.sort((a, b) => {
           return roomOrder.indexOf(a.room) - roomOrder.indexOf(b.room);
