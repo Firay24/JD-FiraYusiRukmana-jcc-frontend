@@ -199,11 +199,11 @@ export const regionalTimeline: IRegionalTimeline[] = [
     address: "Genteng",
     date: 1749972612,
     status: true,
-    regis: true,
+    regis: false,
     location: "MAN 2 Banyuwangi",
     path: "/posterRegional6.png",
     juknis: "/juknis-season1.pdf",
-    description: "Pendaftaran dibuka hingga 13 Juni 2025",
+    description: "Kegiatan telah dilaksanakan",
     kisikisi: [
       {
         label: "Matematika",

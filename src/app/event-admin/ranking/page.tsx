@@ -17,7 +17,7 @@ const DashboardEventAdmin = () => {
   const { updateAttedance } = useActivity();
 
   const [regional, setRegional] = useState<IRegional[]>([]);
-  const [selectedRegional, setSelectedRegional] = useState<string>("1ec1fa544e2247a1a2bf");
+  const [selectedRegional, setSelectedRegional] = useState<string>("96c3c7a9086642158d0a");
   const [report, setReport] = useState<ICompetitionRank[]>();
   const [allClasses, setAllClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

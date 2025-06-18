@@ -113,7 +113,12 @@ const Event = () => {
                 <div className="mt-4 grid grid-cols-1 gap-x-2 gap-y-4 md:grid-cols-2">
                   {eventsDummy
                     .filter((event) => event.category === activeTab || activeTab === "all")
-                    .sort((a, b) => b.id - a.id)
+                    .sort((a, b) => {
+                      if (a.status === b.status) {
+                        return b.id - a.id;
+                      }
+                      return Number(b.status) - Number(a.status);
+                    })
                     .map((event) => (
                       <div key={event.id} className="flex rounded-lg bg-white p-4 shadow-md">
                         <div className={`mr-4 w-1 ${event.color} rounded-full`} />

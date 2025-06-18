@@ -74,7 +74,7 @@ export const eventsDummy = [
     date: "15 Juni 2025",
     time: "07.00 - 15.00 WIB",
     color: "bg-green-500",
-    status: true,
+    status: false,
   },
   // {
   //   id: 7,
