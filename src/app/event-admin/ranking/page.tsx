@@ -4,17 +4,24 @@ import { useRegional } from "@/hooks/regional/useRegional";
 import { IReportDataResponse } from "@/hooks/statistics/types";
 import { ICompetitionRank, useStatistics } from "@/hooks/statistics/useStatistics";
 import { IRegional } from "@/types/global";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { exportRankToExcel } from "./exportDataRankToExcel";
 import { useActivity } from "@/hooks/activity/useActivity";
+import CertifTemplate1 from "./template-certif.png";
+import Image from "next/image";
+import generateCertificateNumber from "@/utils/generateCertificateNumber";
+import { convertEpochToDateLong } from "@/utils/convertEpochToDate";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const DashboardEventAdmin = () => {
   const { listRegional } = useRegional();
   const { statisticRank } = useStatistics();
   const { updateAttedance } = useActivity();
+  const certifRef = useRef<HTMLDivElement>(null);
 
   const [regional, setRegional] = useState<IRegional[]>([]);
   const [selectedRegional, setSelectedRegional] = useState<string>("1ec1fa544e2247a1a2bf");
@@ -22,6 +29,16 @@ const DashboardEventAdmin = () => {
   const [allClasses, setAllClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingExport, setLoadingExport] = useState<boolean>(false);
+
+  const downloadPDF = async () => {
+    if (!certifRef.current) return;
+
+    const canvas = await html2canvas(certifRef.current);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("landscape", "px", [canvas.width, canvas.height]);
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save(`sertifikat.pdf`);
+  };
 
   const handleSearchButton = async () => {
     if (selectedRegional) {
@@ -186,7 +203,31 @@ const DashboardEventAdmin = () => {
                             <td className="px-6 py-4">{rankItem.name}</td>
                             <td className="px-6 py-4">{rankItem.school}</td>
                             <td className="px-6 py-4">{rankItem.score}</td>
-                            <td className="px-6 py-4">
+                            <td>
+                              <div ref={certifRef} className="fixed top-0 -z-10 h-[794px] w-[1123px]">
+                                <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
+
+                                {/* text */}
+                                <p className="absolute left-1/2 top-[27%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.score, rankItem.date)}`}</p>
+                                <p className="absolute left-1/2 top-[38%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
+                                <p className="absolute left-1/2 top-[53%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">sebagai</p>
+                                <p className="absolute left-1/2 top-[47%] -translate-x-1/2 transform text-[30px] font-light text-[#404040]" style={{ letterSpacing: "10px" }}>
+                                  SEBAGAI PESERTA
+                                </p>
+                                <p className="absolute left-1/2 top-[53%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                  bidang <span className="font-bold">{item.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
+                                </p>
+                                <p className="absolute left-1/2 top-[57%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                  tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
+                                  {`${item.region}, pada `}
+                                  <span className="font-bold">{`Minggu, ${convertEpochToDateLong(rankItem.date)}`}</span>.
+                                </p>
+                              </div>
+                              <button onClick={downloadPDF} className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700">
+                                Download Sertifikat
+                              </button>
+                            </td>
+                            {/* <td className="px-6 py-4">
                               <input
                                 type="checkbox"
                                 checked={rankItem.attedance || false}
@@ -233,7 +274,7 @@ const DashboardEventAdmin = () => {
                                 }}
                                 className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                               />
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                       </tbody>

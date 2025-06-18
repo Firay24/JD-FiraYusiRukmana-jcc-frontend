@@ -9,6 +9,8 @@ interface IRank {
   score: number;
   attedance: boolean;
   ket: number;
+  date: number;
+  index: number;
 }
 
 export interface ICompetitionRank {
@@ -16,6 +18,8 @@ export interface ICompetitionRank {
   subject: string;
   stage: string;
   level: number;
+  region: string;
+  location: string;
   rank: IRank[];
 }
 
