@@ -39,7 +39,7 @@ const EventAdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ContainerAdmin>
       {isMobile && <NavbarEventAdmin isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} isScrolled={isScrolled} />}
-      <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-4 gap-6"}`}>
+      <div className={`grid bg-white ${isMobile ? "grid-cols-1" : "grid-cols-4 gap-6"}`}>
         {/* Sidebar (Hanya tampil jika bukan mobile) */}
         {!isMobile && (
           <div>

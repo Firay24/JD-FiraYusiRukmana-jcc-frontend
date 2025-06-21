@@ -8,6 +8,7 @@ const inter = localFont({
   src: [
     { path: "../../public/fonts/inter.ttf", style: "normal" },
     { path: "../../public/fonts/inter-italic.ttf", style: "italic" },
+    // { path: "../../public/fonts/ChildosArabicDEMO-Light.otf", style: "normal" },
   ],
   display: "swap",
   variable: "--font-inter",

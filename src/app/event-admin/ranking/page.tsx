@@ -216,19 +216,19 @@ const DashboardEventAdmin = () => {
                             <td className="px-6 py-4">{rankItem.school}</td>
                             <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
-                              <div id={rankItem.studentId} className={`fixed top-0 -z-10 h-[794px] w-[1123px]`}>
+                              <div id={rankItem.studentId} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
                                 <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
 
                                 {/* text */}
-                                <p className="absolute left-1/2 top-[27%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
-                                <p className="absolute left-1/2 top-[38%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
-                                <p className="absolute left-1/2 top-[47%] -translate-x-1/2 transform text-[30px] font-light text-[#404040]" style={{ letterSpacing: "10px" }}>
+                                <p className="absolute left-1/2 top-[28%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
+                                <p className="absolute left-1/2 top-[39%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
+                                <p className="absolute left-1/2 top-[52%] -translate-x-1/2 transform text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
                                   {`${rankItem.category.toUpperCase()} REGIONAL`}
                                 </p>
-                                <p className="absolute left-1/2 top-[53%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                <p className="absolute left-1/2 top-[58%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
                                   bidang <span className="font-bold">{item.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
                                 </p>
-                                <p className="absolute left-1/2 top-[57%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                <p className="absolute left-1/2 top-[61%] w-[65%] -translate-x-1/2 transform text-center text-[22px] leading-7 text-[#404040]" style={{}}>
                                   tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
                                   {`${item.region}, pada `}
                                   <span className="font-bold">{`Minggu, ${convertEpochToDateLong(item.date)}`}</span>.
