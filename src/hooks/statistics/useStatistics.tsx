@@ -19,6 +19,29 @@ export interface ICompetitionRank {
   rank: IRank[];
 }
 
+export interface IWinner {
+  name: string;
+  studentId: string;
+  school: string;
+  class: string;
+  stage: string;
+  category: string;
+  score: number;
+  certifNumber: number;
+}
+
+export interface IListWinner {
+  idCompetition: string;
+  name: string;
+  level: number;
+  stage: string;
+  region: string;
+  date: number;
+  location: string;
+  subject: string;
+  winner: IWinner[];
+}
+
 export const useStatistics = () => {
   const router = useRouter();
   const { get } = useHttp();
@@ -47,5 +70,18 @@ export const useStatistics = () => {
     }
   };
 
-  return { statisticReport, statisticRank };
+  const listWinner = async (regionId: string) => {
+    try {
+      const response: HttpResponse<IListWinner[]> = await get(`/achievement/winner/${regionId}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.statusCode === 401) {
+        router.push("/auth/sign-in");
+      }
+      console.error("No authenticated:", error);
+      throw error;
+    }
+  };
+
+  return { statisticReport, statisticRank, listWinner };
 };

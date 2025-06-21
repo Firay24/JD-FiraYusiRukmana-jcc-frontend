@@ -18,8 +18,8 @@ export const exportClassToExcel = (data: IParticipantsClasses[], fileName = "pes
   const sheetData = data.map((item, index) => ({
     Sertif: `${index + 1 + 402}/JCC/PRT/IV/2025`,
     ID: `J${item.idMember.padStart(4, "0")}`,
-    Nama: toTitleCase(item.name),
-    // Nama: toTitleCase(shortenName(item.name)),
+    // Nama: toTitleCase(item.name),
+    Nama: toTitleCase(shortenName(toTitleCase(item.name))),
     Kelas: `${item.stage} ${item.stage === "SMP" ? Number(item.class) + 6 : item.class || "-"}`,
     // Kelas: item.stage === "SMP" ? Number(item.class) + 6 : item.class,
     Jenjang: item.stage,

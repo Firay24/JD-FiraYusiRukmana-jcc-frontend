@@ -1,20 +1,19 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toTitleCase } from "@/utils/toTitleCase";
-import { ICompetitionRank } from "@/hooks/statistics/useStatistics";
+import { ICompetitionRank, IListWinner } from "@/hooks/statistics/useStatistics";
 
-export const exportRankToExcel = (data: ICompetitionRank[], fileName = "rank-jcc.xlsx") => {
+export const exportRankToExcel = (data: IListWinner[], fileName = "rank-jcc.xlsx") => {
   const sheetData: any[] = [];
 
   data.forEach((comp) => {
     const jenjang = `${comp.stage} ${comp.subject.toUpperCase()} ${comp.level}`;
 
-    comp.rank.forEach((item, index) => {
+    comp.winner.forEach((item, index) => {
       sheetData.push({
         Nama: toTitleCase(item.name),
         Sekolah: item.school,
         Jenjang: jenjang + `-JUARA ${index + 1}`,
-        Keterangan: item.attedance ? "Sudah" : "Belum",
       });
     });
   });

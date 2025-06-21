@@ -1,38 +1,50 @@
 "use client";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import { useRegional } from "@/hooks/regional/useRegional";
-import { IReportDataResponse } from "@/hooks/statistics/types";
-import { ICompetitionRank, useStatistics } from "@/hooks/statistics/useStatistics";
+import { ICompetitionRank, IListWinner, useStatistics } from "@/hooks/statistics/useStatistics";
 import { IRegional } from "@/types/global";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
-import { FaUserGroup } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { exportRankToExcel } from "./exportDataRankToExcel";
 import { useActivity } from "@/hooks/activity/useActivity";
+import { MdDownload } from "react-icons/md";
+import Image from "next/image";
+import CertifTemplate1 from "./templateJuara.png";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import generateCertificateNumber from "@/utils/generateCertificateNumber";
+import { convertEpochToDateLong } from "@/utils/convertEpochToDate";
 
 const DashboardEventAdmin = () => {
   const { listRegional } = useRegional();
-  const { statisticRank } = useStatistics();
+  const { statisticRank, listWinner } = useStatistics();
   const { updateAttedance } = useActivity();
 
   const [regional, setRegional] = useState<IRegional[]>([]);
-  const [selectedRegional, setSelectedRegional] = useState<string>("96c3c7a9086642158d0a");
-  const [report, setReport] = useState<ICompetitionRank[]>();
+  const [selectedRegional, setSelectedRegional] = useState<string>("8fa7be3333954104bf31");
+  // const [report, setReport] = useState<ICompetitionRank[]>();
+  const [report, setReport] = useState<IListWinner[]>();
   const [allClasses, setAllClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingExport, setLoadingExport] = useState<boolean>(false);
 
+  const downloadPDF = async ({ id, name, category, subject, level, stage }: { id: string; name: string; category: string; subject: string; level: number; stage: string }) => {
+    const certifElement = document.getElementById(id);
+    if (!certifElement) return;
+
+    const canvas = await html2canvas(certifElement);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("landscape", "px", [canvas.width, canvas.height]);
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save(`${subject.toUpperCase()}-${category.toUpperCase()}-${stage} ${level}-${name}.pdf`);
+  };
+
   const handleSearchButton = async () => {
     if (selectedRegional) {
       try {
-        if (selectedRegional === "all") {
-          const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058" });
-          setReport(response);
-        } else {
-          const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
-          setReport(response);
-        }
+        const response = await listWinner(selectedRegional);
+        setReport(response);
       } catch (error) {
         console.error("Failed to fetch roles:", error);
       } finally {
@@ -40,6 +52,23 @@ const DashboardEventAdmin = () => {
       }
     }
   };
+  // const handleSearchButton = async () => {
+  //   if (selectedRegional) {
+  //     try {
+  //       if (selectedRegional === "all") {
+  //         const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058" });
+  //         setReport(response);
+  //       } else {
+  //         const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+  //         setReport(response);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch roles:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
 
   const handleExport = async () => {
     setLoadingExport(true);
@@ -48,7 +77,7 @@ const DashboardEventAdmin = () => {
       if (report) {
         exportRankToExcel(report);
       } else {
-        const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+        const response = await listWinner(selectedRegional);
         exportRankToExcel(response);
       }
     } catch (error) {
@@ -78,7 +107,7 @@ const DashboardEventAdmin = () => {
     const fetchStatistic = async () => {
       try {
         if (regional) {
-          const response = await statisticRank({ seasonId: "c2ea4ab1f7114bbb8058", regionId: selectedRegional });
+          const response = await listWinner(selectedRegional);
           setReport(response);
         }
       } catch (error) {
@@ -152,9 +181,9 @@ const DashboardEventAdmin = () => {
             ) : report && report.length > 0 ? (
               report.map((item, index) => (
                 <div key={index} className="mb-6">
-                  <p className="pb-2 font-semibold text-gray-700">{item.competitionName}</p>
+                  <p className="pb-2 font-semibold text-gray-700">{item.name}</p>
 
-                  {item.rank && item.rank.length > 0 ? (
+                  {item.winner && item.winner.length > 0 ? (
                     <table className="w-full text-left text-sm text-gray-500 rtl:text-right">
                       <thead className="text-xs uppercase text-gray-700">
                         <tr>
@@ -179,15 +208,36 @@ const DashboardEventAdmin = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {item.rank.map((rankItem, rankIndex) => (
+                        {item.winner.map((rankItem, rankIndex) => (
                           <tr key={rankIndex} className="border-b border-gray-200">
                             <td className="px-6 py-4">{rankIndex + 1}</td>
-                            <td className="px-6 py-4">{rankItem.ket !== 0 ? `Juara ${rankItem.ket}` : rankIndex < 3 ? `Juara ${rankIndex + 1}` : rankItem.ket}</td>
+                            <td className="px-6 py-4">{rankItem.category}</td>
                             <td className="px-6 py-4">{rankItem.name}</td>
                             <td className="px-6 py-4">{rankItem.school}</td>
                             <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
-                              <input
+                              <div id={rankItem.studentId} className={`fixed top-0 -z-10 h-[794px] w-[1123px]`}>
+                                <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
+
+                                {/* text */}
+                                <p className="absolute left-1/2 top-[27%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
+                                <p className="absolute left-1/2 top-[38%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
+                                <p className="absolute left-1/2 top-[47%] -translate-x-1/2 transform text-[30px] font-light text-[#404040]" style={{ letterSpacing: "10px" }}>
+                                  {`${rankItem.category.toUpperCase()} REGIONAL`}
+                                </p>
+                                <p className="absolute left-1/2 top-[53%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                  bidang <span className="font-bold">{item.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
+                                </p>
+                                <p className="absolute left-1/2 top-[57%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                  tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
+                                  {`${item.region}, pada `}
+                                  <span className="font-bold">{`Minggu, ${convertEpochToDateLong(item.date)}`}</span>.
+                                </p>
+                              </div>
+                              <button type="button" onClick={() => downloadPDF({ id: rankItem.studentId, name: rankItem.name, category: rankItem.category, subject: item.subject, level: item.level, stage: item.stage })} className="me-2 inline-flex items-center rounded-lg bg-gray-400 p-2 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                <MdDownload />
+                              </button>
+                              {/* <input
                                 type="checkbox"
                                 checked={rankItem.attedance || false}
                                 onChange={async (e) => {
@@ -232,7 +282,7 @@ const DashboardEventAdmin = () => {
                                   }
                                 }}
                                 className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                              />
+                              /> */}
                             </td>
                           </tr>
                         ))}
