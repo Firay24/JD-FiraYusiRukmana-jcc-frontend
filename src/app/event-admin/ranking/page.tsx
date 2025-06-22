@@ -219,12 +219,12 @@ const DashboardEventAdmin = () => {
                             <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
                               {rankItem.stage === "TK" ? (
-                                <div id={rankItem.studentId} className="font-monosugar fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
+                                <div id={rankItem.studentId} className="font-monosugar fixed left-1/2 top-1/2 z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
                                   <Image src={CertifTemplate2} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
                                   {/* text */}
-                                  <p className="absolute left-14 top-[27%] transform text-[20px] font-thin text-[#404040]">{`No. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
-                                  <p className="absolute left-14 top-[38%] transform text-[33px] text-[#fe656e]">{rankItem.name}</p>
-                                  <p className="absolute left-14 top-[46%] transform rounded-lg bg-[#ffc235] p-2 text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
+                                  <p className="absolute left-14 top-[25%] transform text-[20px] font-thin text-[#404040]">{`No. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
+                                  <p className="absolute left-14 top-[36%] transform text-[33px] text-[#fe656e]">{rankItem.name}</p>
+                                  <p className="absolute left-14 top-[44%] transform p-2 text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
                                     {`${rankItem.category.toUpperCase()} REGIONAL`}
                                   </p>
                                   <p className="absolute left-14 top-[54%] w-[65%] transform text-left text-[22px] font-thin text-[#404040]">
