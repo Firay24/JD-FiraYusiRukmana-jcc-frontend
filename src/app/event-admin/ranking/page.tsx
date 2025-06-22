@@ -223,7 +223,7 @@ const DashboardEventAdmin = () => {
                                   <Image src={CertifTemplate2} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
                                   {/* text */}
                                   <p className="absolute left-14 top-[25%] transform text-[20px] font-thin text-[#404040]">{`No. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
-                                  <p className="absolute left-14 top-[36%] transform text-[33px] text-[#fe656e]">{rankItem.name}</p>
+                                  <p className="absolute left-14 top-[36%] transform text-[33px] text-[#fe656e]">{toTitleCase(rankItem.name)}</p>
                                   <p className="absolute left-14 top-[44%] transform p-2 text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
                                     {`${rankItem.category.toUpperCase()} REGIONAL`}
                                   </p>
@@ -240,7 +240,7 @@ const DashboardEventAdmin = () => {
                                 <div id={rankItem.studentId} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
                                   <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
                                   <p className="absolute left-1/2 top-[28%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
-                                  <p className="absolute left-1/2 top-[39%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
+                                  <p className="absolute left-1/2 top-[39%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{toTitleCase(rankItem.name)}</p>
                                   <p className="absolute left-1/2 top-[52%] -translate-x-1/2 transform text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
                                     {`${rankItem.category.toUpperCase()} REGIONAL`}
                                   </p>
