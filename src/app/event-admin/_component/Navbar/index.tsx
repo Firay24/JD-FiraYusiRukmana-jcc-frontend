@@ -44,6 +44,9 @@ const NavbarEventAdmin = ({ toggleMenu, isScrolled, isMenuOpen }: NavbarProps) =
             <a href="/event-admin/ranking" className="hover:text-gray-400">
               Rangking
             </a>
+            <a href="/event-admin/pengumuman" className="hover:text-gray-400">
+              Pengumuman
+            </a>
             <a href="/event-admin/participants" className="hover:text-gray-400">
               Peserta
             </a>

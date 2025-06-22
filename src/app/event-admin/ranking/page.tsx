@@ -11,10 +11,12 @@ import { useActivity } from "@/hooks/activity/useActivity";
 import { MdDownload } from "react-icons/md";
 import Image from "next/image";
 import CertifTemplate1 from "./templateJuara.png";
+import CertifTemplate2 from "./templateTK.jpg";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import generateCertificateNumber from "@/utils/generateCertificateNumber";
 import { convertEpochToDateLong } from "@/utils/convertEpochToDate";
+import { toTitleCase } from "@/utils/toTitleCase";
 
 const DashboardEventAdmin = () => {
   const { listRegional } = useRegional();
@@ -22,7 +24,7 @@ const DashboardEventAdmin = () => {
   const { updateAttedance } = useActivity();
 
   const [regional, setRegional] = useState<IRegional[]>([]);
-  const [selectedRegional, setSelectedRegional] = useState<string>("8fa7be3333954104bf31");
+  const [selectedRegional, setSelectedRegional] = useState<string>("96c3c7a9086642158d0a");
   // const [report, setReport] = useState<ICompetitionRank[]>();
   const [report, setReport] = useState<IListWinner[]>();
   const [allClasses, setAllClasses] = useState<any[]>([]);
@@ -216,24 +218,42 @@ const DashboardEventAdmin = () => {
                             <td className="px-6 py-4">{rankItem.school}</td>
                             <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
-                              <div id={rankItem.studentId} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
-                                <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
-
-                                {/* text */}
-                                <p className="absolute left-1/2 top-[28%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
-                                <p className="absolute left-1/2 top-[39%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
-                                <p className="absolute left-1/2 top-[52%] -translate-x-1/2 transform text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
-                                  {`${rankItem.category.toUpperCase()} REGIONAL`}
-                                </p>
-                                <p className="absolute left-1/2 top-[58%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
-                                  bidang <span className="font-bold">{item.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
-                                </p>
-                                <p className="absolute left-1/2 top-[61%] w-[65%] -translate-x-1/2 transform text-center text-[22px] leading-7 text-[#404040]" style={{}}>
-                                  tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
-                                  {`${item.region}, pada `}
-                                  <span className="font-bold">{`Minggu, ${convertEpochToDateLong(item.date)}`}</span>.
-                                </p>
-                              </div>
+                              {rankItem.stage === "TK" ? (
+                                <div id={rankItem.studentId} className="font-monosugar fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
+                                  <Image src={CertifTemplate2} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
+                                  {/* text */}
+                                  <p className="absolute left-14 top-[27%] transform text-[20px] font-thin text-[#404040]">{`No. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
+                                  <p className="absolute left-14 top-[38%] transform text-[33px] text-[#fe656e]">{rankItem.name}</p>
+                                  <p className="absolute left-14 top-[46%] transform rounded-lg bg-[#ffc235] p-2 text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
+                                    {`${rankItem.category.toUpperCase()} REGIONAL`}
+                                  </p>
+                                  <p className="absolute left-14 top-[54%] w-[65%] transform text-left text-[22px] font-thin text-[#404040]">
+                                    bidang <span className="font-medium">{toTitleCase(item.subject)}</span> dalam Junior National Olympiad (JUNIO),
+                                  </p>
+                                  <p className="absolute left-14 top-[57%] w-[50%] transform text-left text-[22px] font-thin leading-7 text-[#404040]" style={{ letterSpacing: "1px" }}>
+                                    tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
+                                    {`${item.region}, pada `}
+                                    <span>{`Minggu, ${convertEpochToDateLong(item.date)}`}</span>.
+                                  </p>
+                                </div>
+                              ) : (
+                                <div id={rankItem.studentId} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
+                                  <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
+                                  <p className="absolute left-1/2 top-[28%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
+                                  <p className="absolute left-1/2 top-[39%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{rankItem.name}</p>
+                                  <p className="absolute left-1/2 top-[52%] -translate-x-1/2 transform text-[30px] font-medium text-[#404040]" style={{ letterSpacing: "5px" }}>
+                                    {`${rankItem.category.toUpperCase()} REGIONAL`}
+                                  </p>
+                                  <p className="absolute left-1/2 top-[58%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
+                                    bidang <span className="font-bold">{item.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
+                                  </p>
+                                  <p className="absolute left-1/2 top-[61%] w-[65%] -translate-x-1/2 transform text-center text-[22px] leading-7 text-[#404040]" style={{}}>
+                                    tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
+                                    {`${item.region}, pada `}
+                                    <span className="font-bold">{`Minggu, ${convertEpochToDateLong(item.date)}`}</span>.
+                                  </p>
+                                </div>
+                              )}
                               <button type="button" onClick={() => downloadPDF({ id: rankItem.studentId, name: rankItem.name, category: rankItem.category, subject: item.subject, level: item.level, stage: item.stage })} className="me-2 inline-flex items-center rounded-lg bg-gray-400 p-2 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                 <MdDownload />
                               </button>

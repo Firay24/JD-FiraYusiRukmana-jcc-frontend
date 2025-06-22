@@ -9,6 +9,27 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "More Sugar";
+  src: url("/fonts/MoreSugar-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "More Sugar";
+  src: url("/fonts/MoreSugar-Thin.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "More Sugar";
+  src: url("/fonts/MoreSugar-Extras.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 @layer base {
   :root {
     --tw-ring-color: transparent !important;

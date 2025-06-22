@@ -16,6 +16,10 @@ const menuSidebar = [
     path: "/event-admin/ranking",
   },
   {
+    label: "Pengumuman",
+    path: "/event-admin/pengumuman",
+  },
+  {
     label: "Peserta",
     path: "/event-admin/participants",
   },

@@ -33,6 +33,7 @@ const config: Config = {
     fontFamily: {
       inter: ["var(--font-inter)", "sans-serif"],
       childos: ['"Childos Arabic"', "sans-serif"],
+      monosugar: ['"More Sugar"', "sans-serif"],
       monospace: 'Consolas, "Courier New", monospace',
     },
     colors: {
