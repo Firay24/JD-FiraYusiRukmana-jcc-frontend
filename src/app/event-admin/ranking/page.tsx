@@ -228,7 +228,7 @@ const DashboardEventAdmin = () => {
                                     {`${rankItem.category.toUpperCase()} REGIONAL`}
                                   </p>
                                   <p className="absolute left-14 top-[54%] w-[65%] transform text-left text-[22px] font-thin text-[#404040]">
-                                    bidang <span className="font-medium">{rankItem.subject.toLowerCase()}</span> dalam Junior National Olympiad (JUNIO),
+                                    bidang <span className="font-medium">{rankItem.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
                                   </p>
                                   <p className="absolute left-14 top-[57%] w-[50%] transform text-left text-[22px] font-thin leading-7 text-[#404040]" style={{ letterSpacing: "1px" }}>
                                     tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
