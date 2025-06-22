@@ -31,8 +31,8 @@ const DashboardEventAdmin = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingExport, setLoadingExport] = useState<boolean>(false);
 
-  const downloadPDF = async ({ id, name, category, subject, level, stage }: { id: string; name: string; category: string; subject: string; level: number; stage: string }) => {
-    const certifElement = document.getElementById(id);
+  const downloadPDF = async ({ id, name, category, subject, level, stage, competitionId }: { id: string; name: string; category: string; subject: string; level: number; stage: string; competitionId: string }) => {
+    const certifElement = document.getElementById(id + competitionId);
     if (!certifElement) return;
 
     const canvas = await html2canvas(certifElement);
@@ -219,7 +219,7 @@ const DashboardEventAdmin = () => {
                             <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
                               {rankItem.stage === "TK" ? (
-                                <div id={rankItem.studentId} className="font-monosugar fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
+                                <div id={rankItem.studentId + item.idCompetition} className="font-monosugar fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
                                   <Image src={CertifTemplate2} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
                                   {/* text */}
                                   <p className="absolute left-14 top-[25%] transform text-[20px] font-thin text-[#404040]">{`No. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
@@ -228,7 +228,7 @@ const DashboardEventAdmin = () => {
                                     {`${rankItem.category.toUpperCase()} REGIONAL`}
                                   </p>
                                   <p className="absolute left-14 top-[54%] w-[65%] transform text-left text-[22px] font-thin text-[#404040]">
-                                    bidang <span className="font-medium">{toTitleCase(item.subject)}</span> dalam Junior National Olympiad (JUNIO),
+                                    bidang <span className="font-medium">{rankItem.subject.toLowerCase()}</span> dalam Junior National Olympiad (JUNIO),
                                   </p>
                                   <p className="absolute left-14 top-[57%] w-[50%] transform text-left text-[22px] font-thin leading-7 text-[#404040]" style={{ letterSpacing: "1px" }}>
                                     tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
@@ -237,7 +237,7 @@ const DashboardEventAdmin = () => {
                                   </p>
                                 </div>
                               ) : (
-                                <div id={rankItem.studentId} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
+                                <div id={rankItem.studentId + item.idCompetition} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
                                   <Image src={CertifTemplate1} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
                                   <p className="absolute left-1/2 top-[28%] -translate-x-1/2 transform text-[22px] text-[#404040]">{`NO. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
                                   <p className="absolute left-1/2 top-[39%] -translate-x-1/2 transform text-[33px] text-[#f8bd34]">{toTitleCase(rankItem.name)}</p>
@@ -245,7 +245,7 @@ const DashboardEventAdmin = () => {
                                     {`${rankItem.category.toUpperCase()} REGIONAL`}
                                   </p>
                                   <p className="absolute left-1/2 top-[58%] w-[65%] -translate-x-1/2 transform text-center text-[22px] text-[#404040]">
-                                    bidang <span className="font-bold">{item.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
+                                    bidang <span className="font-bold">{rankItem.subject.toUpperCase()}</span> dalam Junior National Olympiad (JUNIO),
                                   </p>
                                   <p className="absolute left-1/2 top-[61%] w-[65%] -translate-x-1/2 transform text-center text-[22px] leading-7 text-[#404040]" style={{}}>
                                     tingkat <span>{item.stage === "SMP" ? "SMP/MTs" : item.stage === "SD" ? "SD/MI" : "TK/RA"}</span> Kelas <span>{item.stage === "SMP" ? item.level + 6 : item.level}</span> yang diselenggarakan di <span>{item.location}</span>, <span className="font-bold"></span>
@@ -254,7 +254,7 @@ const DashboardEventAdmin = () => {
                                   </p>
                                 </div>
                               )}
-                              <button type="button" onClick={() => downloadPDF({ id: rankItem.studentId, name: rankItem.name, category: rankItem.category, subject: item.subject, level: item.level, stage: item.stage })} className="me-2 inline-flex items-center rounded-lg bg-gray-400 p-2 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                              <button type="button" onClick={() => downloadPDF({ competitionId: item.idCompetition, id: rankItem.studentId, name: rankItem.name, category: rankItem.category, subject: item.subject, level: item.level, stage: item.stage })} className="me-2 inline-flex items-center rounded-lg bg-gray-400 p-2 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                 <MdDownload />
                               </button>
                               {/* <input

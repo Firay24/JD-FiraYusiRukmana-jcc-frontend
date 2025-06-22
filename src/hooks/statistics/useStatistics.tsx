@@ -26,6 +26,7 @@ export interface IWinner {
   class: string;
   stage: string;
   category: string;
+  subject: string;
   score: number;
   certifNumber: number;
 }
