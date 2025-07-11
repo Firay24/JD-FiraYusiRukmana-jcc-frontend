@@ -24,7 +24,7 @@ const PengumumanPage = () => {
   const { listRegional } = useRegional();
 
   const [regional, setRegional] = useState<IRegional[]>([]);
-  const [selectedRegional, setSelectedRegional] = useState<string>("96c3c7a9086642158d0a");
+  const [selectedRegional, setSelectedRegional] = useState<string>("all");
   const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
   const [listParticipant, setParticipant] = useState<IListParticipant>();
   const [isScrolled, setIsScrolled] = useState(false);

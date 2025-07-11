@@ -2,6 +2,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toTitleCase } from "@/utils/toTitleCase";
 import { ICompetitionRank, IListWinner } from "@/hooks/statistics/useStatistics";
+import generateCertificateNumber from "@/utils/generateCertificateNumber";
 
 export const exportRankToExcel = (data: IListWinner[], fileName = "rank-jcc.xlsx") => {
   const sheetData: any[] = [];
@@ -14,6 +15,8 @@ export const exportRankToExcel = (data: IListWinner[], fileName = "rank-jcc.xlsx
         Nama: toTitleCase(item.name),
         Sekolah: item.school,
         Jenjang: jenjang + `-JUARA ${index + 1}`,
+        Skor: item.score,
+        Sertif: `${generateCertificateNumber(item.certifNumber, comp.date)}`,
       });
     });
   });

@@ -35,6 +35,22 @@ const DashboardEventAdmin = () => {
     }
   };
 
+  const fetchStatistic = async () => {
+    try {
+      if (selectedRegional === "all") {
+        const response = await statisticReport();
+        setReport(response);
+      } else {
+        const response = await statisticReport(selectedRegional);
+        setReport(response);
+      }
+    } catch (error) {
+      console.error("Failed to fetch roles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchRegional = async () => {
       try {
@@ -42,10 +58,10 @@ const DashboardEventAdmin = () => {
         const response = await listRegional();
         setRegional(response);
 
-        const regionCurrent = response.find((item) => item.region === 5);
-        if (regionCurrent) {
-          setSelectedRegional(regionCurrent.id);
-        }
+        // const regionCurrent = response.find((item) => item.region === 5);
+        // if (regionCurrent) {
+        //   setSelectedRegional(regionCurrent.id);
+        // }
       } catch (error) {
         console.error("Failed to fetch roles:", error);
       } finally {
@@ -54,22 +70,10 @@ const DashboardEventAdmin = () => {
     };
 
     fetchRegional();
+    fetchStatistic();
   }, []);
 
   useEffect(() => {
-    const fetchStatistic = async () => {
-      try {
-        if (regional) {
-          const response = await statisticReport(selectedRegional);
-          setReport(response);
-        }
-      } catch (error) {
-        console.error("Failed to fetch roles:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (selectedRegional) {
       fetchStatistic();
     }
