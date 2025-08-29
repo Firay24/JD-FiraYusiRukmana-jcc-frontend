@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Junior Championship Center (JCC)
 
-## Getting Started
+Sistem manajemen event perlombaan olimpiade akademik jenjang TK, SD hingga SMP.
 
-First, run the development server:
+Proyek ini sudah **dideploy** dan bisa langsung dicoba melalui:  
+👉 [jrchampionship.id](https://jrchampionship.id)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📌 Fitur
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 👤 Peserta
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Pendaftaran Akun** → Membuat akun untuk ikut serta dalam lomba.
+- **Registrasi Lomba/Event** → Memilih dan mendaftar ke lomba yang tersedia.
+- **Pendaftaran Akun Kolektif** → Upload file Excel untuk membuat banyak akun peserta sekaligus.
+- **Tracking Pembayaran** → Memantau status pembayaran.
+- **Leaderboard** → Melihat peringkat peserta secara langsung.
+- **Riwayat Lomba** → Akses hasil nilai dan scan LJK dari lomba yang sudah diikuti.
+- **Sertifikat Digital** → Otomatis menghasilkan sertifikat peserta.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🛠️ Admin
 
-## Learn More
+- **Statistik Peserta** → Melihat data statistik jumlah peserta.
+- **Manajemen Peserta** → Mengelola daftar peserta, termasuk update status.
+- **Leaderboard Admin** → Menampilkan peringkat resmi peserta.
+- **Download Sertifikat Juara** → Mengunduh sertifikat untuk pemenang lomba.
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Teknologi yang Digunakan
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js](https://nextjs.org/) – React Framework
+- [Tailwind CSS](https://tailwindcss.com/) – Styling
+- [NestJS](https://nestjs.com/) – Backend Framework
+- [PostgreSQL](https://www.postgresql.org/) – Database
+- [Niagahoster VPS](https://www.niagahoster.co.id/) – Deployment Server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Instalasi & Menjalankan di Localhost
 
-## Deploy on Vercel
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/username/jrchampionship.git
+   cd jrchampionship
+   ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+3. **Buat file .env di root project, lalu isi dengan:**
+   ```env
+   NEXT_PUBLIC_API_URL=https://api.jrchampionship.id/v1
+   ```
+4. **Jalankan development server**
+   ```bash
+   npm run dev
+   Buka http://localhost:3000 untuk melihat hasilnya.
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Opsi Penggunaan
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Localhost → Jalankan sesuai instruksi instalasi di atas.
+- Production (Deploy) → Akses langsung di [jrchampionship.id](https://jrchampionship.id)
+
+## 🔑 Akun Demo
+
+Berikut adalah daftar akun demo yang bisa digunakan untuk mencoba aplikasi:
+
+| Role     | Username   | Password   |
+| -------- | ---------- | ---------- |
+| Peserta  | kezia24    | Junior123$ |
+| Admin    | admin_demo | Junior123$ |
+| Kolektif | adminbatch | Junior123$ |
