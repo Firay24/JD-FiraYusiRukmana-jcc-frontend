@@ -1,22 +1,38 @@
 "use client";
+
+// next core
 import React, { useEffect, useState } from "react";
+
+// components
 import Navbar from "@/components/module/Navbar";
+
+// data
 import { navbarMenuMember } from "@/data/navbarMember";
+
+// icons
 import { MdClear, MdFilterListAlt } from "react-icons/md";
+import { FiDownload } from "react-icons/fi";
+import { PiEmptyBold } from "react-icons/pi";
+import { IoSearch } from "react-icons/io5";
+
+// hooks
 import { useActivity } from "@/hooks/activity/useActivity";
 import { IListParticipant, Participant } from "@/hooks/activity/types";
 import { useEvent } from "@/hooks/event/useEvent";
 import { useSubject } from "@/hooks/subject/useSubject";
-import { PiEmptyBold } from "react-icons/pi";
 import { useStudent } from "@/hooks/student/useStudent";
 import { IGetStudentInfo } from "@/hooks/student/type";
-import { IoSearch } from "react-icons/io5";
 import { useRegional } from "@/hooks/regional/useRegional";
-import { IRegional } from "@/types/global";
 import { set } from "react-hook-form";
-import { parse } from "path";
+
+// utils
 import { generatePDF } from "@/utils/generatePdfLeaderboard";
-import { FiDownload } from "react-icons/fi";
+
+// types
+import { IRegional } from "@/types/global";
+
+// third-party
+import { parse } from "path";
 
 type StageType = "TK" | "SD" | "SMP";
 

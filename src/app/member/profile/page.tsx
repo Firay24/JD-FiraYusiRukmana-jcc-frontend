@@ -1,20 +1,30 @@
 "use client";
-import Navbar from "@/components/module/Navbar";
-import { navbarMenuMember } from "@/data/navbarMember";
+
+// next core
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+// components
+import Navbar from "@/components/module/Navbar";
+import Container from "@/components/base/Container";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
+
+// data
+import { navbarMenuMember } from "@/data/navbarMember";
+
+// icons
 import { AiFillEdit } from "react-icons/ai";
 import { PiStudentFill } from "react-icons/pi";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { CgGenderFemale } from "react-icons/cg";
 import { FaPhone, FaRegUser } from "react-icons/fa";
-import Container from "@/components/base/Container";
-import { useRouter } from "next/navigation";
-import { useStudent } from "@/hooks/student/useStudent";
-import { IStudentInfo } from "@/hooks/student/type";
-import SkeletonLoader from "@/components/base/SkeletonLoader";
 import { FaIdCardClip } from "react-icons/fa6";
 import { BiSolidSchool } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
+
+// hooks
+import { useStudent } from "@/hooks/student/useStudent";
+import { IStudentInfo } from "@/hooks/student/type";
 import { useProfileStore } from "@/hooks/profile/useProfile";
 
 const Profile = () => {
@@ -28,7 +38,6 @@ const Profile = () => {
   const [repeatpassword, setRepeatPassword] = useState<string>("");
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  // const [levelInfo, setLevelInfo] = useState<LevelInfo>();
 
   // Hooks
   const router = useRouter();
@@ -49,7 +58,6 @@ const Profile = () => {
     }
   };
 
-  // UseEffect
   // Mengambil data profile saat pertama kali render
   useEffect(() => {
     const handleGetStudentProfile = async () => {
@@ -83,12 +91,6 @@ const Profile = () => {
     }
   }, [password, repeatpassword]);
 
-  // useEffect(() => {
-  //   if (dataProfile) {
-  //     setLevelInfo(getLevelInfo(dataProfile.poin));
-  //   }
-  // }, [dataProfile]);
-
   return (
     <div className="min-h-screen bg-base-gray">
       {/* nav */}
@@ -112,10 +114,6 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {/* <div className="mr-2 text-center text-white">
-                    <p className="text-lg font-bold">{dataProfile?.poin}</p>
-                    <p className="text-sm">poin</p>
-                  </div> */}
                   <button
                     type="button"
                     onClick={() => {

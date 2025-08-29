@@ -1,11 +1,19 @@
 "use client";
+
+// next core
+import React, { useState } from "react";
+import { useParams } from "next/navigation";
+
+// components
 import Container from "@/components/base/Container";
 import BackNavbar from "@/components/module/BackNavbar";
-import { useParams } from "next/navigation";
-import React, { useState } from "react";
+
+// icons
+import { TiWarning } from "react-icons/ti";
+
+// third-party
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { TiWarning } from "react-icons/ti";
 
 const AssesmentResult = () => {
   const params = useParams();

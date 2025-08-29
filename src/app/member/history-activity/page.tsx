@@ -1,23 +1,32 @@
 "use client";
 
-import Navbar from "@/components/module/Navbar";
-import { navbarMenuMember } from "@/data/navbarMember";
+// next core
 import { useEffect, useState } from "react";
-import { LuSettings2 } from "react-icons/lu";
-import CardHistoryActivity from "./_component/CardActivity";
+
+// components
 import Table from "./_component/Table";
-import Achievement from "./_component/Achievement";
+import Navbar from "@/components/module/Navbar";
 import Container from "@/components/base/Container";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
+import CardHistoryActivity from "./_component/CardActivity";
+import Achievement from "./_component/Achievement";
+
+// data
+import { navbarMenuMember } from "@/data/navbarMember";
+
+// icons
+import { PiEmptyBold } from "react-icons/pi";
+import { LuSettings2 } from "react-icons/lu";
+
+// hooks
 import { useActivity } from "@/hooks/activity/useActivity";
 import { IListActivityStudent } from "@/hooks/activity/types";
-import SkeletonLoader from "@/components/base/SkeletonLoader";
-import { PiEmptyBold } from "react-icons/pi";
 
 const HistoruyActivity = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const { listbyidstudent } = useActivity();
-  const [listActivities, setListActivities] = useState<IListActivityStudent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [listActivities, setListActivities] = useState<IListActivityStudent[]>([]);
 
   useEffect(() => {
     const fetchActivity = async () => {
@@ -45,11 +54,13 @@ const HistoruyActivity = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
     <div className="min-h-screen bg-base-gray">
       {/* nav */}
       <Navbar menu={navbarMenuMember} isScrolled={isScrolled} isLogged title="Riwayat Perlombaan" />
       <Container>
+        {/* **UPCOMING FEATURES** */}
         {/* header */}
         {/* <div className="flex flex-col gap-5 px-4">
           <div className="flex flex-row items-center justify-between">
@@ -89,6 +100,8 @@ const HistoruyActivity = () => {
             )}
           </div>
         )}
+
+        {/* **UPCOMING FEATURES** */}
         {/* Achievement */}
         {/* <div className="mx-4 mt-3 overflow-x-auto rounded-xl bg-white p-1">
           <Achievement />

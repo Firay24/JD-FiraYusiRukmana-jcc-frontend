@@ -1,35 +1,45 @@
 "use client";
+
+// next core
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+
+// components
 import Navbar from "@/components/module/Navbar";
+import SkeletonLoader from "@/components/base/SkeletonLoader";
+
+// data
 import { navbarMenuMember } from "@/data/navbarMember";
+
+// icons
 import { BsPersonArmsUp } from "react-icons/bs";
 import { IoIosArrowDropright } from "react-icons/io";
-import dynamic from "next/dynamic";
+import { IoClose } from "react-icons/io5";
+import { MdOutlineQueryStats } from "react-icons/md";
+import { PiStudentFill } from "react-icons/pi";
+
+// hooks
 import { useStudent } from "@/hooks/student/useStudent";
 import { useModalStore } from "@/state/modalState";
-import { IoClose } from "react-icons/io5";
-import { useRouter } from "next/navigation";
-import { PiStudentFill } from "react-icons/pi";
+import { LevelInfo, PrfoileResponse } from "@/hooks/student/type";
+
+// utils
 import getFirstName from "@/utils/getFirstName";
 import { getLevelInfo } from "@/utils/getInfoLevel";
-import SkeletonLoader from "@/components/base/SkeletonLoader";
-import { MdOutlineQueryStats } from "react-icons/md";
-import { LevelInfo, PrfoileResponse } from "@/hooks/student/type";
 
 const LineChart = dynamic(() => import("../../components/module/Linechart"), { ssr: false });
 
 const HomeMember = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [studentProfile, setStudentProfile] = useState<PrfoileResponse>();
-  const { isModalOpen, openModal, closeModal } = useModalStore();
-  const [levelInfo, setLevelInfo] = useState<LevelInfo>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Hooks
   const router = useRouter();
   const { profileDashboard } = useStudent();
+  const { isModalOpen, openModal, closeModal } = useModalStore();
 
-  // UseEffects
+  const [isLoading, setIsLoading] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [levelInfo, setLevelInfo] = useState<LevelInfo>();
+  const [studentProfile, setStudentProfile] = useState<PrfoileResponse>();
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -72,7 +82,7 @@ const HomeMember = () => {
         {/* nav */}
         <Navbar isScrolled={isScrolled} menu={navbarMenuMember} isLogged logoPath="/only-logo.png" />
 
-        <div className="grid grid-cols-1 gap-4 px-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4">
           {/* header */}
           {isLoading ? (
             <div className="rounded-lg bg-white p-4">
@@ -90,6 +100,7 @@ const HomeMember = () => {
                 </div>
               </div>
             </div>
+            // **UPCOMING FEATURES**
             // <div className="rounded-lg bg-white p-2">
             //   <div className="flex items-center justify-between">
             //     <div className="flex items-center gap-2">
@@ -164,6 +175,7 @@ const HomeMember = () => {
             )}
           </div>
 
+          {/* **UPCOMING FEATURES** */}
           {/* graph */}
           {/* {isLoading ? null : (
             <div className="grid grid-cols-1 gap-6 rounded-lg bg-white p-4">
@@ -177,6 +189,7 @@ const HomeMember = () => {
             </div>
           )} */}
 
+          {/* **UPCOMING FEATURES** */}
           {/* upcoming event */}
           {/* {isLoading ? null : (
             <div className="rounded-lg bg-white p-4">
@@ -214,6 +227,8 @@ const HomeMember = () => {
           )} */}
         </div>
       </div>
+
+      {/* popup melengkapi data siswa jika belum lengkap */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-full max-w-2xl p-4">
