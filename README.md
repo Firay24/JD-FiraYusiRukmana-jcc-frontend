@@ -55,7 +55,7 @@ Proyek ini sudah **dideploy** dan bisa langsung dicoba melalui:
 
 ## 🌐 Opsi Penggunaan
 
-- Localhost → Jalankan sesuai instruksi instalasi di atas.
+- Localhost → Jalankan sesuai instruksi instalasi di atas. Repository [backend](https://github.com/Firay24/JD_031-FiraYusiRukmana-jcc-backend)
 - Production (Deploy) → Akses langsung di [jrchampionship.id](https://jrchampionship.id)
 
 ## 🔑 Akun Demo
