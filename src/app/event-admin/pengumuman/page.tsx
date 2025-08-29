@@ -1,4 +1,9 @@
 "use client";
+
+// next core
+import React, { useEffect, useState } from "react";
+
+// hooks
 import { IListParticipant, Participant } from "@/hooks/activity/types";
 import { useActivity } from "@/hooks/activity/useActivity";
 import { useEvent } from "@/hooks/event/useEvent";
@@ -6,9 +11,14 @@ import { useRegional } from "@/hooks/regional/useRegional";
 import { IGetStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
 import { useSubject } from "@/hooks/subject/useSubject";
+
+// types
 import { IRegional } from "@/types/global";
+
+// utils
 import { generatePDF } from "@/utils/generatePdfLeaderboard";
-import React, { useEffect, useState } from "react";
+
+// icons
 import { FiDownload } from "react-icons/fi";
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
@@ -337,12 +347,6 @@ const PengumumanPage = () => {
             <span className="sr-only">Search</span>
           </button>
         </div>
-        {/* button */}
-        {/* <div className="grid grid-cols-3 gap-2">
-                <button className="rounded-full border-2 bg-transparent p-2 text-sm text-neutral-700 hover:bg-blue-800">Default</button>
-                <button className="rounded-full bg-blue-600 p-2 text-sm font-medium text-white hover:bg-blue-800">Default</button>
-                <button className="rounded-full border-2 bg-transparent p-2 text-sm text-neutral-700 hover:bg-blue-800">Default</button>
-              </div> */}
         <div className="mt-2">
           <div className="relative overflow-x-auto sm:rounded-lg">
             {listParticipant && listParticipant.data.length > 0 ? (

@@ -1,16 +1,26 @@
 "use client";
+
+// next core
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+
+// components
 import ContainerFacilitator from "@/components/base/Container-facilitator/page";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
+
+// hooks
 import { IDetailPayment } from "@/hooks/activity/types";
 import { usePayment } from "@/hooks/payment/usePayment";
 import { IParticipantsList } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
+
+// types
 import { StatusPayment } from "@/types/global";
+
+// utils
 import { convertEpochToDateShort } from "@/utils/convertEpochToDate";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
 const Participants = () => {
   const params = useParams();
@@ -55,18 +65,6 @@ const Participants = () => {
   }, []);
 
   useEffect(() => {
-    if (detailPaymentData) {
-      if (detailPaymentData.latestStatus.status === StatusPayment.PENDING) {
-        setStatusInvoice("Belum Bayar");
-      } else if (detailPaymentData.latestStatus.status === StatusPayment.CONFIRMED) {
-        setStatusInvoice("Menunggu");
-      } else if (detailPaymentData.latestStatus.status === StatusPayment.COMPLETED) {
-        setStatusInvoice("Lunas");
-      }
-    }
-  }, [detailPaymentData]);
-
-  useEffect(() => {
     const fetchDetail = async () => {
       try {
         setIsLoading(true);
@@ -81,6 +79,18 @@ const Participants = () => {
 
     fetchDetail();
   }, []);
+
+  useEffect(() => {
+    if (detailPaymentData) {
+      if (detailPaymentData.latestStatus.status === StatusPayment.PENDING) {
+        setStatusInvoice("Belum Bayar");
+      } else if (detailPaymentData.latestStatus.status === StatusPayment.CONFIRMED) {
+        setStatusInvoice("Menunggu");
+      } else if (detailPaymentData.latestStatus.status === StatusPayment.COMPLETED) {
+        setStatusInvoice("Lunas");
+      }
+    }
+  }, [detailPaymentData]);
 
   return (
     <ContainerFacilitator>

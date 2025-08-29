@@ -219,7 +219,7 @@ const DashboardEventAdmin = () => {
                             <td className="px-6 py-4">{rankItem.score}</td>
                             <td className="px-6 py-4">
                               {rankItem.stage === "TK" ? (
-                                <div id={rankItem.studentId + item.idCompetition} className="font-monosugar fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2">
+                                <div id={rankItem.studentId + item.idCompetition} className="fixed left-1/2 top-1/2 -z-10 h-[794px] w-[1123px] -translate-x-1/2 -translate-y-1/2 font-monosugar">
                                   <Image src={CertifTemplate2} alt="Sertifikat Background" fill className="absolute h-full w-full object-cover" />
                                   {/* text */}
                                   <p className="absolute left-14 top-[25%] transform text-[20px] font-thin text-[#404040]">{`No. ${generateCertificateNumber(rankItem.certifNumber, item.date)}`}</p>
@@ -257,52 +257,6 @@ const DashboardEventAdmin = () => {
                               <button type="button" onClick={() => downloadPDF({ competitionId: item.idCompetition, id: rankItem.studentId, name: rankItem.name, category: rankItem.category, subject: item.subject, level: item.level, stage: item.stage })} className="me-2 inline-flex items-center rounded-lg bg-gray-400 p-2 text-center text-sm font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                 <MdDownload />
                               </button>
-                              {/* <input
-                                type="checkbox"
-                                checked={rankItem.attedance || false}
-                                onChange={async (e) => {
-                                  const newChecked = e.target.checked;
-
-                                  // Langsung update data lokal (state `report`)
-                                  setReport((prevReport) => {
-                                    if (!prevReport) return prevReport;
-                                    return prevReport.map((competition) => ({
-                                      ...competition,
-                                      rank: competition.rank.map((r) => {
-                                        if (r.id === rankItem.id) {
-                                          return { ...r, attedance: newChecked };
-                                        }
-                                        return r;
-                                      }),
-                                    }));
-                                  });
-
-                                  // Baru kirim request ke server
-                                  try {
-                                    await updateAttedance({
-                                      id: rankItem.id,
-                                      attedance: newChecked,
-                                    });
-                                    console.log("Attendance updated");
-                                  } catch (error) {
-                                    console.error("Failed to update attendance", error);
-                                    // OPTIONAL: Kalau gagal, rollback data
-                                    setReport((prevReport) => {
-                                      if (!prevReport) return prevReport;
-                                      return prevReport.map((competition) => ({
-                                        ...competition,
-                                        rank: competition.rank.map((r) => {
-                                          if (r.id === rankItem.id) {
-                                            return { ...r, attedance: !newChecked };
-                                          }
-                                          return r;
-                                        }),
-                                      }));
-                                    });
-                                  }
-                                }}
-                                className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                              /> */}
                             </td>
                           </tr>
                         ))}
