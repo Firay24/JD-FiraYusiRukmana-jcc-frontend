@@ -1,21 +1,38 @@
 "use client";
-import Container from "@/components/base/Container";
-import Navbar from "@/components/module/Navbar";
-import { navbarMenuMember } from "@/data/navbarMember";
+
+// next core
 import React, { useEffect, useState } from "react";
-import { eventsDummy } from "./data";
 import { useRouter } from "next/navigation";
-import { useActivity } from "@/hooks/activity/useActivity";
-import { IListActivity, IListActivityStudent } from "@/hooks/activity/types";
+
+// icons
+import { PiEmptyBold } from "react-icons/pi";
+import { FaCalendar } from "react-icons/fa";
+import { RiMoneyEuroCircleFill } from "react-icons/ri";
+import { FaLocationDot, FaRegCircleCheck } from "react-icons/fa6";
+import { MdCalendarMonth, MdOutlinePayment } from "react-icons/md";
+
+// utils
+import { formatCurrency } from "@/utils/formatCurrency";
+
+// types
 import { convertEpochToDateLong, convertEpochToDateShort } from "@/utils/convertEpochToDate";
 import { StatusPayment } from "@/types/global";
-import { PiEmptyBold } from "react-icons/pi";
-import { usePayment } from "@/hooks/payment/usePayment";
-import { IGetAllPayment } from "@/hooks/payment/type";
+
+// components
 import SkeletonLoader from "@/components/base/SkeletonLoader";
-import { formatCurrency } from "@/utils/formatCurrency";
-import { FaLocationDot } from "react-icons/fa6";
-import { FaCalendar } from "react-icons/fa";
+import Container from "@/components/base/Container";
+import Navbar from "@/components/module/Navbar";
+
+// hooks
+import { IGetAllPayment } from "@/hooks/payment/type";
+import { usePayment } from "@/hooks/payment/usePayment";
+import { useActivity } from "@/hooks/activity/useActivity";
+import { IListActivity, IListActivityStudent } from "@/hooks/activity/types";
+
+// data
+import { navbarMenuMember } from "@/data/navbarMember";
+import { eventsDummy } from "./data";
+import Link from "next/link";
 
 const tabs = [
   { id: "all", label: "Semua" },
@@ -28,13 +45,14 @@ const Event = () => {
   const { allbyuser } = usePayment();
   const { listbyidstudent } = useActivity();
 
-  const [listActivity, setListActivity] = useState<IListActivityStudent[]>([]);
-  const [listPayment, setListPayment] = useState<IGetAllPayment[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(20);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+  const [activeTab, setActiveTab] = useState<string>("all");
+  const [listPayment, setListPayment] = useState<IGetAllPayment[]>([]);
+  const [listActivity, setListActivity] = useState<IListActivityStudent[]>([]);
 
   useEffect(() => {
     const fetchList = async () => {
@@ -155,20 +173,27 @@ const Event = () => {
 
                 {/* my event list */}
                 {activeTab === "my-event" && (
-                  <div className="mt-4 space-y-4">
+                  <div className="mt-4 grid grid-cols-1 gap-x-2 gap-y-4 md:grid-cols-2">
                     {listActivity && listActivity.length > 0 ? (
                       listActivity.map((event, index) => (
                         <div onClick={() => router.push(`/member/event/my-event/${event.id}`)} key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
                           <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold text-gray-800">{event.competition.name}</h3>
-                            <p className="text-sm text-gray-600">{event.competition.region.name}</p>
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
-                              <FaLocationDot />
-                              <p className="font-semibold">{event.competition.location}</p>
+                            <div className="flex justify-between">
+                              <h3 className="text-lg font-semibold text-gray-800">{event.competition.name}</h3>
+                              <Link href={`/member/event/my-event/${event.id}`} className="text-gray-500 transition hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                                Lihat
+                              </Link>
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
-                              <FaCalendar />
-                              <p className="font-semibold">{convertEpochToDateLong(event.competition.date)}</p>
+                            <p className="text-sm text-gray-600">{event.competition.region.name}</p>
+                            <div className="mt-2 flex gap-4">
+                              <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <FaLocationDot />
+                                <p className="font-semibold">{event.competition.location}</p>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <FaCalendar />
+                                <p className="font-semibold">{convertEpochToDateLong(event.competition.date)}</p>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -184,20 +209,37 @@ const Event = () => {
 
                 {/* invoice */}
                 {activeTab === "invoice" && (
-                  <div className="mt-4 space-y-4">
+                  <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                     {listPayment && listPayment.length > 0 ? (
                       listPayment.map((payment, index) => (
-                        <div onClick={() => router.push(`/member/event/invoice/${payment.id}`)} key={index} className="cursor-pointer rounded-xl bg-white p-6 shadow-md">
-                          <h3 className="text-lg font-semibold text-gray-800">{payment.invoice}</h3>
-                          <p className="text-sm text-gray-600">{convertEpochToDateLong(payment.date)}</p>
-                          <div className="mt-2 flex items-center justify-between">
-                            <p className="text-base font-semibold">{formatCurrency(payment.amount)}</p>
-                            <span className={`me-2 rounded-full px-2.5 py-0.5 text-sm font-medium text-gray-500 ${payment.status === StatusPayment.COMPLETED ? "bg-green-100 text-green-800" : payment.status === StatusPayment.CONFIRMED ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}`}>{payment.status === StatusPayment.COMPLETED ? "Lunas" : payment.status === StatusPayment.CONFIRMED ? "Menunggu" : "Belum Bayar"}</span>
+                        <div onClick={() => router.push(`/member/event/invoice/${payment.id}`)} key={index} className="flex cursor-pointer items-center gap-4 rounded-xl bg-white p-6 shadow-md hover:bg-blue-50">
+                          <div>
+                            <p className="text-5xl text-gray-200">
+                              <RiMoneyEuroCircleFill />
+                            </p>
+                          </div>
+                          <div className="w-full">
+                            <div className="flex justify-between gap-2">
+                              <h3 className="text-lg font-semibold">{formatCurrency(payment.amount)}</h3>
+                              <span className={`me-2 rounded-full px-2.5 py-0.5 font-medium text-gray-500 ${payment.status === StatusPayment.COMPLETED ? "bg-green-100 text-green-800" : payment.status === StatusPayment.CONFIRMED ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}`}>{payment.status === StatusPayment.COMPLETED ? "Lunas" : payment.status === StatusPayment.CONFIRMED ? "Menunggu" : "Belum Bayar"}</span>
+                            </div>
+                            <div className="mt-2 flex gap-2">
+                              <p className="text-gray-600">
+                                <MdOutlinePayment />
+                              </p>
+                              <p className="text-sm text-gray-800">{payment.invoice}</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <p className="text-gray-600">
+                                <MdCalendarMonth />
+                              </p>
+                              <p className="text-sm text-gray-600">{convertEpochToDateLong(payment.date)}</p>
+                            </div>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div className="flex flex-col items-center justify-center pt-6 text-gray-400">
+                      <div className="col-span-2 flex flex-col items-center justify-center pt-6 text-gray-400">
                         <PiEmptyBold size={100} />
                         <p className="mt-2">Tidak ada Event Lomba Anda saat ini</p>
                       </div>
