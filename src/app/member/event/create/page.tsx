@@ -1,15 +1,22 @@
 "use client";
+// next core
+import React, { Suspense, use, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+// components
 import Container from "@/components/base/Container";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import BackNavbar from "@/components/module/BackNavbar";
+
+// icons
+import { RiErrorWarningFill } from "react-icons/ri";
+
+// hooks
 import { useActivity } from "@/hooks/activity/useActivity";
 import { useEvent } from "@/hooks/event/useEvent";
 import { IGetStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
 import { SubjectResponse, useSubject } from "@/hooks/subject/useSubject";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { Suspense, use, useEffect, useState } from "react";
-import { RiErrorWarningFill } from "react-icons/ri";
 
 const EventCreateContent = () => {
   const router = useRouter();
@@ -22,12 +29,12 @@ const EventCreateContent = () => {
   const { create } = useActivity();
   const { eventId } = useEvent();
 
-  const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
-  const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
-  const [selectedSubjects, setSelectedSUbject] = useState<SubjectResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const [idPayment, setIdPayment] = useState<string>("");
+  const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
+  const [profileStudent, setProfileStuden] = useState<IGetStudentInfo>();
+  const [selectedSubjects, setSelectedSUbject] = useState<SubjectResponse[]>([]);
 
   const handleSelectSubject = (subject: SubjectResponse) => {
     setSelectedSUbject((prev) => {
@@ -89,12 +96,6 @@ const EventCreateContent = () => {
   };
 
   useEffect(() => {
-    if (idPayment) {
-      router.push(`/member/event/invoice/${idPayment}`);
-    }
-  }, [idPayment]);
-
-  useEffect(() => {
     const fetchProfileStudent = async () => {
       try {
         setIsLoading(true);
@@ -109,6 +110,12 @@ const EventCreateContent = () => {
     };
     fetchProfileStudent();
   }, []);
+
+  useEffect(() => {
+    if (idPayment) {
+      router.push(`/member/event/invoice/${idPayment}`);
+    }
+  }, [idPayment]);
 
   useEffect(() => {
     if (profileStudent && seasonId) {
@@ -137,7 +144,7 @@ const EventCreateContent = () => {
               <BackNavbar />
             </div>
             {subjects.length > 0 ? (
-              <div className="rounded-xl border bg-white p-7">
+              <div className="mx-auto max-w-lg rounded-xl border bg-white p-7">
                 <p className="text-start text-2xl font-normal">Daftar Perlombaan</p>
                 <p className="mt-2 text-start text-sm font-normal text-neutral-600">Perhatikan bahwa peserta bisa memilih lomba lebih dari satu matpel</p>
                 <form onSubmit={handleSubmit}>

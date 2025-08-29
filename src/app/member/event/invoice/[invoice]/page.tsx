@@ -1,16 +1,26 @@
 "use client";
+
+// next core
+import React, { use, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+
+// components
 import Container from "@/components/base/Container";
 import SkeletonLoader from "@/components/base/SkeletonLoader";
 import BackNavbar from "@/components/module/BackNavbar";
+
+// hooks
 import { IDetailPayment } from "@/hooks/activity/types";
 import { usePayment } from "@/hooks/payment/usePayment";
 import { IGetStudentInfo } from "@/hooks/student/type";
 import { useStudent } from "@/hooks/student/useStudent";
+
+// utils
+import { formatCurrency } from "@/utils/formatCurrency";
+
+// types
 import { StatusPayment } from "@/types/global";
 import { convertEpochToDateShort } from "@/utils/convertEpochToDate";
-import { formatCurrency } from "@/utils/formatCurrency";
-import { useParams } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
 
 const DetailInvoice = () => {
   const params = useParams();
@@ -100,14 +110,6 @@ const DetailInvoice = () => {
               {detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.COMPLETED ? <button className="rounded-lg bg-base-green px-5 py-2.5 text-sm text-white">{statusInvoice}</button> : detailPaymentData && detailPaymentData.latestStatus.status === StatusPayment.CONFIRMED ? <button className="rounded-lg bg-base-yellow p-2 text-sm font-medium text-white">{statusInvoice}</button> : <button className="rounded-lg bg-base-pink p-2 text-sm font-medium text-white">{statusInvoice}</button>}
             </div>
 
-            {/* ID Invoice */}
-            {/* <div className="mt-5 flex flex-row">
-              <div className="flex w-full flex-col gap-1">
-                <p className="text-sm font-semibold text-neutral-600">ID Invoice</p>
-                <p className="text-md text-black">{detailPaymentData?.invoice}</p>
-              </div>
-            </div> */}
-
             {/* Amount */}
             <div className="mt-5 flex flex-row">
               <div className="flex w-full items-center justify-between">
@@ -117,18 +119,6 @@ const DetailInvoice = () => {
             </div>
           </div>
         )}
-
-        {/* Events */}
-        {/* {detailPaymentData?.competition &&
-              detailPaymentData.competition.map((event, index) => (
-                <div key={index} className="mt-5 flex flex-col gap-2">
-                  <p className="text-sm font-semibold text-neutral-600">Events</p>
-                  <div className="flex w-full flex-col items-start">
-                    <p className="text-md text-black">{event.name}</p>
-                    <p className="text-sm text-neutral-600">{event.region.name}</p>
-                  </div>
-                </div>
-              ))} */}
 
         {/* Rincian Pembayaran */}
         {isLoading ? (
@@ -230,7 +220,6 @@ const DetailInvoice = () => {
         {/* Status Transaksi */}
         {detailPaymentData && detailPaymentData.latestStatus.status !== StatusPayment.PENDING && (
           <div className="relative mt-5 rounded-lg bg-white p-4">
-            {/* Garis timeline yang menyentuh titik */}
             <div className="absolute bottom-0 left-1/2 top-0 z-0 w-1 -translate-x-1/2 transform bg-gray-300"></div>
 
             {/* Item pertama */}
