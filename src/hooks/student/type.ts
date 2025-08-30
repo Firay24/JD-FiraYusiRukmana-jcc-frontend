@@ -10,10 +10,17 @@ export type TPayloadSave = {
   idUser: string;
 };
 
-export interface IParticipantByIdCompetition {
+interface IParticipantInfo {
   idParticipant: string;
   idMember: string;
   name: string;
+  room?: string;
+}
+export interface IParticipantByIdCompetition {
+  totalParticipants: number;
+  participantsWithRoom: number;
+  withRoom: IParticipantInfo[];
+  withoutRoom: IParticipantInfo[];
 }
 
 interface SubjectArray {

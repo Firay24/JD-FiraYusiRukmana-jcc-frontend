@@ -8,9 +8,10 @@ import React, { useEffect, useState } from "react";
 import { TbPointFilled } from "react-icons/tb";
 import { IParticipantsClasses } from "../exportClassToExcel";
 import { IParticipantByIdCompetition } from "@/hooks/student/type";
+import { parse } from "path";
 
 const CreateClasses = () => {
-  const { listClasses } = useClasses();
+  const { listClasses, assignParticipant } = useClasses();
   const { listRegional } = useRegional();
   const { listEventName } = useEvent();
   const { listParticipantByIdCompetition } = useStudent();
@@ -18,7 +19,7 @@ const CreateClasses = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showParticipants, setShowParticipants] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [participants, setParticipants] = useState<IParticipantByIdCompetition[]>([]);
+  const [participants, setParticipants] = useState<IParticipantByIdCompetition>();
   const [method, setMethod] = useState<string>("all");
   const [range, setRange] = useState({ from: "", to: "" });
   const [isAddingClass, setIsAddingClass] = useState<boolean>(false);
@@ -84,6 +85,26 @@ const CreateClasses = () => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formData = {
+      competitionId: selectedEvent,
+      mode: method,
+      roomId: selectedClass,
+      startIndex: parseInt(range.from, 10),
+      endIndex: parseInt(range.to, 10),
+      idMembers: selectedIds,
+      newRoomName: newClass,
+    };
+
+    try {
+      await assignParticipant(formData);
+    } catch (error) {
+      console.error("Error assign:", error);
+    }
+  };
+
   const handleCheckboxChange = (id: string, checked: boolean) => {
     if (checked) {
       setSelectedIds((prev) => [...prev, id]);
@@ -100,6 +121,8 @@ const CreateClasses = () => {
   useEffect(() => {
     if (selectedRegional) {
       fetchEvents();
+      setMethod("all");
+      setShowParticipants(false);
     }
   }, [selectedRegional]);
 
@@ -108,106 +131,111 @@ const CreateClasses = () => {
       fetchParticipants();
     }
   }, [showParticipants]);
-
-  console.log(selectedIds);
   return (
     <div className="mb-16">
       <h1 className="text-2xl font-semibold">Pembagian Kelas</h1>
-      <div className="mt-3 grid grid-cols-4 gap-5">
+      <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-4">
         {/* FORM */}
-        <div className="col-span-3">
-          {/* Question 1 */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="regional" className="mb-2 block text-gray-900">
-                Regional
-              </label>
-              <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
-                {regional &&
-                  regional.length > 0 &&
-                  regional.map((regional) => (
-                    <option key={regional.id} value={regional.id}>
-                      {regional.name}
-                    </option>
-                  ))}
-              </select>
+        <form className="col-span-1 md:col-span-3" onSubmit={handleSubmit}>
+          <div>
+            {/* Question 1 */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="regional" className="mb-2 block text-gray-900">
+                  Regional
+                </label>
+                <select value={selectedRegional} onChange={(e) => setSelectedRegional(e.target.value)} id="regional" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+                  {regional &&
+                    regional.length > 0 &&
+                    regional.map((regional) => (
+                      <option key={regional.id} value={regional.id}>
+                        {regional.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="event" className="mb-2 block text-gray-900">
+                  Jenis Lomba
+                </label>
+                <select value={selectedEvent} onChange={(e) => setSelectedEvent(e.target.value)} id="event" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+                  {events &&
+                    events.length > 0 &&
+                    events.map((event) => (
+                      <option key={event.id} value={event.id}>
+                        {event.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
             </div>
-            <div>
-              <label htmlFor="event" className="mb-2 block text-gray-900">
-                Jenis Lomba
-              </label>
-              <select value={selectedEvent} onChange={(e) => setSelectedEvent(e.target.value)} id="event" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
-                {events &&
-                  events.length > 0 &&
-                  events.map((event) => (
-                    <option key={event.id} value={event.id}>
-                      {event.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </div>
 
-          {/* Question 2 */}
-          <div className="mt-2">
-            <label htmlFor="classes" className="mb-2 block text-gray-900">
-              Pilihan Kelas
-            </label>
-            <select value={selectedClass} disabled={isAddingClass} onChange={(e) => setSelectedClass(e.target.value)} id="classes" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
-              {classes &&
-                classes.length > 0 &&
-                classes.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-            </select>
-            {isAddingClass ? (
-              <div className="mt-2">
-                <input type="text" value={newClass} onChange={(e) => setNewClass(e.target.value)} placeholder="Masukkan nama kelas baru" className="w-full rounded-lg border-gray-200 bg-white p-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500" />
-                <p
-                  onClick={() => {
-                    setIsAddingClass(false);
-                    setNewClass("");
-                  }}
-                  className="mt-2 cursor-pointer text-sm text-red-500 hover:underline"
-                >
-                  Batal
+            {/* Question 2 */}
+            <div className="mt-2">
+              <label htmlFor="classes" className="mb-2 block text-gray-900">
+                Pilihan Kelas
+              </label>
+              <select value={selectedClass} disabled={isAddingClass} onChange={(e) => setSelectedClass(e.target.value)} id="classes" className="w-full rounded-lg border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500">
+                {classes &&
+                  classes.length > 0 &&
+                  classes.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+              </select>
+              {isAddingClass ? (
+                <div className="mt-2">
+                  <input type="text" value={newClass} onChange={(e) => setNewClass(e.target.value)} placeholder="Masukkan nama kelas baru" className="w-full rounded-lg border-gray-200 bg-white p-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500" />
+                  <p
+                    onClick={() => {
+                      setIsAddingClass(false);
+                      setNewClass("");
+                    }}
+                    className="mt-2 cursor-pointer text-sm text-red-500 hover:underline"
+                  >
+                    Batal
+                  </p>
+                </div>
+              ) : (
+                <p onClick={() => setIsAddingClass(true)} className="mt-2 cursor-pointer text-sm text-blue-600 hover:underline">
+                  Tambah kelas lainnya
                 </p>
-              </div>
-            ) : (
-              <p onClick={() => setIsAddingClass(true)} className="mt-2 cursor-pointer text-sm text-blue-600 hover:underline">
-                Tambah kelas lainnya
-              </p>
-            )}
-          </div>
-
-          {/* Question 3 */}
-          <div className="mt-2">
-            <label htmlFor="method" className="mb-2 block text-gray-900">
-              Pilih Metode
-            </label>
-
-            {/* Radio */}
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <input type="radio" id="all" name="method" value="all" checked={method === "all"} onChange={(e) => setMethod(e.target.value)} className="h-4 w-4 text-blue-600 focus:ring-blue-500" />
-                <label htmlFor="all" className="text-gray-700">
-                  Semua
-                </label>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input type="radio" id="custom" name="method" value="custom" checked={method === "custom"} onChange={(e) => setMethod(e.target.value)} className="h-4 w-4 text-blue-600 focus:ring-blue-500" />
-                <label htmlFor="custom" className="text-gray-700">
-                  Custom
-                </label>
-              </div>
+              )}
             </div>
 
-            {/* Custom */}
-            {method === "custom" && (
-              <>
+            {/* Question 3 */}
+            <div className="mt-2">
+              <label htmlFor="method" className="mb-2 block text-gray-900">
+                Pilih Metode
+              </label>
+
+              {/* Radio */}
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <input type="radio" id="all" name="method" value="all" checked={method === "all"} onChange={(e) => setMethod(e.target.value)} className="h-4 w-4 text-blue-600 focus:ring-blue-500" />
+                  <label htmlFor="all" className="text-gray-700">
+                    Semua
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input type="radio" id="range" name="method" value="range" checked={method === "range"} onChange={(e) => setMethod(e.target.value)} className="h-4 w-4 text-blue-600 focus:ring-blue-500" />
+                  <label htmlFor="range" className="text-gray-700">
+                    Range
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input type="radio" id="members" name="method" value="members" checked={method === "members"} onChange={(e) => setMethod(e.target.value)} className="h-4 w-4 text-blue-600 focus:ring-blue-500" />
+                  <label htmlFor="members" className="text-gray-700">
+                    Custom
+                  </label>
+                </div>
+              </div>
+
+              {/* Custom */}
+              {method === "range" && (
                 <div className="mt-3 flex items-center gap-6">
                   <div className="flex items-center gap-3">
                     <label htmlFor="from" className="block text-gray-500">
@@ -222,35 +250,53 @@ const CreateClasses = () => {
                     <input type="number" id="to" value={range.to} onChange={(e) => setRange({ ...range, to: e.target.value })} className="w-24 rounded-lg border-gray-200 bg-white p-2 text-sm focus:border-blue-500 focus:ring-blue-500" />
                   </div>
                 </div>
+              )}
 
-                {/* Checkbox */}
-                <label className="mt-3 flex items-center gap-2 text-neutral-700">
-                  <input checked={showParticipants} type="checkbox" onChange={(e) => setShowParticipants(e.target.checked)} value="" className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"></input>
-                  <span>Tampilkan Peserta</span>
-                </label>
+              {method === "members" && (
+                <>
+                  {/* Checkbox */}
+                  <label className="mt-3 flex items-center gap-2 text-neutral-700">
+                    <input checked={showParticipants} type="checkbox" onChange={(e) => setShowParticipants(e.target.checked)} value="" className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"></input>
+                    <span>Tampilkan Peserta</span>
+                  </label>
 
-                {/* DATA PARTICIPANT */}
-                {showParticipants && participants && participants.length > 0 && (
-                  <div className="mt-3 grid grid-cols-2 text-neutral-500">
-                    {participants.map((p) => (
-                      <label key={p.idMember} className="flex items-center gap-2">
-                        <input type="checkbox" checked={selectedIds.includes(p.idMember)} onChange={(e) => handleCheckboxChange(p.idMember, e.target.checked)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-                        <span>{p.name}</span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
+                  {/* DATA PARTICIPANT */}
+                  {showParticipants && participants && participants.withoutRoom.length > 0 && (
+                    <>
+                      <div className="mt-3 grid grid-cols-2 text-neutral-600">
+                        {participants.withoutRoom.map((p) => (
+                          <label key={p.idMember} className="flex items-center gap-2">
+                            <input type="checkbox" checked={selectedIds.includes(p.idMember)} onChange={(e) => handleCheckboxChange(p.idMember, e.target.checked)} className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+                            <span>{p.name}</span>
+                          </label>
+                        ))}
+                      </div>
+                      <hr className="my-4 border-gray-300" />
+                      <p className="text-neutral-500">
+                        Participants with class: {participants?.participantsWithRoom ?? 0} / {participants?.totalParticipants ?? 0}
+                      </p>
+                      <div className="mt-3 grid grid-cols-2 gap-2 text-neutral-600">
+                        {participants.withRoom.map((p) => (
+                          <div key={p.idMember} className="flex items-center gap-2">
+                            <p>{p.name}</p>
+                            <p>{p.room}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* Submit */}
+            <div className="mt-7">
+              <button type="submit" className="rounded-lg bg-blue-600 px-9 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                Simpan
+              </button>
+            </div>
           </div>
-
-          {/* Submit */}
-          <div className="mt-7">
-            <button type="submit" className="rounded-lg bg-blue-600 px-9 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-              Simpan
-            </button>
-          </div>
-        </div>
+        </form>
 
         {/* KELAS PESERTA */}
         <div>

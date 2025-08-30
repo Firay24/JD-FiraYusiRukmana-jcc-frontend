@@ -92,7 +92,7 @@ export const useStudent = () => {
 
   const listParticipantByIdCompetition = async (idCompetition: string) => {
     try {
-      const response: HttpResponse<IParticipantByIdCompetition[]> = await get(`/activity/participants/${idCompetition}`);
+      const response: HttpResponse<IParticipantByIdCompetition> = await get(`/activity/participants/${idCompetition}`);
       return response.data;
     } catch (error: any) {
       if (error.statusCode === 401) {
