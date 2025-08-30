@@ -9,6 +9,7 @@ import { TbPointFilled } from "react-icons/tb";
 import { IParticipantsClasses } from "../exportClassToExcel";
 import { IParticipantByIdCompetition } from "@/hooks/student/type";
 import { parse } from "path";
+import toast from "react-hot-toast";
 
 const CreateClasses = () => {
   const { listClasses, assignParticipant } = useClasses();
@@ -102,6 +103,8 @@ const CreateClasses = () => {
       await assignParticipant(formData);
     } catch (error) {
       console.error("Error assign:", error);
+    } finally {
+      toast.success("Successfully assigned!");
     }
   };
 
