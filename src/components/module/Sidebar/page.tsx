@@ -43,7 +43,7 @@ const Sidebar = ({ currentPath }: { currentPath: string }) => {
         <div>
           {menuSidebar.map((item, index) => (
             <div key={index} className="mb-2">
-              <a href={item.path} className={`text-md block rounded-lg px-4 py-2 ${currentPath.toLowerCase() === item.path.toLowerCase() ? "font-semibold text-blue-600" : "text-neutral-500"} hover:bg-neutral-100 hover:text-neutral-800`}>
+              <a href={item.path} className={`text-md block rounded-lg px-4 py-2 ${currentPath.toLowerCase().startsWith(item.path.toLowerCase()) ? "font-semibold text-blue-600" : "text-neutral-500"} hover:bg-neutral-100 hover:text-neutral-800`}>
                 {item.label}
               </a>
             </div>

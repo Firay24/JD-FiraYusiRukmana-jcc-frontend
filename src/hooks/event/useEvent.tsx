@@ -5,6 +5,11 @@ interface IEventId {
   id: string;
 }
 
+export interface IEventName {
+  id: string;
+  name: string;
+}
+
 export const useEvent = () => {
   const router = useRouter();
   const { get } = useHttp();
@@ -32,5 +37,15 @@ export const useEvent = () => {
     }
   };
 
-  return { eventId, pdfView };
+  const listEventName = async (id: string) => {
+    try {
+      const response: HttpResponse<IEventName[]> = await get(`/event/list/name/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Save failed:", error);
+      throw error;
+    }
+  };
+
+  return { eventId, pdfView, listEventName };
 };

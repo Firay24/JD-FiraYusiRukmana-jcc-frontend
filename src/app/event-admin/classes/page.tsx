@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { exportClassToExcel } from "./exportClassToExcel";
+import Link from "next/link";
 
 const Participants = () => {
   const { listRegional } = useRegional();
@@ -272,8 +273,11 @@ const Participants = () => {
           </div>
         </div>
 
-        <div>
+        <div className="flex justify-between">
           <p>{`Jumlah Peserta: ${participants && participants.totalItems}`}</p>
+          <Link href="classes/create" className="text-neutral-600 transition hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+            Pembagian Kelas
+          </Link>
         </div>
 
         {/* table */}
